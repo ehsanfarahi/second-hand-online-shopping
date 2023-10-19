@@ -4,10 +4,10 @@ module.exports = {
   theme: {
     extend: {},
     screens: {
-      sm: { max: "640px" },
+      sm: { max: "600px" },
       // => @media (min-width: 640px) { ... }
 
-      md: { max: "768px" },
+      md: { max: "1000px", min: "600px" },
       // => @media (min-width: 768px) { ... }
 
       lg: { max: "1024px" },
