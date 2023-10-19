@@ -47,17 +47,12 @@ const Header = () => {
   }
 
   return (
-<<<<<<< HEAD
     <div
       className={`${
         menuType ? "bg-blue-100 shadow" : "bg-white"
       } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed sm:shadow-sm md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed`}
     >
       <div className="flex justify-between items-center w-[95%] mx-auto py-3 sm:block sm:w-full sm:py-3">
-=======
-    <div className="bg-white w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed">
-      <div className="flex justify-between items-center w-[95%] mx-auto py-4 sm:block sm:w-full sm:py-3">
->>>>>>> a4557beceef90b648de8265de73a38ac8ee2ad10
         <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
           {menuIconDisplay ? (
             <AiOutlineMenuFold
@@ -80,15 +75,10 @@ const Header = () => {
         <div>
           <div
             className={`${
-<<<<<<< HEAD
               menuIconDisplay
                 ? `sm:absolute sm:left-0 sm:top-14 transition-all duration-[.5s] ease-in-out md:absolute md:left-0 md:top-16`
                 : `sm:absolute sm:-left-full sm:top-14 transition-all duration-[.5s] ease-in-out md:absolute md:-left-full md:top-14`
             } sm:bg-blue-200 sm:w-[70%] sm:h-screen sm:z-[3]  md:bg-blue-200 md:w-[50%] md:h-screen md:z-[3]`}
-=======
-              menuIconDisplay ? `sm:block md:block` : `sm:hidden md:hidden`
-            } sm:absolute sm:left-0 sm:top-14 sm:bg-blue-200 sm:w-[70%] sm:h-screen sm:z-[3] md:absolute md:left-0 md:top-16 md:bg-blue-200 md:w-[50%] md:h-screen md:z-[3]`}
->>>>>>> a4557beceef90b648de8265de73a38ac8ee2ad10
           >
             <ul className="flex text-xl uppercase font-semibold sm:block md:block sm:text-center md:text-center">
               <li className="sm:py-4 md:py-4">
@@ -144,11 +134,7 @@ const Header = () => {
           <div
             className={`${
               menuIconDisplay &&
-<<<<<<< HEAD
               "sm:bg-gray-700 sm:bg-opacity-50 sm:absolute  sm:top-14 sm:left-0 sm:right-0 sm:bottom-0 sm:z-[2] sm:h-screen md:bg-gray-700 md:bg-opacity-70 md:absolute  md:top-16 md:left-0 md:right-0 md:bottom-0 md:z-[2] md:h-screen"
-=======
-              "sm:bg-gray-700 sm:bg-opacity-70 sm:absolute  sm:top-14 sm:left-0 sm:right-0 sm:bottom-0 sm:z-[2] sm:h-screen md:bg-gray-700 md:bg-opacity-70 md:absolute  md:top-16 md:left-0 md:right-0 md:bottom-0 md:z-[2] md:h-screen"
->>>>>>> a4557beceef90b648de8265de73a38ac8ee2ad10
             }`}
           ></div>
         </div>
