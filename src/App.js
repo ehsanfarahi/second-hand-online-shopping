@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // React Icons
-import { MdAddBusiness } from "react-icons/md";
+import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { RiArrowUpSLine } from "react-icons/ri";
 
 // Import Pages
@@ -53,11 +53,11 @@ const AddProduct = (props) => {
   return (
     <>
       {props.disp && (
-        <div className="fixed right-10 bottom-12 sm:right-4 sm:z-[-1] md:right-6 md:z-[-1]">
-          <MdAddBusiness className="text-5xl cursor-pointer text-green-400 hover:text-green-500 sm:text-3xl md:text-4xl" />
+        <div className="fixed right-10 bottom-12 sm:right-4 md:right-6">
+          <AiOutlineAppstoreAdd className="text-5xl cursor-pointer text-orange-400 hover:text-orange-500 sm:text-3xl md:text-4xl" />
           {/* <MdAddChart /> */}
           {/* <MdLibraryAdd /> */}
-          {/* <AiOutlineAppstoreAdd /> */}
+          {/* <MdAddBusiness /> */}
           {/* <BiCommentAdd /> */}
           {/* <MdAddComment /> */}
         </div>
@@ -72,7 +72,7 @@ const ArrowUp = (props) => {
       {props.disp && (
         <div
           onClick={props.func}
-          className="fixed right-10 bottom-12 bg-blue-50 rounded-sm cursor-pointer hover:bg-blue-100 sm:right-4 sm:z-[-1] md:right-6 md:z-[-1]"
+          className="fixed right-10 bottom-12 bg-blue-50 rounded-sm cursor-pointer hover:bg-blue-100 sm:right-4 md:right-6"
         >
           <RiArrowUpSLine className="text-5xl cursor-pointer text-blue-400 sm:text-4xl md:text-4xl" />
         </div>

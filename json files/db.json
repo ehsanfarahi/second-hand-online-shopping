@@ -1,0 +1,15 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "category": "cars",
+      "company": "BMW",
+      "model": "White Car",
+      "price": "96,000.00",
+      "location": "Hamburg",
+      "date": "10/23/2023",
+      "newUpload": true,
+      "image": "images/car1.jpg"
+    }
+  ]
+}

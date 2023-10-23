@@ -1,0 +1,59 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "category": "cars",
+      "company": "BMW",
+      "model": "White Car",
+      "price": "96,000.00",
+      "location": "Hamburg",
+      "date": "10/23/2023",
+      "newUpload": true,
+      "image": "pictures/car1.jpg"
+    },
+    {
+      "id": 2,
+      "category": "cars",
+      "company": "Volks Wagen",
+      "model": "Top",
+      "price": "20,000.00",
+      "location": "Munich",
+      "date": "08/02/2023",
+      "newUpload": false,
+      "image": "pictures/car1.jpg"
+    },
+    {
+      "id": 3,
+      "category": "cars",
+      "company": "Lamburghini",
+      "model": "Black",
+      "price": "115,000.00",
+      "location": "Frankfurt",
+      "date": "09/12/2023",
+      "newUpload": false,
+      "image": "pictures/car1.jpg"
+    },
+    {
+      "id": 4,
+      "category": "cars",
+      "company": "Mitsobishi",
+      "model": "2023",
+      "price": "8,300.00",
+      "location": "Essen",
+      "date": "10/23/2023",
+      "newUpload": true,
+      "image": "pictures/car1.jpg"
+    },
+    {
+      "id": 5,
+      "category": "cars",
+      "company": "Opel",
+      "model": "Corsa",
+      "price": "45,500.00",
+      "location": "Schleswig Holstein",
+      "date": "10/23/2023",
+      "newUpload": false,
+      "image": "pictures/car1.jpg"
+    }
+  ]
+}

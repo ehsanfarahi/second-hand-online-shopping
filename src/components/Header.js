@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 // React Icons
@@ -8,6 +8,7 @@ import {
   AiOutlineMenuFold,
 } from "react-icons/ai";
 import { HiUser } from "react-icons/hi";
+import { BiSearch } from "react-icons/bi";
 
 const Header = () => {
   // Track Locations of the Pages
@@ -23,6 +24,7 @@ const Header = () => {
   // Menu & Menu Icon
   const [menuIconDisplay, setMeniIconDisplay] = useState(false);
   const [menuType, setMenuType] = useState(false);
+  const [displaySearch, setDisplaySearch] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -46,13 +48,20 @@ const Header = () => {
     });
   }
 
+  const ref = useRef();
+
+  function handleSearch() {
+    setDisplaySearch((e) => !e);
+    ref.current.focus();
+  }
+
   return (
     <div
       className={`${
         menuType ? "bg-blue-100 shadow" : "bg-white"
       } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed sm:shadow-sm md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed`}
     >
-      <div className="flex justify-between items-center w-[95%] mx-auto py-3 sm:block sm:w-full sm:py-3">
+      <div className="flex justify-between items-center w-[95%] mx-auto py-3 sm:block sm:w-full sm:py-3 sm:z-20">
         <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
           {menuIconDisplay ? (
             <AiOutlineMenuFold
@@ -65,7 +74,7 @@ const Header = () => {
           )}
         </div>
         <div>
-          <h3 className="font-semibold text-3xl sm:text-2xl sm:absolute sm:left-[50%] sm:translate-x-[-50%] sm:top-3 md:text-3xl md:absolute md:left-[50%] md:translate-x-[-50%] md:top-3">
+          <h3 className="font-semibold text-3xl sm:text-2xl sm:absolute sm:left-[50%] sm:translate-x-[-50%] sm:top-2 md:text-3xl md:absolute md:left-[50%] md:translate-x-[-50%] md:top-3">
             <Link to="/">
               AfghanBazaar
               <span className="text-orange-500 font-extrabold">24</span>
@@ -76,8 +85,8 @@ const Header = () => {
           <div
             className={`${
               menuIconDisplay
-                ? `sm:absolute sm:left-0 sm:top-14 transition-all duration-[.5s] ease-in-out md:absolute md:left-0 md:top-16`
-                : `sm:absolute sm:-left-full sm:top-14 transition-all duration-[.5s] ease-in-out md:absolute md:-left-full md:top-14`
+                ? `sm:absolute sm:left-0 sm:top-14 transition-all duration-[.4s] ease-in-out md:absolute md:left-0 md:top-16`
+                : `sm:absolute sm:-left-full sm:top-14 transition-all duration-[.4s] ease-in-out md:absolute md:-left-full md:top-14`
             } sm:bg-blue-200 sm:w-[70%] sm:h-screen sm:z-[3]  md:bg-blue-200 md:w-[50%] md:h-screen md:z-[3]`}
           >
             <ul className="flex text-xl uppercase font-semibold sm:block md:block sm:text-center md:text-center">
@@ -130,6 +139,9 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
+            <div className="sm:cursor-pointer sm:hover:text-gray-700 sm:mr-1 sm:absolute sm:bottom-20 sm:right-4">
+              <HiUser className="hidden sm:block text-3xl sm:mx-1" />
+            </div>
           </div>
           <div
             className={`${
@@ -142,7 +154,28 @@ const Header = () => {
           <p className="sm:hidden flex items-center text-xl">
             Sign in <AiOutlineLogin className="ml-2 " />
           </p>
-          <HiUser className="hidden sm:block text-3xl sm:mx-1" />
+          <div
+            className={`${
+              displaySearch && "sm:bg-blue-400 rounded-full"
+            } hidden sm:block text-3xl sm:mx-1`}
+          >
+            <BiSearch
+              onClick={handleSearch}
+              className={`${displaySearch && "sm:px-1"}`}
+            />
+          </div>
+        </div>
+        <div
+          className={`${
+            displaySearch ? "scale-100" : "scale-0"
+          } hidden sm:block sm:w-[88%] sm:h-[52px] sm:-mt-3 sm:absolute sm:transition-all sm:duration-300 sm:ease-in-out`}
+        >
+          <input
+            type="text"
+            className="sm:w-full sm:bg-blue-200 sm:h-full sm:outline-none sm:border-none sm:text-lg sm:pl-2"
+            placeholder="Search products..."
+            ref={ref}
+          />
         </div>
       </div>
     </div>
