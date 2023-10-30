@@ -25,6 +25,8 @@ const Header = () => {
   const [menuIconDisplay, setMeniIconDisplay] = useState(false);
   const [menuType, setMenuType] = useState(false);
   const [displaySearch, setDisplaySearch] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
+  const [initialScroll, setInitialScroll] = useState(0);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -55,13 +57,24 @@ const Header = () => {
     ref.current.focus();
   }
 
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > initialScroll) {
+      setInitialScroll(window.scrollY);
+      setShowMenu(false);
+    } else if (window.scrollY < initialScroll) {
+      setShowMenu(true);
+    }
+  });
+
   return (
     <div
       className={`${
-        menuType ? "bg-blue-100 shadow" : "bg-white"
-      } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed sm:shadow-sm md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed`}
+        menuType ? "bg-blue-100 shadow z-30" : "bg-white"
+      } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed ${
+        showMenu ? "sm:top-0 opacity-100" : "sm:-top-14 opacity-0"
+      } sm:shadow-sm sm:transition-all sm:duration-[.75s] sm:ease-in-out md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed`}
     >
-      <div className="flex justify-between items-center w-[95%] mx-auto py-3 sm:block sm:w-full sm:py-3 sm:z-20">
+      <div className="flex justify-between items-center w-[95%] mx-auto py-3  sm:block sm:w-full sm:py-3 sm:z-20">
         <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
           {menuIconDisplay ? (
             <AiOutlineMenuFold
