@@ -14,6 +14,9 @@ const Header = () => {
   // Track Locations of the Pages
   const location = useLocation();
 
+  // Refs
+  const ref = useRef();
+
   // Function for getting the pages path
   const selectMenu = (menu) => {
     if (location.pathname === menu) {
@@ -28,6 +31,7 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(true);
   const [initialScroll, setInitialScroll] = useState(0);
 
+  // Hooks
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 5) {
@@ -38,10 +42,14 @@ const Header = () => {
     });
   });
 
+  // Functions
+
+  // Change menu icon
   function handleMenuIcon(e) {
     setMeniIconDisplay(!e);
   }
 
+  // show/hide menu
   function handleMenu() {
     setMeniIconDisplay(false);
     window.scrollTo({
@@ -50,13 +58,14 @@ const Header = () => {
     });
   }
 
-  const ref = useRef();
-
+  // activate/deactivate search bar
   function handleSearch() {
     setDisplaySearch((e) => !e);
     ref.current.focus();
   }
 
+  // Even Listenders
+  // Show and hide menu bar and bottom menu on scroll
   window.addEventListener("scroll", () => {
     if (window.scrollY > initialScroll) {
       setInitialScroll(window.scrollY);
@@ -70,17 +79,13 @@ const Header = () => {
     <div
       className={`${
         menuType ? "bg-blue-100 shadow z-30" : "bg-white"
-      } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:border-b-4 sm:border-b-white sm:fixed ${
-        showMenu ? "sm:top-0 opacity-100" : "sm:-top-14 opacity-0"
+      } fixed w-full text-blue-400 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:fixed sm:shadow-md ${
+        showMenu ? "sm:top-0 sm:opacity-100" : "sm:-top-14 sm:opacity-0"
       } sm:shadow-sm sm:transition-all sm:duration-[.75s] sm:ease-in-out md:bg-blue-200 md:text-gray-600 md:h-16 md:border-b-4 md:border-b-white md:fixed`}
     >
       <div className="flex justify-between items-center w-[95%] mx-auto py-3  sm:block sm:w-full sm:py-3 sm:z-20">
         <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
-          {menuIconDisplay ? (
-            <AiOutlineMenuFold
-              onClick={() => handleMenuIcon(menuIconDisplay)}
-            />
-          ) : (
+          {menuIconDisplay ? null : (
             <AiOutlineMenuUnfold
               onClick={() => handleMenuIcon(menuIconDisplay)}
             />
@@ -98,11 +103,26 @@ const Header = () => {
           <div
             className={`${
               menuIconDisplay
-                ? `sm:absolute sm:left-0 sm:top-14 transition-all duration-[.4s] ease-in-out md:absolute md:left-0 md:top-16`
-                : `sm:absolute sm:-left-full sm:top-14 transition-all duration-[.4s] ease-in-out md:absolute md:-left-full md:top-14`
+                ? `sm:absolute sm:left-0 sm:top-0 transition-all duration-[.4s] ease-in-out md:absolute md:left-0 md:top-16`
+                : `sm:absolute sm:-left-full sm:top-0 transition-all duration-[.4s] ease-in-out md:absolute md:-left-full md:top-14`
             } sm:bg-blue-200 sm:w-[70%] sm:h-screen sm:z-[3]  md:bg-blue-200 md:w-[50%] md:h-screen md:z-[3]`}
           >
-            <ul className="flex text-xl uppercase font-semibold sm:block md:block sm:text-center md:text-center">
+            <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
+              {menuIconDisplay ? (
+                <AiOutlineMenuFold
+                  onClick={() => handleMenuIcon(menuIconDisplay)}
+                />
+              ) : null}
+            </div>
+            <div className="hidden sm:block">
+              <h3 className="font-semibold text-3xl sm:text-2xl sm:absolute sm:left-[50%] sm:translate-x-[-50%] sm:top-2 md:text-3xl md:absolute md:left-[50%] md:translate-x-[-50%] md:top-3">
+                <Link to="/">
+                  AfghanBazaar
+                  <span className="text-orange-500 font-extrabold">24</span>
+                </Link>
+              </h3>
+            </div>
+            <ul className="flex text-xl uppercase font-semibold sm:py-14 sm:block md:block sm:text-center md:text-center">
               <li className="sm:py-4 md:py-4">
                 <Link
                   onClick={handleMenu}
@@ -156,13 +176,17 @@ const Header = () => {
               <HiUser className="hidden sm:block text-3xl sm:mx-1" />
             </div>
           </div>
+          {/* Over lay container */}
           <div
+            onClick={() => setMeniIconDisplay(false)}
             className={`${
               menuIconDisplay &&
-              "sm:bg-gray-700 sm:bg-opacity-50 sm:absolute  sm:top-14 sm:left-0 sm:right-0 sm:bottom-0 sm:z-[2] sm:h-screen md:bg-gray-700 md:bg-opacity-70 md:absolute  md:top-16 md:left-0 md:right-0 md:bottom-0 md:z-[2] md:h-screen"
+              "sm:bg-gray-700 sm:bg-opacity-50 sm:absolute  sm:top-0 sm:left-0 sm:right-0 sm:bottom-0 sm:z-[2] sm:h-screen md:bg-gray-700 md:bg-opacity-70 md:absolute  md:top-16 md:left-0 md:right-0 md:bottom-0 md:z-[2] md:h-screen"
             }`}
           ></div>
         </div>
+
+        {/* Sign in container */}
         <div className="cursor-pointer hover:text-blue-500 sm:hover:text-gray-700 sm:float-right sm:mr-1">
           <p className="sm:hidden flex items-center text-xl">
             Sign in <AiOutlineLogin className="ml-2 " />
@@ -178,6 +202,8 @@ const Header = () => {
             />
           </div>
         </div>
+
+        {/* Search bar container */}
         <div
           className={`${
             displaySearch ? "scale-100" : "scale-0"

@@ -69,7 +69,7 @@ const MenuBottom = () => {
     <div
       className={`${
         displayMenuBottom ? "bottom-0 opacity-100" : "-bottom-14 opacity-0"
-      } hidden sm:flex justify-between items-center px-2 fixed bg-blue-200 h-14 z-30 w-full text-gray-600 transition-all duration-[.75s] ease-in-out`}
+      } hidden sm:flex justify-between items-center px-2 fixed bg-blue-200 h-14 z-20 w-full text-gray-600 transition-all duration-[.75s] ease-in-out`}
     >
       {/* <RiShoppingCartLine /> */}
       {/* <FiShoppingCart /> */}
@@ -92,8 +92,8 @@ const AddProduct = (props) => {
   return (
     <>
       {props.disp && (
-        <div className="fixed right-10 bottom-16 z-30 sm:right-4 md:right-6">
-          <AiOutlineAppstoreAdd className="text-5xl cursor-pointer text-orange-400 hover:text-orange-500 sm:text-3xl md:text-4xl" />
+        <div className="fixed right-10 bottom-16 z-20 sm:right-4 md:right-6">
+          <AiOutlineAppstoreAdd className="text-5xl cursor-pointer text-orange-400 hover:text-orange-500 sm:text-4xl md:text-4xl" />
           {/* <MdAddChart /> */}
           {/* <MdLibraryAdd /> */}
           {/* <MdAddBusiness /> */}
@@ -111,7 +111,7 @@ const ArrowUp = (props) => {
       {props.disp && (
         <div
           onClick={props.func}
-          className="fixed right-10 bottom-16 bg-blue-50 rounded-sm cursor-pointer hover:bg-blue-100 z-30 sm:right-4 md:right-6"
+          className="fixed right-10 bottom-16 bg-blue-50 rounded-sm cursor-pointer hover:bg-blue-100 z-20 sm:right-4 md:right-6"
         >
           <RiArrowUpSLine className="text-5xl cursor-pointer text-blue-400 sm:text-4xl md:text-4xl" />
         </div>
