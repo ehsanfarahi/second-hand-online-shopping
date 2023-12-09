@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 
 // React Icons
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
@@ -8,15 +14,17 @@ import { HiOutlineUser } from "react-icons/hi";
 
 // Import Pages
 import Home from "./pages/Home";
+import AddProduct from "./pages/AddProduct";
 
 // Import Components
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
+import SearchProduct from "./components/SearchProduct";
 
 function App() {
   const [displayAddProduct, setDisplayAddProduct] = useState(true);
   const [displayArrowUp, setDisplayArrowUp] = useState(false);
 
+  // React Hooks
   useEffect(() => {
     window.addEventListener("scroll", (e) => {
       if (window.scrollY > 1500) {
@@ -35,16 +43,19 @@ function App() {
       behavior: "smooth",
     });
   };
+
   return (
     <div className="App">
       <Router>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search-products/:data" element={<SearchProduct />} />
+          <Route path="/add-product" element={<AddProduct />} />
         </Routes>
         <MenuBottom />
+        <AddProductIcon disp={displayAddProduct} />
       </Router>
-      <AddProduct disp={displayAddProduct} />
       <ArrowUp disp={displayArrowUp} func={handleArrowUp} />
     </div>
   );
@@ -88,12 +99,20 @@ const MenuBottom = () => {
   );
 };
 
-const AddProduct = (props) => {
+const AddProductIcon = (props) => {
+  const navigate = useNavigate();
+  // Functions
+  function handleAddProduct() {
+    navigate("/add-product");
+  }
   return (
     <>
       {props.disp && (
         <div className="fixed right-10 bottom-16 z-20 sm:right-4 md:right-6">
-          <AiOutlineAppstoreAdd className="text-5xl cursor-pointer text-orange-400 hover:text-orange-500 sm:text-4xl md:text-4xl" />
+          <AiOutlineAppstoreAdd
+            onClick={handleAddProduct}
+            className="text-5xl cursor-pointer text-orange-400 hover:text-orange-500 sm:text-4xl md:text-4xl"
+          />
           {/* <MdAddChart /> */}
           {/* <MdLibraryAdd /> */}
           {/* <MdAddBusiness /> */}

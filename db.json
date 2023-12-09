@@ -8,8 +8,7 @@
       "price": 96000,
       "discount": false,
       "location": "Hamburg",
-      "date": "10/30/2023",
-      "newUpload": true,
+      "date": "11/26/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -20,8 +19,7 @@
       "price": 20000,
       "discount": 10,
       "location": "Munich",
-      "date": "10/29/2023",
-      "newUpload": false,
+      "date": "11/25/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -32,8 +30,7 @@
       "price": 115000,
       "discount": false,
       "location": "Frankfurt",
-      "date": "10/28/2023",
-      "newUpload": false,
+      "date": "11/24/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -44,8 +41,7 @@
       "price": 8300,
       "discount": false,
       "location": "Essen",
-      "date": "10/28/2023",
-      "newUpload": true,
+      "date": "11/26/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -56,8 +52,7 @@
       "price": 45500,
       "discount": 5,
       "location": "Schleswig Holstein State",
-      "date": "10/30/2023",
-      "newUpload": false,
+      "date": "11/22/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -68,8 +63,7 @@
       "price": 45500,
       "discount": false,
       "location": "Schleswig Holstein",
-      "date": "10/29/2023",
-      "newUpload": false,
+      "date": "11/21/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -80,8 +74,7 @@
       "price": 45500,
       "discount": false,
       "location": "Schleswig Holstein",
-      "date": "10/23/2023",
-      "newUpload": false,
+      "date": "11/20/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -92,8 +85,7 @@
       "price": 45500,
       "discount": false,
       "location": "Schleswig Holstein",
-      "date": "10/23/2023",
-      "newUpload": false,
+      "date": "11/19/2023",
       "image": "pictures/car1.jpg"
     },
     {
@@ -105,7 +97,6 @@
       "discount": 23,
       "location": "Schleswig Holstein",
       "date": "10/23/2023",
-      "newUpload": false,
       "image": "pictures/car1.jpg"
     },
     {
@@ -117,8 +108,63 @@
       "discount": 100,
       "location": "Schleswig Holstein",
       "date": "10/23/2023",
-      "newUpload": false,
       "image": "pictures/car1.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "cat": "Electronics"
+    },
+    {
+      "id": 2,
+      "cat": "Furniture"
+    },
+    {
+      "id": 3,
+      "cat": "Vehicles"
+    },
+    {
+      "id": 4,
+      "cat": "Other"
+    }
+  ],
+  "electronicsTypes": [
+    {
+      "id": 1,
+      "type": "Computers"
+    },
+    {
+      "id": 2,
+      "type": "Mobiles"
+    }
+  ],
+  "furnituresTypes": [
+    {
+      "id": 1,
+      "type": "Sofas"
+    },
+    {
+      "id": 2,
+      "type": "Beds"
+    },
+    {
+      "id": 3,
+      "type": "Capboards"
+    }
+  ],
+  "vehiclesTypes": [
+    {
+      "id": 1,
+      "type": "Cars"
+    },
+    {
+      "id": 2,
+      "type": "Motor Bikes"
+    },
+    {
+      "id": 3,
+      "type": "Bikes"
     }
   ]
 }

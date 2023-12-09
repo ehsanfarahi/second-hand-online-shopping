@@ -1,5 +1,6 @@
-// React Icons
 import { useEffect, useState } from "react";
+
+// React Icons
 import { AiOutlineHeart } from "react-icons/ai";
 
 const Home = () => {
@@ -9,13 +10,18 @@ const Home = () => {
     fetch(`http://localhost:3000/products`)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         setProducts(result);
       });
   }, []);
 
   const date = new Date();
-  const newDate = date.setDate(date.getDate() - 1);
+  const yesterday = date.setDate(date.getDate() - 1);
+  const twoDaysAgo = date.setDate(date.getDate(yesterday) - 1);
+  const threeDaysAgo = date.setDate(date.getDate(twoDaysAgo) - 1);
+  const fourDaysAgo = date.setDate(date.getDate(threeDaysAgo) - 1);
+  const fiveDaysAgo = date.setDate(date.getDate(fourDaysAgo) - 1);
+  const sixDaysAgo = date.setDate(date.getDate(fiveDaysAgo) - 1);
+  const oneWeekAgo = date.setDate(date.getDate(sixDaysAgo) - 1);
 
   return (
     <div className="py-20 sm:py-17 md:py-8">
@@ -26,7 +32,8 @@ const Home = () => {
               key={product.id}
               className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
             >
-              {product.newUpload && (
+              {new Date(product.date).toDateString() ===
+                new Date().toDateString() && (
                 <span className="absolute bg-blue-300 text-white font-bold text-lg px-2 py-1 shadow top-4">
                   New
                 </span>
@@ -72,13 +79,31 @@ const Home = () => {
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap overflow-hidden">
                   {product.location}
                 </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap">
                   {new Date(product.date).toDateString() ===
                   new Date().toDateString()
                     ? "Today"
                     : new Date(product.date).toDateString() ===
-                      new Date(newDate).toDateString()
+                      new Date(yesterday).toDateString()
                     ? "Yesterday"
+                    : new Date(product.date).toDateString() ===
+                      new Date(twoDaysAgo).toDateString()
+                    ? "2d ago"
+                    : new Date(product.date).toDateString() ===
+                      new Date(threeDaysAgo).toDateString()
+                    ? "3d ago"
+                    : new Date(product.date).toDateString() ===
+                      new Date(fourDaysAgo).toDateString()
+                    ? "4d ago"
+                    : new Date(product.date).toDateString() ===
+                      new Date(fiveDaysAgo).toDateString()
+                    ? "5d ago"
+                    : new Date(product.date).toDateString() ===
+                      new Date(sixDaysAgo).toDateString()
+                    ? "6d ago"
+                    : new Date(product.date).toDateString() ===
+                      new Date(oneWeekAgo).toDateString()
+                    ? "1w ago"
                     : product.date}
                 </span>
               </div>
