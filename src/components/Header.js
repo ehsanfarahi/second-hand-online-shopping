@@ -215,7 +215,7 @@ const Header = () => {
               >
                 <Link
                   onClick={handleMenu}
-                  className={`mx-5 flex items-center ${
+                  className={`mx-5 flex items-center sm:inline-flex ${
                     selectMenu("/products") &&
                     `text-blue-500 border-b-[3px] border-orange-500 sm:text-gray-700 md:text-gray-700`
                   }`}
@@ -270,7 +270,10 @@ const Header = () => {
             <span className="sm:hidden text-3xl mr-4">
               <AiOutlineSearch onClick={handleSearchDisplay} />
             </span>
-            <p className="sm:hidden flex items-center text-xl">
+            <p
+              onClick={() => navigate("/user-signin")}
+              className="sm:hidden flex items-center text-xl"
+            >
               Sign in <AiOutlineLogin className="ml-2 " />
             </p>
           </div>
@@ -368,7 +371,7 @@ export default Header;
 
 const ProductsTypes = () => {
   return (
-    <div className="absolute w-[23rem] top-[2.8rem] bg-blue-50 p-5">
+    <div className="absolute w-[23rem] top-[2.8rem] bg-blue-50 p-5 sm:hidden">
       <div className="absolute left-[0] -top-[0.2rem] w-[1.8rem] h-[1.8rem] bg-blue-50 rotate-[45deg]"></div>
       <p>All products</p>
     </div>

@@ -53,12 +53,12 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="py-[8rem] max-w-[50%] mx-auto sm:max-w-[90%] sm:py-[6rem]">
+    <div className="py-[8rem] max-w-[50%] mx-auto sm:max-w-[90%] sm:py-[5rem] md:max-w-[70%] md:py-[6rem]">
       <h2 className="bg-blue-50 py-2 text-center shadow-md text-gray-700">
-        Add a new product
+        Publishing a product
       </h2>
       <form>
-        <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block">
+        <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block sm:mt-4">
           <div
             className={`flex flex-col ${
               displayType ? "w-[49%] sm:w-full" : "w-[100%]"
@@ -80,7 +80,7 @@ const AddProduct = () => {
             </select>
           </div>
           {displayType && (
-            <div className="flex flex-col w-[49%] sm:w-full sm:mt-7">
+            <div className="flex flex-col w-[49%] sm:w-full sm:mt-3">
               <label className="pb-2  font-semibold">Type</label>
               <select className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300">
                 <option>Choose {getType} types</option>
@@ -95,7 +95,7 @@ const AddProduct = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block">
+        <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block sm:mt-3">
           <div className="flex flex-col w-[49%] sm:w-full">
             <label className="pb-2  font-semibold">Title</label>
             <input
@@ -104,7 +104,7 @@ const AddProduct = () => {
               placeholder="Enter product's title"
             />
           </div>
-          <div className="flex flex-col w-[49%] sm:w-full sm:mt-7">
+          <div className="flex flex-col w-[49%] sm:w-full sm:mt-3">
             <label className="pb-2  font-semibold">Company</label>
             <input
               type="text"
@@ -114,7 +114,7 @@ const AddProduct = () => {
           </div>
         </div>
         {getType === "vehicles" && (
-          <div className="flex justify-between mt-7 text-lg text-gray-700">
+          <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
             <div className="flex flex-col w-[49%]">
               <label className="pb-2  font-semibold">Model</label>
               <input
@@ -134,8 +134,16 @@ const AddProduct = () => {
           </div>
         )}
 
-        <div className="flex justify-between mt-7 text-lg text-gray-700">
-          <div className={`grid grid-cols-${discount ? "3" : "1"} w-[49%]`}>
+        <div
+          className={`${
+            discount && "sm:block md:block"
+          } flex justify-between mt-7 text-lg text-gray-700 sm:mt-3`}
+        >
+          <div
+            className={`grid grid-cols-${discount ? "3" : "1"} ${
+              discount && "sm:w-full md:w-full"
+            } w-[49%]`}
+          >
             <div className="flex flex-col">
               <label className="pb-2  font-semibold">Price</label>
               <input
@@ -156,7 +164,7 @@ const AddProduct = () => {
             {discount && (
               <>
                 <div className="flex flex-col mx-2">
-                  <label className="pb-2  font-semibold">Percentage %</label>
+                  <label className="pb-2  font-semibold ">Percentage</label>
                   <input
                     type="number"
                     onChange={handleDiscountedPrice}
@@ -168,9 +176,7 @@ const AddProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="pb-2  font-semibold">
-                    Discounted price
-                  </label>
+                  <label className="pb-2  font-semibold">Disc. price</label>
                   <input
                     type="text"
                     className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2"
@@ -181,7 +187,11 @@ const AddProduct = () => {
               </>
             )}
           </div>
-          <div className="flex flex-col w-[49%]">
+          <div
+            className={`flex flex-col w-[49%] ${
+              discount && "sm:mt-3 sm:w-full md:w-full"
+            }`}
+          >
             <label className="pb-2  font-semibold">Discount</label>
             <div className="flex justify-between">
               <input
@@ -203,8 +213,25 @@ const AddProduct = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block sm:mt-3">
+          <div className="flex flex-col w-[49%] sm:w-full">
+            <label className="pb-2  font-semibold">Location</label>
+            <input
+              type="text"
+              className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2"
+              placeholder="Enter product's location"
+            />
+          </div>
+          <div className="flex flex-col w-[49%] sm:w-full sm:mt-3">
+            <label className="pb-2  font-semibold">Image</label>
+            <input
+              type="file"
+              className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2"
+            />
+          </div>
+        </div>
         <div className="bg-slate-200 mt-7 py-2 text-center font-bold cursor-pointer hover:bg-slate-300">
-          <button>Add</button>
+          <button>Publish</button>
         </div>
       </form>
     </div>

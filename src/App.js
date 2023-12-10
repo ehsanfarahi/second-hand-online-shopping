@@ -15,6 +15,7 @@ import { HiOutlineUser } from "react-icons/hi";
 // Import Pages
 import Home from "./pages/Home";
 import AddProduct from "./pages/AddProduct";
+import UserSignIn from "./pages/UserSignIn";
 
 // Import Components
 import Header from "./components/Header";
@@ -52,6 +53,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search-products/:data" element={<SearchProduct />} />
           <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/user-signin" element={<UserSignIn />} />
         </Routes>
         <MenuBottom />
         <AddProductIcon disp={displayAddProduct} />

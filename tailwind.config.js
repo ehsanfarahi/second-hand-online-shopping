@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        position: "position",
+      },
+    },
     screens: {
       sm: { max: "600px" },
       // => @media (min-width: 640px) { ... }
