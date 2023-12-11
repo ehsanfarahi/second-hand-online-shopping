@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 
 // React Icons
@@ -16,6 +17,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import Home from "./pages/Home";
 import AddProduct from "./pages/AddProduct";
 import UserSignIn from "./pages/UserSignIn";
+import Favorite from "./pages/Favorite";
 
 // Import Components
 import Header from "./components/Header";
@@ -54,6 +56,7 @@ function App() {
           <Route path="/search-products/:data" element={<SearchProduct />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/user-signin" element={<UserSignIn />} />
+          <Route path="/favorite" element={<Favorite />} />
         </Routes>
         <MenuBottom />
         <AddProductIcon disp={displayAddProduct} />
@@ -69,6 +72,9 @@ const MenuBottom = () => {
   const [displayMenuBottom, setDisplayMenuBottom] = useState(true);
   const [initialScroll, setInitialScroll] = useState(0);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   window.addEventListener("scroll", () => {
     if (window.scrollY > initialScroll) {
       setInitialScroll(window.scrollY);
@@ -77,6 +83,13 @@ const MenuBottom = () => {
       setDisplayMenuBottom(true);
     }
   });
+
+  // Functions
+  function selectMenuBottom(menu) {
+    if (location.pathname === menu) {
+      return true;
+    }
+  }
 
   return (
     <div
@@ -90,13 +103,29 @@ const MenuBottom = () => {
       {/* <TiShoppingCart /> */}
 
       {/* <LiaShoppingBagSolid /> */}
-      <div className="relative">
-        <FaShoppingBasket className="text-3xl hover:text-gray-700 cursor-pointer" />
-        <span className="absolute bg-orange-500 text-white font-semibold px-1 leading-none  rounded-full -top-[6px] -right-[10px]">
+      <div
+        className={`relative ${
+          selectMenuBottom("/favorite") && " border-orange-500 text-gray-700"
+        }  h-full pt-2 border-t-[4px] border-blue-200`}
+      >
+        <FaShoppingBasket
+          onClick={() => navigate("/favorite")}
+          className="text-3xl hover:text-gray-700 cursor-pointer"
+        />
+        <span className="absolute bg-orange-500 text-white font-semibold px-1 leading-none  rounded-full -top-[6px] -right-[10px] mt-2">
           0
         </span>
       </div>
-      <HiOutlineUser className="text-3xl hover:text-gray-700 cursor-pointer" />
+      <div
+        className={`${
+          selectMenuBottom("/user-signin") && "border-orange-500 text-gray-700"
+        } h-full pt-2 border-t-[4px] border-blue-200`}
+      >
+        <HiOutlineUser
+          onClick={() => navigate("/user-signin")}
+          className="text-3xl hover:text-gray-700 cursor-pointer"
+        />
+      </div>
     </div>
   );
 };

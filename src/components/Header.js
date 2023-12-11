@@ -8,7 +8,6 @@ import {
   AiOutlineMenuFold,
   AiOutlineSearch,
 } from "react-icons/ai";
-import { HiUser } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import { RxCrossCircled } from "react-icons/rx";
 import { IoCloseSharp } from "react-icons/io5";
@@ -250,9 +249,6 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-            <div className="sm:cursor-pointer sm:hover:text-gray-700 sm:mr-1 sm:absolute sm:bottom-20 sm:right-4">
-              <HiUser className="hidden sm:block text-3xl sm:mx-1" />
-            </div>
           </div>
           {/* Over lay container */}
           <div
