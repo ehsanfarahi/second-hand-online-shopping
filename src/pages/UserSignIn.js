@@ -15,6 +15,10 @@ const UserSignIn = () => {
   const [mobileShowPassword, setMobileShowPasswprd] = useState(false);
   const [mobileShowConfirmPassword, setMobileShowConfirmPasswprd] =
     useState(false);
+  const [mobileEmptyEmailPassword, setMobileEmptyEmailPassword] =
+    useState(false);
+  const [mobileEmptyEmail, setMobileEmptyEmail] = useState(false);
+  const [mobileEmptyPassword, setMobileEmptyPassword] = useState(false);
 
   // Functions
   function handleMobileSignin() {
@@ -65,24 +69,39 @@ const UserSignIn = () => {
 
       {/* Login Form Mobile Size */}
       <div className="absolute top-0 bottom-0 left-0 right-0 hidden sm:block">
-        <div className="flex justify-between h-full">
+        <div className="py-[2rem] flex justify-between h-full">
           <div
             onClick={handleMobileSignin}
             className={`${
               mobileSigninupForm
                 ? "w-[90%] bg-white"
                 : "w-[10%] bg-slate-200 cursor-pointer"
-            } pt-[5rem] transition-all duration-700 ease-in-out`}
+            } pt-[3rem] `}
           >
             <h3
               className={`${
                 mobileSigninupForm
                   ? "text-2xl text-center uppercase"
                   : "text-lg rotate-[90deg] whitespace-nowrap flex justify-center items-center h-full font-semibold"
-              } transition-all duration-700 ease-in-out`}
+              } `}
             >
               Sign in
             </h3>
+            {mobileEmptyEmailPassword && (
+              <small className="text-red-500 block text-center pt-1">
+                Empty email and password fields
+              </small>
+            )}
+            {mobileEmptyEmail && (
+              <small className="text-red-500 block text-center pt-1">
+                Empty email field
+              </small>
+            )}
+            {mobileEmptyPassword && (
+              <small className="text-red-500 block text-center pt-1">
+                Empty password field
+              </small>
+            )}
             {mobileSigninupForm && (
               <div className="mt-6 px-8">
                 <div className="text-lg">
@@ -91,7 +110,11 @@ const UserSignIn = () => {
                     <input
                       type="email"
                       placeholder="Enter email"
-                      className="border-none outline-none h-10 w-full bg-transparent px-2"
+                      className={` ${
+                        mobileEmptyEmail || mobileEmptyEmailPassword
+                          ? "border border-1 border-red-500 rounded-2xl"
+                          : "border-none"
+                      }  outline-none h-10 w-full bg-transparent px-2`}
                     />
                     <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
                   </div>
@@ -100,9 +123,17 @@ const UserSignIn = () => {
                   <label>Password</label>
                   <div className="bg-gray-100 rounded-xl mt-1 shadow-sm relative">
                     <input
-                      type={mobileShowPassword ? "text" : "password"}
+                      type={
+                        mobileShowPassword || mobileEmptyEmailPassword
+                          ? "text"
+                          : "password"
+                      }
                       placeholder="Enter password"
-                      className="border-none outline-none h-10 w-full bg-transparent px-2"
+                      className={`${
+                        mobileEmptyPassword
+                          ? "border border-1 border-red-500 rounded-2xl"
+                          : "border-none"
+                      } outline-none h-10 w-full bg-transparent px-2`}
                     />
                     {mobileShowPassword ? (
                       <BsFillUnlockFill
@@ -119,7 +150,7 @@ const UserSignIn = () => {
                 </div>
                 <div className="flex justify-between mt-12">
                   <div className="flex">
-                    <input type="radio" checke10 className="mr-2" />
+                    <input type="checkbox" className="mr-2" />
                     <p>Remember me</p>
                   </div>
                   <p className="text-blue-400 font-semibold cursor-pointer">
@@ -148,58 +179,64 @@ const UserSignIn = () => {
               mobileSigninupForm
                 ? "w-[10%] bg-slate-200 h-full cursor-pointer relative"
                 : "w-[90%] bg-white"
-            } pt-[5rem] transition-all duration-700 ease-in-out`}
+            } pt-[3rem] `}
           >
             <h3
               className={`${
                 mobileSigninupForm
                   ? "text-lg rotate-[90deg] whitespace-nowrap h-fit absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] font-semibold"
                   : "text-2xl text-center uppercase"
-              } transition-all duration-700`}
+              } `}
             >
               Sign up
             </h3>
+            <small className="block hidden text-red-500 text-center pt-1">
+              To continue, you must agree with our terms and conditions.
+            </small>
+            <small className="block hidden text-red-500 text-center pt-1">
+              Required fileds cannot be empty
+            </small>
             {!mobileSigninupForm && (
-              <div className="mt-6 px-8">
+              <div className="mt-4 px-8">
                 <div className="text-lg">
                   <label>First name</label>
                   <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
                     <input
                       type="text"
-                      placeholder="Enter first name"
+                      placeholder="Enter first name *"
                       className="border-none outline-none h-10 w-full bg-transparent px-2"
                     />
                     <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
                   </div>
                 </div>
-                <div className="mt-6 text-lg">
+                <div className="mt-4 text-lg">
                   <label>Last name</label>
                   <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
                     <input
                       type="text"
-                      placeholder="Enter last name"
+                      placeholder="Enter last name *"
                       className="border-none outline-none h-10 w-full bg-transparent px-2"
                     />
                     <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
                   </div>
                 </div>
-                <div className="mt-6 text-lg">
+                <div className="mt-4 text-lg">
                   <label>Email or Username</label>
                   <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
                     <input
                       type="email"
-                      placeholder="Enter email"
+                      placeholder="Enter email *"
                       className="border-none outline-none h-10 w-full bg-transparent px-2"
                     />
                     <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
                   </div>
                 </div>
-                <div className="mt-6 text-lg">
+                <div className="mt-4 text-lg">
                   <label>Password</label>
                   <div className="bg-gray-100 rounded-xl mt-1 shadow-sm relative">
                     <input
                       type={mobileShowPassword ? "text" : "password"}
-                      placeholder="Enter password"
+                      placeholder="Enter password *"
                       className="border-none outline-none h-10 w-full bg-transparent px-2"
                     />
                     {mobileShowPassword ? (
@@ -215,12 +252,12 @@ const UserSignIn = () => {
                     )}
                   </div>
                 </div>
-                <div className="mt-6 text-lg">
+                <div className="mt-4 text-lg">
                   <label>Confirm password</label>
                   <div className="bg-gray-100 rounded-xl mt-1 shadow-sm relative">
                     <input
                       type={mobileShowConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm password"
+                      placeholder="Confirm password *"
                       className="border-none outline-none h-10 w-full bg-transparent px-2"
                     />
                     {mobileShowConfirmPassword ? (

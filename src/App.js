@@ -105,8 +105,10 @@ const MenuBottom = () => {
       {/* <LiaShoppingBagSolid /> */}
       <div
         className={`relative ${
-          selectMenuBottom("/favorite") && " border-orange-500 text-gray-700"
-        }  h-full pt-2 border-t-[4px] border-blue-200`}
+          selectMenuBottom("/favorite")
+            ? " border-orange-500 text-gray-700 rounded-t"
+            : "text-gray-500"
+        }  h-full pt-2 border-t-[4px] border-blue-200 px-2`}
       >
         <FaShoppingBasket
           onClick={() => navigate("/favorite")}
@@ -118,8 +120,10 @@ const MenuBottom = () => {
       </div>
       <div
         className={`${
-          selectMenuBottom("/user-signin") && "border-orange-500 text-gray-700"
-        } h-full pt-2 border-t-[4px] border-blue-200`}
+          selectMenuBottom("/user-signin")
+            ? "border-orange-500 text-gray-700 rounded-t"
+            : "text-gray-500"
+        } h-full pt-2 border-t-[4px] border-blue-200 px-2`}
       >
         <HiOutlineUser
           onClick={() => navigate("/user-signin")}
