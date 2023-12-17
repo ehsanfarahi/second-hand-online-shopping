@@ -83,7 +83,7 @@ const UserSignIn = () => {
                 mobileSigninupForm
                   ? "text-2xl text-center uppercase"
                   : "text-lg rotate-[90deg] whitespace-nowrap flex justify-center items-center h-full font-semibold"
-              } `}
+              } transition-all duration-700 ease-in-out`}
             >
               Sign in
             </h3>
@@ -186,7 +186,7 @@ const UserSignIn = () => {
                 mobileSigninupForm
                   ? "text-lg rotate-[90deg] whitespace-nowrap h-fit absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] font-semibold"
                   : "text-2xl text-center uppercase"
-              } `}
+              } transition-all duration-700`}
             >
               Sign up
             </h3>
