@@ -81,9 +81,9 @@ const UserSignIn = () => {
             <h3
               className={`${
                 mobileSigninupForm
-                  ? "text-2xl text-center uppercase transition-all duration-700 ease-in-out"
-                  : "text-lg rotate-[90deg] whitespace-nowrap flex justify-center items-center h-full font-semibold"
-              } `}
+                  ? "text-2xl text-center uppercase"
+                  : "text-lg rotate-[90deg] whitespace-nowrap flex justify-center items-center h-full font-semibold transition-all duration-700 ease-in-out"
+              } w-fit mx-auto transition-all duration-700 ease-in-out`}
             >
               Sign in
             </h3>
