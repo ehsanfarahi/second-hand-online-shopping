@@ -11,16 +11,16 @@ module.exports = {
       sm: { max: "600px" },
       // => @media (min-width: 640px) { ... }
 
-      md: { max: "1000px", min: "600px" },
+      md: { max: "1280px", min: "600px" },
       // => @media (min-width: 768px) { ... }
 
-      lg: { max: "1024px" },
+      lg: { max: "1536px" },
       // => @media (min-width: 1024px) { ... }
 
-      xl: { max: "1280px" },
+      xl: { max: "1750px" },
       // => @media (min-width: 1280px) { ... }
 
-      "2xl": { max: "1536px" },
+      "2xl": { max: "1920px" },
       // => @media (min-width: 1536px) { ... }
     },
   },

@@ -3,7 +3,7 @@ import { useState } from "react";
 // React Icons
 import { FaFacebookF, FaLinkedinIn, FaCheck } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
-import { CiLock, CiUnlock } from "react-icons/ci";
+import { CgLock, CgLockUnlock } from "react-icons/cg";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
@@ -13,6 +13,8 @@ const UserSignIn = () => {
   const [signinupForm, setSigninupForm] = useState(false);
   const [mobileSigninupForm, setMobileSigninupForm] = useState(true);
   const [mobileShowPassword, setMobileShowPasswprd] = useState(false);
+  const [mobileShowConfirmPassword, setMobileShowConfirmPasswprd] =
+    useState(false);
 
   // Functions
   function handleMobileSignin() {
@@ -29,10 +31,10 @@ const UserSignIn = () => {
 
   return (
     <>
-      <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden">
+      <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%]">
         <div className="bg-blue-200">
           <div className="flex justify-between">
-            <div className="px-8 py-12">
+            <div className="px-8 py-12 w-[40%] md:pl-6 md:pr-10 md:py-8 md:w-[40%]">
               <h3 className="text-2xl font-thin">Don't have an account?</h3>
               <button
                 onClick={() => setSigninupForm((e) => !e)}
@@ -41,7 +43,7 @@ const UserSignIn = () => {
                 Sign up
               </button>
             </div>
-            <div className="px-8 py-12">
+            <div className="px-8 py-12 w-[40%] md:pl-10 md:pr-6 md:py-8 md:w-[40%]">
               <h3 className="text-2xl font-thin">Already have an account?</h3>
               <button
                 onClick={() => setSigninupForm((e) => !e)}
@@ -53,8 +55,8 @@ const UserSignIn = () => {
           </div>
           <div
             className={`absolute transition-all duration-500 ease-in-out  ${
-              signinupForm && "left-8"
-            } top-0 w-[60%] right-8 bg-white border-2 border-blue-200 px-8 py-10`}
+              signinupForm && "left-6"
+            } top-0 w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
           >
             {signinupForm ? <Signup /> : <Signin />}
           </div>
@@ -63,14 +65,14 @@ const UserSignIn = () => {
 
       {/* Login Form Mobile Size */}
       <div className="absolute top-0 bottom-0 left-0 right-0 hidden sm:block">
-        <div className="py-[2rem] flex justify-between h-full">
+        <div className="flex justify-between h-full">
           <div
             onClick={handleMobileSignin}
             className={`${
               mobileSigninupForm
                 ? "w-[90%] bg-white"
                 : "w-[10%] bg-slate-200 cursor-pointer"
-            } pt-[3rem] transition-all duration-700 ease-in-out`}
+            } pt-[5rem] transition-all duration-700 ease-in-out`}
           >
             <h3
               className={`${
@@ -146,7 +148,7 @@ const UserSignIn = () => {
               mobileSigninupForm
                 ? "w-[10%] bg-slate-200 h-full cursor-pointer relative"
                 : "w-[90%] bg-white"
-            } pt-[3rem] transition-all duration-700 ease-in-out`}
+            } pt-[5rem] transition-all duration-700 ease-in-out`}
           >
             <h3
               className={`${
@@ -160,6 +162,28 @@ const UserSignIn = () => {
             {!mobileSigninupForm && (
               <div className="mt-6 px-8">
                 <div className="text-lg">
+                  <label>First name</label>
+                  <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
+                    <input
+                      type="text"
+                      placeholder="Enter first name"
+                      className="border-none outline-none h-10 w-full bg-transparent px-2"
+                    />
+                    <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
+                  </div>
+                </div>
+                <div className="mt-6 text-lg">
+                  <label>Last name</label>
+                  <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
+                    <input
+                      type="text"
+                      placeholder="Enter last name"
+                      className="border-none outline-none h-10 w-full bg-transparent px-2"
+                    />
+                    <HiUser className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
+                  </div>
+                </div>
+                <div className="mt-6 text-lg">
                   <label>Email or Username</label>
                   <div className="bg-gray-100 rounded-2xl mt-1 shadow-sm relative">
                     <input
@@ -191,28 +215,42 @@ const UserSignIn = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex justify-between mt-12">
-                  <div className="flex">
-                    <input type="radio" checke10 className="mr-2" />
-                    <p>Remember me</p>
+                <div className="mt-6 text-lg">
+                  <label>Confirm password</label>
+                  <div className="bg-gray-100 rounded-xl mt-1 shadow-sm relative">
+                    <input
+                      type={mobileShowConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm password"
+                      className="border-none outline-none h-10 w-full bg-transparent px-2"
+                    />
+                    {mobileShowConfirmPassword ? (
+                      <BsFillUnlockFill
+                        onClick={() => setMobileShowConfirmPasswprd((e) => !e)}
+                        className="absolute right-1 top-[50%] translate-y-[-50%] text-xl"
+                      />
+                    ) : (
+                      <BsFillLockFill
+                        onClick={() => setMobileShowConfirmPasswprd((e) => !e)}
+                        className="absolute right-1 top-[50%] translate-y-[-50%] text-xl"
+                      />
+                    )}
                   </div>
-                  <p className="text-blue-400 font-semibold cursor-pointer">
-                    Forgot password?
-                  </p>
+                </div>
+                <div className="mt-10 inline-flex">
+                  <input type="checkbox" className="mr-2" id="conditions" />
+                  <label
+                    htmlFor="conditions"
+                    className="text-sm cursor-pointer"
+                  >
+                    Agree with{" "}
+                    <Link className="font-semibold underline text-blue-400">
+                      terms and conditions
+                    </Link>
+                  </label>
                 </div>
                 <button className="bg-blue-400 rounded w-full my-8 text-white font-semibold py-2 hover:bg-blue-500 cursor-pointer">
-                  Sign in
+                  Sign up
                 </button>
-                <div className="relative">
-                  <p className="text-center mb-6 before:content-[''] before:bg-blue-300 before:absolute before:left-0 before:top-[50%] before:translate-y-[-50%] before:w-[30%] before:h-[1px] after:content-[''] after:bg-blue-300 after:absolute after:right-0 after:top-[50%] after:translate-y-[-50%] after:w-[30%] after:h-[1px]">
-                    Or log in with
-                  </p>
-                </div>
-                <div className="flex justify-center text-3xl">
-                  <FaFacebookF className="cursor-pointer bg-blue-700 text-white rounded-full p-1" />
-                  <IoLogoGoogleplus className="mx-4 cursor-pointer bg-red-500 text-white rounded-full p-1" />
-                  <FaLinkedinIn className="cursor-pointer bg-blue-400 text-white rounded-full p-1" />
-                </div>
               </div>
             )}
           </div>
@@ -231,9 +269,11 @@ function Signin() {
   const [password, setPassword] = useState("");
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
+  const [errorUser, setErrorLogin] = useState(false);
+  const [user, setUser] = useState("");
 
   // Functions
-  function handleSigninFormLaptop() {
+  async function handleSigninFormLaptop() {
     if (email.length < 1) {
       setErrorEmail(false);
     } else {
@@ -244,6 +284,21 @@ function Signin() {
     } else {
       setErrorPassword(true);
     }
+
+    fetch(
+      `http://localhost:3000/userSignup?email=${email}&password=${password}`
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.length > 0) {
+          setUser(result);
+          setErrorLogin(false);
+          alert("Loged in");
+          console.log(result);
+        } else {
+          setErrorLogin(true);
+        }
+      });
   }
 
   function handleEmail(e) {
@@ -273,7 +328,9 @@ function Signin() {
           OR
         </p>
       </div>
-      <small className="block text-center text-red-500 hidden">
+      <small
+        className={`${errorUser ? "block" : "hidden"} text-center text-red-500`}
+      >
         Incorrect email or password. Please try again.
       </small>
       <div className="flex flex-col">
@@ -300,12 +357,12 @@ function Signin() {
             className="w-full outline-none border-none"
           />
           {lock ? (
-            <CiLock
+            <CgLock
               onClick={() => setLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
           ) : (
-            <CiUnlock
+            <CgLockUnlock
               onClick={() => setLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
@@ -315,9 +372,9 @@ function Signin() {
           Password cannot be empty.
         </small>
       </div>
-      <div className="flex my-4 text-lg">
+      <div className="flex my-4 text-md">
+        <input type="checkbox" className="mr-2" />
         <p>Remember me</p>
-        <input type="checkbox" className="ml-2" />
       </div>
       <div className="flex justify-between items-center">
         <p className="text-blue-400 font-semibold cursor-pointer">
@@ -337,6 +394,7 @@ function Signin() {
 function Signup() {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
+  const [confirmLock, setConfirmLock] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -358,54 +416,59 @@ function Signup() {
   const [passwordContain, setPasswordContain] = useState(false);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
   const [errorPasswordMatch, setErrorPasswordMatch] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [displayTermsMsg, setDisplayTermsMsg] = useState(false);
 
   // Functions
   function handleEmail(e) {
-    if (e.target.value.length > 0) {
-      setEmailIcon(false);
-    } else {
-      setEmailIcon(true);
-    }
-    setEmail(e.target.value);
+    const event = e.target.value;
+    // if (event.length > 0) {
+    //   setEmailIcon(false);
+    // } else {
+    //   setEmailIcon(true);
+    // }
+    setEmail(event);
+    setErrorEmail(false);
   }
 
   function handlePassword(e) {
-    setPassword(e.target.value);
+    const event = e.target.value;
+    setPassword(event);
     setPasswordContain(true);
 
-    if (e.target.value.length >= 6) {
+    if (event.length >= 6) {
       setChars(true);
     } else {
       setChars(false);
     }
 
     if (
-      e.target.value.includes("A") ||
-      e.target.value.includes("B") ||
-      e.target.value.includes("C") ||
-      e.target.value.includes("D") ||
-      e.target.value.includes("E") ||
-      e.target.value.includes("F") ||
-      e.target.value.includes("G") ||
-      e.target.value.includes("H") ||
-      e.target.value.includes("I") ||
-      e.target.value.includes("J") ||
-      e.target.value.includes("K") ||
-      e.target.value.includes("L") ||
-      e.target.value.includes("M") ||
-      e.target.value.includes("N") ||
-      e.target.value.includes("O") ||
-      e.target.value.includes("P") ||
-      e.target.value.includes("Q") ||
-      e.target.value.includes("R") ||
-      e.target.value.includes("S") ||
-      e.target.value.includes("T") ||
-      e.target.value.includes("U") ||
-      e.target.value.includes("V") ||
-      e.target.value.includes("W") ||
-      e.target.value.includes("X") ||
-      e.target.value.includes("Y") ||
-      e.target.value.includes("Z")
+      event.includes("A") ||
+      event.includes("B") ||
+      event.includes("C") ||
+      event.includes("D") ||
+      event.includes("E") ||
+      event.includes("F") ||
+      event.includes("G") ||
+      event.includes("H") ||
+      event.includes("I") ||
+      event.includes("J") ||
+      event.includes("K") ||
+      event.includes("L") ||
+      event.includes("M") ||
+      event.includes("N") ||
+      event.includes("O") ||
+      event.includes("P") ||
+      event.includes("Q") ||
+      event.includes("R") ||
+      event.includes("S") ||
+      event.includes("T") ||
+      event.includes("U") ||
+      event.includes("V") ||
+      event.includes("W") ||
+      event.includes("X") ||
+      event.includes("Y") ||
+      event.includes("Z")
     ) {
       setCapital(true);
     } else {
@@ -413,16 +476,16 @@ function Signup() {
     }
 
     if (
-      e.target.value.includes(0) ||
-      e.target.value.includes(1) ||
-      e.target.value.includes(2) ||
-      e.target.value.includes(3) ||
-      e.target.value.includes(4) ||
-      e.target.value.includes(5) ||
-      e.target.value.includes(6) ||
-      e.target.value.includes(7) ||
-      e.target.value.includes(8) ||
-      e.target.value.includes(9)
+      event.includes(0) ||
+      event.includes(1) ||
+      event.includes(2) ||
+      event.includes(3) ||
+      event.includes(4) ||
+      event.includes(5) ||
+      event.includes(6) ||
+      event.includes(7) ||
+      event.includes(8) ||
+      event.includes(9)
     ) {
       setNum(true);
     } else {
@@ -430,55 +493,55 @@ function Signup() {
     }
 
     if (
-      e.target.value.includes(",") ||
-      e.target.value.includes(";") ||
-      e.target.value.includes("'") ||
-      e.target.value.includes("/") ||
-      e.target.value.includes("<") ||
-      e.target.value.includes(">") ||
-      e.target.value.includes("?") ||
-      e.target.value.includes(":") ||
-      e.target.value.includes("|") ||
-      e.target.value.includes("!") ||
-      e.target.value.includes("@") ||
-      e.target.value.includes("#") ||
-      e.target.value.includes("$") ||
-      e.target.value.includes("%") ||
-      e.target.value.includes("^") ||
-      e.target.value.includes("&") ||
-      e.target.value.includes("*") ||
-      e.target.value.includes("(") ||
-      e.target.value.includes(")") ||
-      e.target.value.includes("_") ||
-      e.target.value.includes("-") ||
-      e.target.value.includes("=") ||
-      e.target.value.includes("+") ||
-      e.target.value.includes("`") ||
-      e.target.value.includes("~")
+      event.includes(",") ||
+      event.includes(";") ||
+      event.includes("'") ||
+      event.includes("/") ||
+      event.includes("<") ||
+      event.includes(">") ||
+      event.includes("?") ||
+      event.includes(":") ||
+      event.includes("|") ||
+      event.includes("!") ||
+      event.includes("@") ||
+      event.includes("#") ||
+      event.includes("$") ||
+      event.includes("%") ||
+      event.includes("^") ||
+      event.includes("&") ||
+      event.includes("*") ||
+      event.includes("(") ||
+      event.includes(")") ||
+      event.includes("_") ||
+      event.includes("-") ||
+      event.includes("=") ||
+      event.includes("+") ||
+      event.includes("`") ||
+      event.includes("~")
     ) {
       setSpecialChar(true);
     } else {
       setSpecialChar(false);
     }
 
-    if (e.target.value.length >= 1) {
+    if (event.length >= 1) {
       setWeak(true);
     } else {
       setWeak(false);
     }
-    if (e.target.value.length >= 4) {
+    if (event.length >= 4) {
       setMeduim(true);
       setWeak(false);
     } else {
       setMeduim(false);
     }
-    if (e.target.value.length >= 6) {
+    if (event.length >= 6) {
       setStrong(true);
       setMeduim(false);
     } else {
       setStrong(false);
     }
-    if (e.target.value.length >= 7) {
+    if (event.length >= 7) {
       setVeryStrong(true);
       setStrong(false);
     } else {
@@ -486,7 +549,12 @@ function Signup() {
     }
   }
 
-  function handleSignupFormLaptop() {
+  function handleConfirmPassword(e) {
+    setConfirmPassword(e.target.value);
+    setErrorPasswordMatch(false);
+  }
+
+  async function handleSignupFormLaptop() {
     if (firstName.length < 1) {
       setErrorFirstName(true);
     } else {
@@ -518,6 +586,46 @@ function Signup() {
     } else {
       setInvalidEmail(false);
     }
+
+    if (confirmPassword.length > 0 && password !== confirmPassword) {
+      setErrorPasswordMatch(true);
+    } else {
+      setErrorPasswordMatch(false);
+    }
+
+    if (agreeTerms === false) {
+      setDisplayTermsMsg(true);
+    } else {
+      setDisplayTermsMsg(false);
+    }
+
+    if (
+      firstName.length >= 3 &&
+      lastName.length >= 3 &&
+      email.includes("@") &&
+      password.length >= 6 &&
+      password === confirmPassword &&
+      agreeTerms === true
+    ) {
+      let data = await fetch("http://localhost:3000/userSignup", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          password,
+          confirmPassword,
+        }),
+      });
+
+      data = await data.json();
+      if (data) {
+        alert("Signed up successfully!");
+      }
+    } else {
+      alert("Something went wrong!");
+    }
   }
 
   return (
@@ -525,41 +633,49 @@ function Signup() {
       <h2 className="text-3xl font-semibold text-orange-500">Sign up</h2>
 
       <div className="flex flex-col mt-10">
+        {displayTermsMsg && (
+          <small className="text-center text-red-500 mb-2">
+            To continue, you must agree to our terms and conditions.
+          </small>
+        )}
         <div className="flex  justify-between p-1 text-lg relative">
-          <div className="border-b-2 border-blue-100">
-            <input
-              onChange={(e) => setFirstName(e.target.value)}
-              type="text"
-              placeholder="First name *"
-              className="w-full outline-none border-none"
-            />
+          <div>
+            <div className="border-b-2 border-blue-100">
+              <input
+                onChange={(e) => setFirstName(e.target.value)}
+                type="text"
+                placeholder="First name *"
+                className="w-full outline-none border-none"
+              />
+            </div>
+            {errorFirstName && (
+              <small className="text-red-500">First name is required</small>
+            )}
           </div>
 
-          <div className="border-b-2 border-blue-100">
-            <input
-              onChange={(e) => setLastName(e.target.value)}
-              type="text"
-              placeholder="Last name *"
-              className="w-full outline-none border-none"
-            />
+          <div>
+            <div className="border-b-2 border-blue-100">
+              <input
+                onChange={(e) => setLastName(e.target.value)}
+                type="text"
+                placeholder="Last name *"
+                className="w-full outline-none border-none"
+              />
+            </div>
+            {errorLastName && (
+              <small className="text-red-500">Last name is required</small>
+            )}
           </div>
         </div>
-        {errorFirstName && (
-          <small className="text-red-500">First name is required</small>
-        )}
-        {errorLastName && (
-          <small className="text-red-500">Last name is required</small>
-        )}
-        <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative">
+
+        <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
           <input
             onChange={handleEmail}
             type="email"
             placeholder="Email *"
             className="w-full outline-none border-none"
           />{" "}
-          {emailIcon && (
-            <MdOutlineEmail className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
-          )}
+          {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
         </div>
         {errorEmail && (
           <small className="text-red-500">Email is required</small>
@@ -573,12 +689,12 @@ function Signup() {
             className="w-full outline-none border-none"
           />
           {lock ? (
-            <CiLock
+            <CgLock
               onClick={() => setLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
           ) : (
-            <CiUnlock
+            <CgLockUnlock
               onClick={() => setLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
@@ -591,58 +707,84 @@ function Signup() {
           <div className="flex justify-between">
             <small>
               <p
-                className={`flex items-center ${
-                  chars ? "text-green-600" : "text-slate-600"
+                className={`flex items-center font-semibold ${
+                  chars ? "text-green-700" : "text-slate-600"
                 }`}
               >
                 <FaCheck className="mr-2" /> At least 6 characters
               </p>
               <p
                 className={` ${
-                  capital ? "text-green-600" : "text-slate-600"
-                } flex items-center`}
+                  capital ? "text-green-700" : "text-slate-600"
+                } flex items-center font-semibold`}
               >
                 <FaCheck className="mr-2" /> Contain capital letter
               </p>
               <p
                 className={` ${
-                  num ? "text-green-600" : "text-slate-600"
-                } flex items-center`}
+                  num ? "text-green-700" : "text-slate-600"
+                } flex items-center font-semibold`}
               >
                 <FaCheck className="mr-2" /> Contain number
               </p>
               <p
                 className={` ${
-                  specialChar ? "text-green-600" : "text-slate-600"
-                } flex items-center`}
+                  specialChar ? "text-green-700" : "text-slate-600"
+                } flex items-center font-semibold`}
               >
                 <FaCheck className="mr-2" /> Contain special character
               </p>
             </small>
-            <small>
-              {weak && <p className="text-red-500">Weak</p>}
-              {meduim && <p className="text-orange-500">Medium</p>}
-              {strong && <p className="text-green-400">Strong</p>}
-              {veryStrong && <p className="text-green-600">Very strong</p>}
-            </small>
+            <div className="flex justify-between w-[50%] h-fit">
+              <div
+                className={`${
+                  weak || meduim || strong || veryStrong
+                    ? "bg-red-500"
+                    : "bg-white"
+                } mr-1 mt-2 h-1 w-[25%]`}
+              ></div>
+              <div
+                className={`${
+                  meduim || strong || veryStrong ? "bg-orange-400" : "bg-white"
+                } mr-1 mt-2 h-1 w-[25%]`}
+              ></div>
+              <div
+                className={`${
+                  strong || veryStrong ? "bg-green-400" : "bg-white"
+                } mr-1 mt-2 h-1 w-[25%]`}
+              ></div>
+              <div
+                className={`${
+                  veryStrong ? "bg-green-600" : "bg-white"
+                } mr-1 mt-2 h-1 w-[25%]`}
+              ></div>
+
+              <small className="w-[25%] whitespace-nowrap font-semibold">
+                {weak && <p className="text-red-500">Weak</p>}
+                {meduim && <p className="text-orange-500">Medium</p>}
+                {strong && <p className="text-green-400">Strong</p>}
+                {veryStrong && <p className="text-green-600">Very strong</p>}
+              </small>
+            </div>
           </div>
         )}
 
         <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
           <input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            type={lock ? "password" : "text"}
+            onChange={handleConfirmPassword}
+            onClick={() => setPasswordContain(false)}
+            type={confirmLock ? "password" : "text"}
             placeholder="Confirm password *"
             className="w-full outline-none border-none"
           />
-          {lock ? (
-            <CiLock
-              onClick={() => setLock((e) => !e)}
+          {confirmLock ? (
+            <CgLock
+              onClick={() => setConfirmLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
           ) : (
-            <CiUnlock
-              onClick={() => setLock((e) => !e)}
+            <CgLockUnlock
+              onClick={() => setConfirmLock((e) => !e)}
               className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
             />
           )}
@@ -656,14 +798,22 @@ function Signup() {
       </div>
       <div className="flex justify-between items-center mt-[3rem]">
         <div className="flex items-center">
-          <input className="mr-2" type="checkbox" />
-          <p className="text-sm cursor-pointer">
-            Agree with <Link>terms and conditions</Link>
-          </p>
+          <input
+            id="terms"
+            className="mr-2 cursor-pointer w-4 h-4 accent-orange-400/25"
+            onChange={() => setAgreeTerms((e) => !e)}
+            type="checkbox"
+          />
+          <label htmlFor="terms" className="text-sm cursor-pointer">
+            Agree with{" "}
+            <Link className="font-semibold underline text-blue-400">
+              terms and conditions
+            </Link>
+          </label>
         </div>
         <button
           onClick={handleSignupFormLaptop}
-          className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500"
+          className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
         >
           Sign up
         </button>
