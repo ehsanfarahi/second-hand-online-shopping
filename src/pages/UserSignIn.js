@@ -76,14 +76,14 @@ const UserSignIn = () => {
               mobileSigninupForm
                 ? "w-[90%] bg-white"
                 : "w-[10%] bg-slate-200 cursor-pointer"
-            } pt-[3rem] `}
+            } pt-[3rem] transition-all duration-700 ease-in-out`}
           >
             <h3
               className={`${
                 mobileSigninupForm
-                  ? "text-2xl text-center uppercase"
+                  ? "text-2xl text-center uppercase transition-all duration-700 ease-in-out"
                   : "text-lg rotate-[90deg] whitespace-nowrap flex justify-center items-center h-full font-semibold"
-              } transition-all duration-700 ease-in-out`}
+              } `}
             >
               Sign in
             </h3>
@@ -179,14 +179,14 @@ const UserSignIn = () => {
               mobileSigninupForm
                 ? "w-[10%] bg-slate-200 h-full cursor-pointer relative"
                 : "w-[90%] bg-white"
-            } pt-[3rem] `}
+            } pt-[3rem] transition-all duration-700 ease-in-out`}
           >
             <h3
               className={`${
                 mobileSigninupForm
-                  ? "text-lg rotate-[90deg] whitespace-nowrap h-fit absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] font-semibold"
+                  ? "text-lg rotate-[90deg] whitespace-nowrap h-fit absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] font-semibold transition-all duration-700"
                   : "text-2xl text-center uppercase"
-              } transition-all duration-700`}
+              } `}
             >
               Sign up
             </h3>
