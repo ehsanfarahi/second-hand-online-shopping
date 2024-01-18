@@ -17,6 +17,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import Home from "./pages/Home";
 import AddProduct from "./pages/AddProduct";
 import UserSignIn from "./pages/UserSignIn";
+import ForgotPassword from "./pages/ForgotPassword";
 import Favorite from "./pages/Favorite";
 
 // Import Components
@@ -56,6 +57,7 @@ function App() {
           <Route path="/search-products/:data" element={<SearchProduct />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/user-signin" element={<UserSignIn />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/favorite" element={<Favorite />} />
         </Routes>
         <MenuBottom />

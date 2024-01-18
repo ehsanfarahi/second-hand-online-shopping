@@ -183,6 +183,22 @@
       "password": "Ehsan@123",
       "confirmPassword": "Ehsan@123",
       "id": 2
+    },
+    {
+      "firstName": "Farahi",
+      "lastName": "Ehsan",
+      "email": "farahi.ehsan@gmail.com",
+      "password": "Farahi@123",
+      "confirmPassword": "Farahi@123",
+      "id": 3
+    },
+    {
+      "firstName": "Mobile Name",
+      "lastName": "Mobile Last Name",
+      "email": "mobile.email@yahoo.com",
+      "password": "Mobile",
+      "confirmPassword": "Mobile",
+      "id": 4
     }
   ]
 }

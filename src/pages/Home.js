@@ -3,14 +3,21 @@ import { useEffect, useState } from "react";
 // React Icons
 import { AiOutlineHeart } from "react-icons/ai";
 
+// Components
+import Spinner from "../components/Spinner";
+
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:3000/products`)
       .then((response) => response.json())
       .then((result) => {
         setProducts(result);
+       
+          setLoading(false);
+       
       });
   }, []);
 
@@ -116,6 +123,7 @@ const Home = () => {
           );
         })}
       </div>
+      {loading && <Spinner/>}
     </div>
   );
 };

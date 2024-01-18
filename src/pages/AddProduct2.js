@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
 const AddProduct = () => {
   // Get Data from DB
   const [categories, setCategories] = useState([]);
   const [categoriesTypes, setCategoriesTypes] = useState([]);
-  const [chooseCategory, setChooseCategory] = useState(false);
   const [discount, setDiscount] = useState(false);
   const [price, setPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
@@ -27,15 +25,12 @@ const AddProduct = () => {
     switch (e.target.value) {
       case "Electronics":
         catType("electronics");
-        setChooseCategory(true);
         break;
       case "Furniture":
         catType("furnitures");
-        setChooseCategory(true);
         break;
       case "Vehicles":
         catType("vehicles");
-        setChooseCategory(true);
         break;
       default:
         break;
@@ -100,8 +95,7 @@ const AddProduct = () => {
             </div>
           )}
         </div>
-       
-          <FormControlDouble children1="Title" children2="Company" placeholder1="Enter product's title" placeholder2="Enter product's company" conExtraStyle2="sm:mt-3" />
+        <FormControlDouble children1="Title" children2="Company" placeholder1="Enter product's title" placeholder2="Enter product's company" conExtraStyle2="sm:mt-3" />
         {getType === "vehicles" && (
           <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
             <div className="flex flex-col w-[49%]">
@@ -122,6 +116,7 @@ const AddProduct = () => {
             </div>
           </div>
         )}
+
         <div
           className={`${
             discount && "sm:block md:block"
@@ -129,10 +124,10 @@ const AddProduct = () => {
         >
           <div
             className={`flex justify-between ${
-              discount && "sm:w-full md:w-full sm:block"
+              discount && "sm:w-full md:w-full"
             } w-[49%]`}
           >
-            <div className={`flex flex-col ${discount ? "w-[32%] sm:w-[100%]" : "w-[100%]"}`}>
+            <div className={`flex flex-col ${discount ? "w-[32%]" : "w-[100%]"}`}>
               <label className="pb-2  font-semibold">Price</label>
               <input
                 type="number"
@@ -151,7 +146,7 @@ const AddProduct = () => {
             </div>
             {discount && (
               <>
-                <div className={`flex flex-col ${discount ? "w-[32%] sm:w-[100%]" : "w-[100%]"} sm:mt-3`}>
+                <div className="flex flex-col mx-2 w-[32%]">
                   <label className="pb-2  font-semibold ">Percentage</label>
                   <input
                     type="number"
@@ -163,7 +158,7 @@ const AddProduct = () => {
                     placeholder="%"
                   />
                 </div>
-                <div className={`flex flex-col ${discount ? "w-[32%] sm:w-[100%]" : "w-[100%]"} sm:mt-3`}>
+                <div className="flex flex-col w-[32%]">
                   <label className="pb-2  font-semibold">Disc. price</label>
                   <input
                   
@@ -205,20 +200,15 @@ const AddProduct = () => {
 
         <FormControlDouble children1="Location" children2="Image" type2="file" placeholder1="Enter product's location" conExtraStyle2="sm:mt-3" />
 
-        <div className="publish-btn hover:cursor-not-allowed">
-          <button disabled className="hover:cursor-not-allowed">Publish</button>
+        <div className="publish-btn">
+          <button>Publish</button>
         </div>
-        
       </form>
     </div>
   );
 };
 
 export default AddProduct;
-
-FormControlSingle.propTypes = {
-  conStyle: PropTypes.number,
-  }
 
 function FormControlSingle({children, conStyle="flex flex-col w-[49%] sm:w-full", conExtraStyle, labStyle="pb-2  font-semibold", inStyle="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2", type="text", placeholder}) {
   return <div className={`${conStyle} ${conExtraStyle}`}>

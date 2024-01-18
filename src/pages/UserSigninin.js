@@ -519,6 +519,7 @@ function Signin() {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
+  const [user, setUser] = useState("");
 
   // Functions
   async function handleSigninFormLaptop() {
@@ -539,7 +540,7 @@ function Signin() {
       .then((response) => response.json())
       .then((result) => {
         if (result.length > 0) {
-          // setUser(result);
+          setUser(result);
           setErrorLogin(false);
           console.log(result);
         } else {
@@ -868,7 +869,6 @@ function Signup() {
     } else {
       alert("Something went wrong!");
     }
-    setEmailIcon(true);
   }
 
   return (

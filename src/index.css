@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Sign in/up forms start */
+/* Laptop size sign in/up container start*/
+.signinup-container {
+  @apply absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%];
+}
+.signinup-container--signup {
+  @apply px-8 py-12 w-[40%] md:pl-6 md:pr-10 md:py-8 md:w-[40%];
+}
+.signinup-container--signin {
+  @apply px-8 py-12 w-[40%] md:pl-10 md:pr-6 md:py-8 md:w-[40%];
+}
+/* Laptop size sign in/up container end*/
+/* Sign in/up forms end */
+
+/* Add Product Page Start */
+.add-product-container {
+  @apply py-[8rem] max-w-[50%] mx-auto sm:max-w-[90%] sm:py-[5rem] md:max-w-[70%] md:py-[6rem];
+}
+.add-product-container--header {
+  @apply bg-blue-50 py-2 text-center shadow-md text-gray-700;
+}
+.add-product-container--form-control {
+  @apply flex justify-between mt-7 text-lg text-gray-700 sm:block sm:mt-4
+}
+.publish-btn {
+  @apply bg-slate-200 mt-7 py-2 text-center font-bold cursor-pointer hover:bg-slate-300;
+}
+/* Add Product Page End */

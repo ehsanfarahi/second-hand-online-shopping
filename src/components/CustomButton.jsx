@@ -9,6 +9,9 @@ import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 
+// Components
+import CustomButton from "../components/CustomButton";
+
 const UserSignIn = () => {
   return (
     <>
@@ -195,12 +198,12 @@ function MobileSignin({
               <Link to="/forgot-password">Forgot password?</Link>
             </p>
           </div>
-          <button
+          <CustomButton
             onClick={handleMobileSigninForm}
-            className="bg-blue-400 rounded w-full my-8 text-white font-semibold py-2 hover:bg-blue-500 cursor-pointer"
+            btnStyle="bg-blue-400 rounded w-full my-8 text-white font-semibold py-2 hover:bg-blue-500 cursor-pointer"
           >
             Sign in
-          </button>
+          </CustomButton>
           <div className="relative">
             <p className="text-center mb-6 before:content-[''] before:bg-blue-300 before:absolute before:left-0 before:top-[50%] before:translate-y-[-50%] before:w-[30%] before:h-[1px] after:content-[''] after:bg-blue-300 after:absolute after:right-0 after:top-[50%] after:translate-y-[-50%] after:w-[30%] after:h-[1px]">
               Or log in with
@@ -457,12 +460,12 @@ function MobileSignup({
               </Link>
             </label>
           </div>
-          <button
+          <CustomButton
             onClick={handleMobileSignupForm}
-            className="bg-blue-400 rounded w-full my-8 text-white font-semibold py-2 hover:bg-blue-500 cursor-pointer"
+            btnStyle="bg-blue-400 rounded w-full my-8 text-white font-semibold py-2 hover:bg-blue-500 cursor-pointer"
           >
             Sign up
-          </button>
+          </CustomButton>
         </div>
       )}
     </div>
@@ -471,21 +474,29 @@ function MobileSignup({
 
 function SignInUpForms() {
   const [signinupForm, setSigninupForm] = useState(false);
+  const btnStyle =
+    "border-2 border-slate-600 rounded px-4 py-1 mt-10 hover:bg-slate-600 hover:text-white";
   return (
     <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%]">
       <div className="bg-blue-200">
         <div className="flex justify-between">
           <div className="px-8 py-12 w-[40%] md:pl-6 md:pr-10 md:py-8 md:w-[40%]">
             <h3 className="text-2xl font-thin">Don't have an account?</h3>
-            <SignInUpButtons setSigninupForm={setSigninupForm}>
+            <CustomButton
+              onClick={() => setSigninupForm((e) => !e)}
+              btnStyle={btnStyle}
+            >
               Sign up
-            </SignInUpButtons>
+            </CustomButton>
           </div>
           <div className="px-8 py-12 w-[40%] md:pl-10 md:pr-6 md:py-8 md:w-[40%]">
             <h3 className="text-2xl font-thin">Already have an account?</h3>
-            <SignInUpButtons setSigninupForm={setSigninupForm}>
+            <CustomButton
+              onClick={() => setSigninupForm((e) => !e)}
+              btnStyle={btnStyle}
+            >
               Sign in
-            </SignInUpButtons>
+            </CustomButton>
           </div>
         </div>
         <div
@@ -500,17 +511,6 @@ function SignInUpForms() {
   );
 }
 
-function SignInUpButtons({ setSigninupForm, children }) {
-  return (
-    <button
-      onClick={() => setSigninupForm((e) => !e)}
-      className={`border-2 border-slate-600 rounded px-4 py-1 mt-10 hover:bg-slate-600 hover:text-white`}
-    >
-      {children}
-    </button>
-  );
-}
-
 function Signin() {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
@@ -519,6 +519,7 @@ function Signin() {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
+  const [user, setUser] = useState("");
 
   // Functions
   async function handleSigninFormLaptop() {
@@ -539,7 +540,7 @@ function Signin() {
       .then((response) => response.json())
       .then((result) => {
         if (result.length > 0) {
-          // setUser(result);
+          setUser(result);
           setErrorLogin(false);
           console.log(result);
         } else {
@@ -627,12 +628,12 @@ function Signin() {
         <p className="text-blue-400 font-semibold cursor-pointer">
           <Link to="/forgot-password">Forgot password?</Link>
         </p>
-        <button
+        <CustomButton
           onClick={handleSigninFormLaptop}
-          className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500"
+          btnStyle="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500"
         >
           Sign in
-        </button>
+        </CustomButton>
       </div>
     </div>
   );
@@ -868,7 +869,6 @@ function Signup() {
     } else {
       alert("Something went wrong!");
     }
-    setEmailIcon(true);
   }
 
   return (
@@ -1042,12 +1042,12 @@ function Signup() {
             </Link>
           </label>
         </div>
-        <button
+        <CustomButton
           onClick={handleSignupFormLaptop}
-          className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
+          btnStyle="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
         >
           Sign up
-        </button>
+        </CustomButton>
       </div>
     </div>
   );
