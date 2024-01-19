@@ -19,6 +19,7 @@ import AddProduct from "./pages/AddProduct";
 import UserSignIn from "./pages/UserSignIn";
 import ForgotPassword from "./pages/ForgotPassword";
 import Favorite from "./pages/Favorite";
+import ProductDetail from "./pages/ProductDetail";
 
 // Import Components
 import Header from "./components/Header";
@@ -59,6 +60,7 @@ function App() {
           <Route path="/user-signin" element={<UserSignIn />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/favorite" element={<Favorite />} />
+          <Route path="/product-detail/:id" element={<ProductDetail/>} />
         </Routes>
         <MenuBottom />
         <AddProductIcon disp={displayAddProduct} />

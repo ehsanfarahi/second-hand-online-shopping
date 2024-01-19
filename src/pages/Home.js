@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 // React Icons
 import { AiOutlineHeart } from "react-icons/ai";
@@ -9,9 +10,12 @@ import Spinner from "../components/Spinner";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [displayLimit, setDisplayLimit] = useState(6)
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products`)
+    fetch(`http://localhost:3000/products?_limit=${displayLimit}`)
       .then((response) => response.json())
       .then((result) => {
         setProducts(result);
@@ -19,7 +23,15 @@ const Home = () => {
           setLoading(false);
        
       });
-  }, []);
+  }, [displayLimit]);
+
+  function handleLoadMore() {
+    setDisplayLimit(num => num + 6);
+  }
+
+  function handleProductDetail(id) {
+      navigate(`/product-detail/${id}`)
+  }
 
   const date = new Date();
   const yesterday = date.setDate(date.getDate() - 1);
@@ -37,6 +49,7 @@ const Home = () => {
           return (
             <div
               key={product.id}
+              onClick={()=>handleProductDetail(product.id)}
               className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
             >
               {new Date(product.date).toDateString() ===
@@ -122,6 +135,12 @@ const Home = () => {
             </div>
           );
         })}
+      </div>
+      <div onClick={handleLoadMore} className="w-fit mx-auto mt-12 mb-16 cursor-pointer">
+        <div className="flex items-center rounded border-2 px-2 border-slate-400">
+          <Spinner type="5" wWidth="w-[3rem]" applyStyle={false}/>
+          <p className="text-lg pr-1">Load more</p>
+        </div>
       </div>
       {loading && <Spinner/>}
     </div>

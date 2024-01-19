@@ -8,12 +8,15 @@ import { CgLock, CgLockUnlock } from "react-icons/cg";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+import Spinner from "../components/Spinner";
 
 const UserSignIn = () => {
+  const [loading, setLoading] = useState(false);
   return (
     <>
-      <SignInUpForms />
+      <SignInUpForms setLoading={setLoading} />
       <MobileSignInUpForms />
+      {loading && <Spinner/>}
     </>
   );
 };
@@ -469,7 +472,7 @@ function MobileSignup({
   );
 }
 
-function SignInUpForms() {
+function SignInUpForms({setLoading}) {
   const [signinupForm, setSigninupForm] = useState(false);
   return (
     <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%]">
@@ -493,7 +496,7 @@ function SignInUpForms() {
             signinupForm && "left-6"
           } top-0 w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
         >
-          {signinupForm ? <Signup /> : <Signin />}
+          {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
         </div>
       </div>
     </div>
@@ -511,7 +514,7 @@ function SignInUpButtons({ setSigninupForm, children }) {
   );
 }
 
-function Signin() {
+function Signin({setLoading}) {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [email, setEmail] = useState("");
@@ -519,6 +522,7 @@ function Signin() {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
+  
 
   // Functions
   async function handleSigninFormLaptop() {
@@ -533,6 +537,8 @@ function Signin() {
       setErrorPassword(true);
     }
 
+    
+
     fetch(
       `http://localhost:3000/userSignup?email=${email}&password=${password}`
     )
@@ -541,9 +547,17 @@ function Signin() {
         if (result.length > 0) {
           // setUser(result);
           setErrorLogin(false);
-          console.log(result);
+          console.log(result)
+         
         } else {
           setErrorLogin(true);
+          
+        }
+
+        if(errorUser === false && result.length <= 0) {
+          setLoading(true)
+        } else {
+          setLoading(false)
         }
       });
   }
@@ -633,6 +647,7 @@ function Signin() {
         >
           Sign in
         </button>
+        
       </div>
     </div>
   );

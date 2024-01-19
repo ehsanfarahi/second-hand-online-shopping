@@ -10,6 +10,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [enableDiscount, setEnableDiscount] = useState(true);
+  const [descriptionCount, setDescriptionCount] = useState(0);
 
   // Displays
   const [displayType, setDisplayType] = useState(false);
@@ -57,6 +58,11 @@ const AddProduct = () => {
     setDiscountedPrice(price - discountedPrice);
   }
 
+  function handleDescription(e) {
+    const count = e.target.value;
+    setDescriptionCount(count.length);
+  }
+
   return (
     <div className="add-product-container">
       <h2 className="add-product-container--header">
@@ -101,7 +107,19 @@ const AddProduct = () => {
           )}
         </div>
        
-          <FormControlDouble children1="Title" children2="Company" placeholder1="Enter product's title" placeholder2="Enter product's company" conExtraStyle2="sm:mt-3" />
+         {chooseCategory && <>
+          <FormControlDouble children1="Brand" children2="Ad title" placeholder1="Enter product's brand" placeholder2="Enter product's title" conExtraStyle2="sm:mt-3" />
+          <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
+            <div className="flex flex-col w-[100%]"> 
+            <label className="pb-2  font-semibold">Description</label>
+            <textarea maxLength={500} onChange={handleDescription} className="resize-none border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2" />
+            <div className="text-sm flex justify-between">
+              <p>Write a description of the product</p>
+            <p><span className={`${descriptionCount >= 450 && "text-red-500"}`}>{descriptionCount}</span> / 500</p>
+            </div>
+            </div>
+            
+          </div>
         {getType === "vehicles" && (
           <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
             <div className="flex flex-col w-[49%]">
@@ -208,6 +226,7 @@ const AddProduct = () => {
         <div className="publish-btn hover:cursor-not-allowed">
           <button disabled className="hover:cursor-not-allowed">Publish</button>
         </div>
+         </>}
         
       </form>
     </div>
