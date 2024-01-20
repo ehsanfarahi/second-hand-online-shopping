@@ -5,8 +5,10 @@ const AddProduct = () => {
   // Get Data from DB
   const [categories, setCategories] = useState([]);
   const [categoriesTypes, setCategoriesTypes] = useState([]);
-  const [chooseCategory, setChooseCategory] = useState(false);
+  const [chooseType, setChooseType] = useState(false);
   const [discount, setDiscount] = useState(false);
+  const [transmission, setTransmission] = useState(false);
+  const [fuel, setFuel] = useState(false);
   const [price, setPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [enableDiscount, setEnableDiscount] = useState(true);
@@ -14,7 +16,6 @@ const AddProduct = () => {
 
   // Displays
   const [displayType, setDisplayType] = useState(false);
-
   const [getType, setGetType] = useState("");
 
   useEffect(() => {
@@ -28,18 +29,24 @@ const AddProduct = () => {
     switch (e.target.value) {
       case "Electronics":
         catType("electronics");
-        setChooseCategory(true);
         break;
       case "Furniture":
         catType("furnitures");
-        setChooseCategory(true);
         break;
       case "Vehicles":
         catType("vehicles");
-        setChooseCategory(true);
         break;
+        case "Fashion":
+          catType("fashion");
+          break;
       default:
         break;
+    }
+  }
+
+  function handleType(e) {
+    if(e.target.value) {
+      setChooseType(true);
     }
   }
 
@@ -93,7 +100,7 @@ const AddProduct = () => {
           {displayType && (
             <div className="flex flex-col w-[49%] sm:w-full sm:mt-3">
               <label className="pb-2  font-semibold">Type</label>
-              <select className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300">
+              <select onChange={handleType} className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300">
                 <option>Choose {getType} types</option>
                 {categoriesTypes.map((et) => {
                   return (
@@ -107,20 +114,9 @@ const AddProduct = () => {
           )}
         </div>
        
-         {chooseCategory && <>
+         {chooseType && <>
           <FormControlDouble children1="Brand" children2="Ad title" placeholder1="Enter product's brand" placeholder2="Enter product's title" conExtraStyle2="sm:mt-3" />
-          <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
-            <div className="flex flex-col w-[100%]"> 
-            <label className="pb-2  font-semibold">Description</label>
-            <textarea maxLength={500} onChange={handleDescription} className="resize-none border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2" />
-            <div className="text-sm flex justify-between">
-              <p>Write a description of the product</p>
-            <p><span className={`${descriptionCount >= 450 && "text-red-500"}`}>{descriptionCount}</span> / 500</p>
-            </div>
-            </div>
-            
-          </div>
-        {getType === "vehicles" && (
+          {getType === "vehicles" && (
           <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
             <div className="flex flex-col w-[49%]">
               <label className="pb-2  font-semibold">Model</label>
@@ -140,6 +136,114 @@ const AddProduct = () => {
             </div>
           </div>
         )}
+          <FormControlDouble children1="Year" children2="KM driven" type1="number" type2="number" placeholder1="Enter vehicle's model" placeholder2="Enter KM driven" conExtraStyle2="sm:mt-3" />
+          
+
+
+
+
+
+
+          <div
+          className={`sm:block md:block flex justify-between mt-7 text-lg text-gray-700 sm:mt-3`}
+        >
+          <div
+            className={`flex flex-col w-[49%] sm:mt-3 sm:w-full md:w-full`}
+          >
+            <label className="pb-2  font-semibold">Transmission</label>
+            <div className="flex justify-between">
+              <input
+                type="button"
+                value="Automatic"
+                onClick={() => setTransmission((e) => !e)}
+                className={`${
+                  transmission ? "bg-slate-300" : "white"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] mr-1`}
+              />
+              <input
+                type="button"
+                value="Manual"
+                onClick={() => setTransmission((e) => !e)}
+                className={`${
+                  transmission ? "bg-white" : "bg-slate-300"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+              />
+            </div>
+          </div>
+          <div
+            className={`flex flex-col w-[49%] sm:mt-3 sm:w-full md:w-full`}
+          >
+            <label className="pb-2  font-semibold">Fuel</label>
+            <div className="flex justify-between">
+              <input
+                type="button"
+                value="Diesel"
+                onClick={() => setFuel((e) => !e)}
+                className={`${
+                  fuel ? "bg-white" : "bg-slate-300"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+              />
+               <input
+                type="button"
+                value="Electric"
+                onClick={() => setFuel((e) => !e)}
+                className={`${
+                  fuel ? "bg-white" : "bg-slate-300"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+              />
+               <input
+                type="button"
+                value="Hybrids"
+                onClick={() => setFuel((e) => !e)}
+                className={`${
+                  fuel ? "bg-slate-300" : "white"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] mr-1`}
+              />
+               <input
+                type="button"
+                value="LPG"
+                onClick={() => setFuel((e) => !e)}
+                className={`${
+                  fuel ? "bg-white" : "bg-slate-300"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+              />
+               <input
+                type="button"
+                value="Petrol"
+                onClick={() => setFuel((e) => !e)}
+                className={`${
+                  fuel ? "bg-white" : "bg-slate-300"
+                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+              />
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          <div className="flex justify-between mt-7 text-lg text-gray-700 sm:mt-3">
+            <div className="flex flex-col w-[100%]"> 
+            <label className="pb-2  font-semibold">Description</label>
+            <textarea maxLength={500} onChange={handleDescription} className="resize-none border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2" />
+            <div className="text-sm flex justify-between">
+              <p>Write a description of the product</p>
+            <p><span className={`${descriptionCount >= 450 && "text-red-500"}`}>{descriptionCount}</span> / 500</p>
+            </div>
+            </div>
+            
+          </div>
+       
         <div
           className={`${
             discount && "sm:block md:block"
@@ -204,7 +308,7 @@ const AddProduct = () => {
               <input
                 type="button"
                 value="YES"
-                onClick={() => setDiscount((e) => !e)}
+                onClick={() => setDiscount((e) => !discount && !e)}
                 className={`${
                   discount ? "bg-slate-300" : "white"
                 } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] mr-1`}
@@ -212,7 +316,7 @@ const AddProduct = () => {
               <input
                 type="button"
                 value="NO"
-                onClick={() => setDiscount((e) => !e)}
+                onClick={() => setDiscount((e) => !discount && !e)}
                 className={`${
                   discount ? "bg-white" : "bg-slate-300"
                 } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}

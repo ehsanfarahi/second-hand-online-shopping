@@ -12,7 +12,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [displayLimit, setDisplayLimit] = useState(6)
 
-  const navigate = useNavigate();
+  
 
   useEffect(() => {
     fetch(`http://localhost:3000/products?_limit=${displayLimit}`)
@@ -28,11 +28,96 @@ const Home = () => {
   function handleLoadMore() {
     setDisplayLimit(num => num + 6);
   }
+  
+  return (
+    <div className="py-20 sm:py-17 md:py-8">
+      <div className="grid grid-cols-6 gap-6 mt-12 mx-10 sm:grid-cols-1 sm:gap-0 sm:mt-0 sm:mx-4 md:grid-cols-3 md:mx-4">
+        {products.map((product) => {
+          return (
+            <ProductCard product={product}/>
+          );
+        })}
+      </div>
+      <LoadMore handleLoadMore={handleLoadMore} />
+      {loading && <Spinner/>}
+    </div>
+  );
+};
 
+export default Home;
+
+function ProductCard({product}) {
+  const navigate = useNavigate();
   function handleProductDetail(id) {
       navigate(`/product-detail/${id}`)
   }
+  return <div
+  key={product.id}
+  onClick={()=>handleProductDetail(product.id)}
+  className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
+>
+  {new Date(product.date).toDateString() ===
+    new Date().toDateString() && (
+    <span className="absolute bg-blue-300 text-white font-bold text-lg px-2 py-1 shadow top-4">
+      New
+    </span>
+  )}
+  <img
+    className="w-full h-56 shadow"
+    src="pictures/car1.jpg"
+    alt="Sunset in the mountains"
+  />
+  <div className="px-6 py-3">
+    <p className="text-gray-700 text-base text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
+      {product.company} {product.model}
+    </p>
+    <ProductPrice product={product}/>
+  </div>
+  <div className="px-6 pt-0 pb-1 flex justify-between">
+    <ProductLocation product={product}/>
+    <ProductDate product={product}/>
+  </div>
+  <AddToFavorite/>
+</div>
+}
 
+function ProductPrice({product}) {
+  return <div className="font-bold text-xl mb-2 text-center w-min mx-auto font-mono">
+  <p
+    className={`${
+      product.discount &&
+      "text-red-400 relative font-medium text-lg before:content-[''] before:block before:w-full before:border-red-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 before:rotate-[-6deg] px-1"
+    }`}
+  >
+    ${product.price.toFixed(2)}
+  </p>
+  {product.discount ? (
+    <div className="relative flex">
+      <p className="text-green-700 text-2xl">
+        {product.discount === 100
+          ? "Free"
+          : `$${(
+              product.price -
+              (product.discount / 100) * product.price
+            ).toFixed(2)}`}
+      </p>{" "}
+      <span className="absolute right-[-55px] top-[-10px] text-orange-400">
+        -{product.discount}%
+      </span>
+    </div>
+  ) : (
+    ""
+  )}
+</div>
+}
+
+function ProductLocation({product}) {
+  return <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap overflow-hidden">
+  {product.location}
+</span>
+}
+
+function ProductDate({product}) {
   const date = new Date();
   const yesterday = date.setDate(date.getDate() - 1);
   const twoDaysAgo = date.setDate(date.getDate(yesterday) - 1);
@@ -42,109 +127,48 @@ const Home = () => {
   const sixDaysAgo = date.setDate(date.getDate(fiveDaysAgo) - 1);
   const oneWeekAgo = date.setDate(date.getDate(sixDaysAgo) - 1);
 
-  return (
-    <div className="py-20 sm:py-17 md:py-8">
-      <div className="grid grid-cols-6 gap-6 mt-12 mx-10 sm:grid-cols-1 sm:gap-0 sm:mt-0 sm:mx-4 md:grid-cols-3 md:mx-4">
-        {products.map((product) => {
-          return (
-            <div
-              key={product.id}
-              onClick={()=>handleProductDetail(product.id)}
-              className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
-            >
-              {new Date(product.date).toDateString() ===
-                new Date().toDateString() && (
-                <span className="absolute bg-blue-300 text-white font-bold text-lg px-2 py-1 shadow top-4">
-                  New
-                </span>
-              )}
-              <img
-                className="w-full h-56 shadow"
-                src="pictures/car1.jpg"
-                alt="Sunset in the mountains"
-              />
-              <div className="px-6 py-3">
-                <p className="text-gray-700 text-base text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
-                  {product.company} {product.model}
-                </p>
-                <div className="font-bold text-xl mb-2 text-center w-min mx-auto font-mono">
-                  <p
-                    className={`${
-                      product.discount &&
-                      "text-red-400 relative font-medium text-lg before:content-[''] before:block before:w-full before:border-red-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 before:rotate-[-6deg] px-1"
-                    }`}
-                  >
-                    ${product.price.toFixed(2)}
-                  </p>
-                  {product.discount ? (
-                    <div className="relative flex">
-                      <p className="text-green-700 text-2xl">
-                        {product.discount === 100
-                          ? "Free"
-                          : `$${(
-                              product.price -
-                              (product.discount / 100) * product.price
-                            ).toFixed(2)}`}
-                      </p>{" "}
-                      <span className="absolute right-[-55px] top-[-10px] text-orange-400">
-                        -{product.discount}%
-                      </span>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-              <div className="px-6 pt-0 pb-1 flex justify-between">
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap overflow-hidden">
-                  {product.location}
-                </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap">
-                  {new Date(product.date).toDateString() ===
-                  new Date().toDateString()
-                    ? "Today"
-                    : new Date(product.date).toDateString() ===
-                      new Date(yesterday).toDateString()
-                    ? "Yesterday"
-                    : new Date(product.date).toDateString() ===
-                      new Date(twoDaysAgo).toDateString()
-                    ? "2d ago"
-                    : new Date(product.date).toDateString() ===
-                      new Date(threeDaysAgo).toDateString()
-                    ? "3d ago"
-                    : new Date(product.date).toDateString() ===
-                      new Date(fourDaysAgo).toDateString()
-                    ? "4d ago"
-                    : new Date(product.date).toDateString() ===
-                      new Date(fiveDaysAgo).toDateString()
-                    ? "5d ago"
-                    : new Date(product.date).toDateString() ===
-                      new Date(sixDaysAgo).toDateString()
-                    ? "6d ago"
-                    : new Date(product.date).toDateString() ===
-                      new Date(oneWeekAgo).toDateString()
-                    ? "1w ago"
-                    : product.date}
-                </span>
-              </div>
-              <div className="px-6 pt-4 pb-2">
-                <button className="w-full border-2 border-blue-400 font-semibold py-2 flex justify-center items-center">
-                  <AiOutlineHeart className="text-lg mr-2" /> Add to favorite
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div onClick={handleLoadMore} className="w-fit mx-auto mt-12 mb-16 cursor-pointer">
-        <div className="flex items-center rounded border-2 px-2 border-slate-400">
-          <Spinner type="5" wWidth="w-[3rem]" applyStyle={false}/>
-          <p className="text-lg pr-1">Load more</p>
-        </div>
-      </div>
-      {loading && <Spinner/>}
-    </div>
-  );
-};
+  return <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap">
+  {new Date(product.date).toDateString() ===
+  new Date().toDateString()
+    ? "Today"
+    : new Date(product.date).toDateString() ===
+      new Date(yesterday).toDateString()
+    ? "Yesterday"
+    : new Date(product.date).toDateString() ===
+      new Date(twoDaysAgo).toDateString()
+    ? "2d ago"
+    : new Date(product.date).toDateString() ===
+      new Date(threeDaysAgo).toDateString()
+    ? "3d ago"
+    : new Date(product.date).toDateString() ===
+      new Date(fourDaysAgo).toDateString()
+    ? "4d ago"
+    : new Date(product.date).toDateString() ===
+      new Date(fiveDaysAgo).toDateString()
+    ? "5d ago"
+    : new Date(product.date).toDateString() ===
+      new Date(sixDaysAgo).toDateString()
+    ? "6d ago"
+    : new Date(product.date).toDateString() ===
+      new Date(oneWeekAgo).toDateString()
+    ? "1w ago"
+    : product.date}
+</span>
+}
 
-export default Home;
+function AddToFavorite() {
+  return <div className="px-6 pt-4 pb-2">
+  <button className="w-full border-2 border-blue-400 font-semibold py-2 flex justify-center items-center">
+    <AiOutlineHeart className="text-lg mr-2" /> Add to favorite
+  </button>
+</div>
+}
+
+function LoadMore({handleLoadMore}) {
+  return <div onClick={handleLoadMore} className="w-fit mx-auto mt-12 mb-16 cursor-pointer">
+  <div className="flex items-center rounded border-2 px-2 border-slate-400">
+    <Spinner type="5" wWidth="w-[3rem]" applyStyle={false}/>
+    <p className="text-lg pr-1">Load more</p>
+  </div>
+</div>
+}

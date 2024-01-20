@@ -123,20 +123,43 @@
     {
       "id": 3,
       "cat": "Vehicles"
+    },{
+      "id": 4,
+      "cat": "Fashion"
     },
     {
-      "id": 4,
+      "id": 5,
       "cat": "Other"
     }
   ],
   "electronicsTypes": [
     {
       "id": 1,
-      "type": "Computers"
+      "type": "Computers & Accessories"
     },
     {
       "id": 2,
-      "type": "Mobiles"
+      "type": "Mobiles & Accessories"
+    },
+    {
+      "id": 3,
+      "type": "TVs"
+    },
+    {
+      "id": 4,
+      "type": "Kitchen Appliances"
+    },
+    {
+      "id": 5,
+      "type": "Cameras"
+    },
+    {
+      "id": 6,
+      "type": "Games & Entertainment"
+    },
+    {
+      "id": 7,
+      "type": "Other electronics"
     }
   ],
   "furnituresTypes": [
@@ -151,6 +174,24 @@
     {
       "id": 3,
       "type": "Capboards"
+    },
+    {
+      "id": 4,
+      "type": "Other furniture"
+    }
+  ],
+  "fashionTypes": [
+    {
+      "id": 1,
+      "type": "Men"
+    },
+    {
+      "id": 2,
+      "type": "Women"
+    },
+    {
+      "id": 3,
+      "type": "Kids"
     }
   ],
   "vehiclesTypes": [
@@ -165,6 +206,18 @@
     {
       "id": 3,
       "type": "Bikes"
+    },
+    {
+      "id": 4,
+      "type": "Scooters"
+    },
+    {
+      "id": 5,
+      "type": "Vehicles' Spare Parts"
+    },
+    {
+      "id": 6,
+      "type": "Other"
     }
   ],
   "userSignup": [
