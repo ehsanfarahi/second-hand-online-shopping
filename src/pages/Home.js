@@ -8,9 +8,11 @@ import { AiOutlineHeart } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 
 const Home = () => {
+  const numProductDisplay = 6;
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [displayLimit, setDisplayLimit] = useState(6)
+  const [displayLimit, setDisplayLimit] = useState(numProductDisplay)
 
   
 
@@ -26,9 +28,8 @@ const Home = () => {
   }, [displayLimit]);
 
   function handleLoadMore() {
-    setDisplayLimit(num => num + 6);
+    setDisplayLimit(num => num + numProductDisplay);
   }
-  
   return (
     <div className="py-20 sm:py-17 md:py-8">
       <div className="grid grid-cols-6 gap-6 mt-12 mx-10 sm:grid-cols-1 sm:gap-0 sm:mt-0 sm:mx-4 md:grid-cols-3 md:mx-4">
@@ -38,7 +39,7 @@ const Home = () => {
           );
         })}
       </div>
-      <LoadMore handleLoadMore={handleLoadMore} />
+      {products.length >= numProductDisplay && <LoadMore handleLoadMore={handleLoadMore} />}
       {loading && <Spinner/>}
     </div>
   );
@@ -167,7 +168,7 @@ function AddToFavorite() {
 function LoadMore({handleLoadMore}) {
   return <div onClick={handleLoadMore} className="w-fit mx-auto mt-12 mb-16 cursor-pointer">
   <div className="flex items-center rounded border-2 px-2 border-slate-400">
-    <Spinner type="5" wWidth="w-[3rem]" applyStyle={false}/>
+    <Spinner type="5" wWidth="w-[3rem] sm:w-[2rem]" applyStyle={false}/>
     <p className="text-lg pr-1">Load more</p>
   </div>
 </div>
