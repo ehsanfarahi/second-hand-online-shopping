@@ -35,7 +35,7 @@ const Home = () => {
       <div className="grid grid-cols-6 gap-6 mt-12 mx-10 sm:grid-cols-1 sm:gap-0 sm:mt-0 sm:mx-4 md:grid-cols-3 md:mx-4">
         {products.map((product) => {
           return (
-            <ProductCard product={product}/>
+            <ProductCard product={product} key={product.id}/>
           );
         })}
       </div>
@@ -53,7 +53,6 @@ function ProductCard({product}) {
       navigate(`/product-detail/${id}`)
   }
   return <div
-  key={product.id}
   onClick={()=>handleProductDetail(product.id)}
   className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
 >
