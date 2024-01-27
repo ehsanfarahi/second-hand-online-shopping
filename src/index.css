@@ -30,3 +30,27 @@
   @apply bg-slate-200 mt-7 py-2 text-center font-bold cursor-pointer hover:bg-slate-300;
 }
 /* Add Product Page End */
+
+/* Product Detail Page Start */
+.product-detail {
+  @apply pt-[9rem] sm:pt-[4.5rem] w-[70%] mx-auto md:w-[90%] sm:w-[93%];
+}
+.go-back-arrow {
+  @apply flex items-center text-blue-900 mb-8 cursor-pointer;
+}
+.bottomAddToFav-container {
+  @apply fixed bottom-8 bg-blue-50 w-[90%] left-[50%] translate-x-[-50%] shadow-md sm:hidden;
+}
+.bottomAddToFav-img {
+  @apply w-[3rem] h-[3rem] border-[1px] border-blue-200 rounded;
+}
+.bottomAddToFav-btn {
+  @apply bg-orange-400 text-white font-semibold py-2 px-3 rounded cursor-pointer hover:bg-orange-500;
+}
+.detailImg-nextBtn {
+  @apply absolute top-[50%] translate-y-[-50%] right-0 text-3xl cursor-pointer opacity-50 bg-gray-200 hover:bg-white hover:opacity-80 rounded-[50%] mr-4;
+}
+.detailImg-prevBtn {
+  @apply absolute top-[50%] translate-y-[-50%] left-0 text-3xl cursor-pointer opacity-50 bg-gray-200 hover:bg-white hover:opacity-80 rounded-[50%] ml-4;
+}
+/* Product Detail Page End */

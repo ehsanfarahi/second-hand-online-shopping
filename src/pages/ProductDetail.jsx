@@ -21,6 +21,10 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { FaViber } from "react-icons/fa6";
 import { LuEye } from "react-icons/lu";
 import { BiArrowBack } from "react-icons/bi";
+import { TbHeartMinus } from "react-icons/tb";
+import { TbHeartPlus } from "react-icons/tb";
+import { FaHeartCircleMinus } from "react-icons/fa6";
+import { FaHeartCirclePlus } from "react-icons/fa6";
 
 // Sharing item on social media API
 import {
@@ -50,7 +54,6 @@ const urlSocialMediaPlatforms = window.location.href;
 
 const ProductDetail = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -66,20 +69,11 @@ const ProductDetail = () => {
             setLoading(false);
         });
     }, [id])
-
-    // Functions
-    function handleGoBack() {
-        navigate(-1);
-    }
  
-    
 return (
     <>
-    <div className="absolute top-[15%] md:top-[15%] sm:top-[4.5rem] left-[50%] translate-x-[-50%] w-[70%] md:w-[90%] sm:w-[93%]">
-    <div onClick={handleGoBack} className="flex items-center text-blue-900 mb-8 cursor-pointer">
-    <BiArrowBack className="text-2xl" />
-    <p className="pl-2 font-bold">Go back</p>
-    </div>
+    <div className="product-detail">
+    <GoBack/>
        <div className="flex sm:flex-col justify-between">
        <DetailLeftSide/>
         <DetailRightSide product={product} setChatBox={setChatBox} urlSocialMediaPlatforms={urlSocialMediaPlatforms} setDisplayShareSocial={setDisplayShareSocial} favorite={favorite} setFavorite={setFavorite} />
@@ -96,13 +90,28 @@ return (
 
 export default ProductDetail;
 
+function GoBack() {
+    const navigate = useNavigate();
+
+    // Functions
+    function handleGoBack() {
+        navigate(-1);
+    }
+
+    return <div onClick={handleGoBack} className="go-back-arrow">
+    <BiArrowBack className="text-2xl" />
+    <p className="pl-2 font-bold">Go back</p>
+    </div>
+}
+
 function BottomAddToFavorite({product, favorite, setFavorite}) {
+    const [bottomAdDisplay, setBottomAdDisplay] = useState(true);
     return (
-        <div className="fixed bottom-8 bg-blue-50 w-[90%] left-[50%] translate-x-[-50%] shadow-md sm:hidden">
-           <div className="flex justify-between items-center py-3 px-8">
+        <div className="bottomAddToFav-container">
+           <div className={`${bottomAdDisplay ? "flex" : "hidden"} justify-between items-center py-3 px-8`}>
            <div className="flex items-center">
                 <div>
-                    <img className="w-[3rem] h-[3rem] border-[1px] border-blue-200 rounded" src="../pictures/car1.jpg" alt="product" />
+                    <img className="bottomAddToFav-img" src="../pictures/car1.jpg" alt="product" />
                 </div>
                 <div className="pl-4">
                     <p className="font-semibold text-xl">{product.company}</p>
@@ -111,9 +120,12 @@ function BottomAddToFavorite({product, favorite, setFavorite}) {
             </div>
             <div className="flex items-center">
                 <p className="pr-6 text-2xl">${product.discount ? (product.price - (product.discount / 100 * product.price)).toFixed(2) : product.price?.toFixed(2)}</p>
-                <button onClick={()=>setFavorite(e=>!e)} className="bg-orange-400 text-white font-semibold py-2 px-3 rounded cursor-pointer hover:bg-orange-500">{favorite ? "Remove from" : "Add to"} favorite (2)</button>
+                <button onClick={()=>setFavorite(e=>!e)} className="bottomAddToFav-btn">{favorite ? "Remove from" : "Add to"} favorite (2)</button>
             </div>
            </div>
+           <div className={`border-2 w-fit border-slate-700 cursor-pointer rounded-[50%] p-1 absolute left-[50%] translate-x-[-50%] ${bottomAdDisplay ? "top-[1.2rem]" : "top-[-3.55rem]"} `}>
+            {bottomAdDisplay && favorite ? <FaHeartCircleMinus onClick={()=>setBottomAdDisplay(e=>!e)} className="text-3xl" /> : bottomAdDisplay && !favorite ? <TbHeartMinus onClick={()=>setBottomAdDisplay(e=>!e)} className="text-3xl" /> : favorite ? <FaHeartCirclePlus onClick={()=>setBottomAdDisplay(e=>!e)} className="text-3xl" /> : <TbHeartPlus onClick={()=>setBottomAdDisplay(e=>!e)} className="text-3xl" />}
+            </div>
         </div>
     )
 }
@@ -151,16 +163,16 @@ function DetailLeftSide() {
 
     return  <div className="w-[50%] sm:w-[100%]">
         <div className="relative">
-        <img src={`../pictures/${images.at(imgCount)}`} alt="product" className="w-[100%]" />
-        <GrFormNext onClick={nextImage} className="absolute top-[50%] translate-y-[-50%] right-0 text-3xl cursor-pointer opacity-50 bg-gray-200 hover:bg-white hover:opacity-80 rounded-[50%] mr-4" />
-        <GrFormPrevious onClick={previousImage} className="absolute top-[50%] translate-y-[-50%] left-0 text-3xl cursor-pointer opacity-50 bg-gray-200 hover:bg-white hover:opacity-80 rounded-[50%] ml-4" />
+        <img src={`../pictures/${images.at(imgCount)}`} alt="product" className="w-[100%] aspect-video md:aspect-square" />
+        <GrFormNext onClick={nextImage} className="detailImg-nextBtn" />
+        <GrFormPrevious onClick={previousImage} className="detailImg-prevBtn" />
         </div>
     
-    <div className="mt-3 flex justify-between">
+    <div className="mt-2 flex justify-between">
         {
             images.map((img, i) => {
                 return (
-                    <SelectedImageDisplay setImgCount={setImgCount} count={i} img={img} key={i}/>
+                    <SelectedImageDisplay imgCount={imgCount} setImgCount={setImgCount} count={i} img={img} key={i}/>
                 )
             })
         }
@@ -168,15 +180,14 @@ function DetailLeftSide() {
 </div>
 }
 
-function SelectedImageDisplay({img, setImgCount, count}) {
-    const [selectedImg, setSelectedImg] = useState(false);
+function SelectedImageDisplay({img, imgCount, setImgCount, count}) {
 
     function handleSelectedImage(num) {
         setImgCount(num);
-        setSelectedImg(true);
     }
+
     return (
-<img onClick={()=>handleSelectedImage(count)} src={`../pictures/${img}`} alt="product" className={`w-[24%] cursor-pointer ${selectedImg ? "border-2 border-orange-500 opacity-50" : ""}`} />
+<img onClick={()=>handleSelectedImage(count)} src={`../pictures/${img}`} alt="product" className={`w-[24%] aspect-video md:aspect-square cursor-pointer ${imgCount === count ? "border-2 border-orange-500 opacity-50" : ""}`} />
     )
 }
 
@@ -214,7 +225,7 @@ function DetailRightSide({product, setChatBox, setDisplayShareSocial, favorite, 
         <p className="font-bold text-2xl sm:text-2xl text-slate-700">${product.discount ? (product.price - (product.discount / 100 * product.price)).toFixed(2) : product.price?.toFixed(2)}</p> 
        {product.discount &&  <p className="ml-4 bg-orange-100 rounded px-2 text-sm font-bold text-orange-500">{product.discount}%</p>}
         </div>
-       {product.discount &&  <p className={`mt-1 w-fit px-1 font-bold text-lg sm:text-xl text-slate-700 ${product.discount && "text-gray-400 relative before:content-[''] before:block before:w-full before:border-gray-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 sm:mb-4"}`}>${product.price?.toFixed(2)}</p>}
+       {product.discount &&  <p className={`mt-1 w-fit px-1 font-bold text-lg sm:text-xl text-gray-400 ${product.discount && "text-gray-400 relative before:content-[''] before:block before:w-full before:border-gray-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 sm:mb-4"}`}>${product.price?.toFixed(2)}</p>}
         <div className="flex justify-between sm:flex-col">
         { callSeller ? <ShowSellerNumber callSeller={callSeller} setCallSeller={setCallSeller} /> : <button onClick={()=>setCallSeller(e=>!e)} className="mt-6 w-[49%] sm:w-[100%] bg-orange-400 cursor-pointer rounded text-white text-lg font-bold md:font-semibold py-2 hover:bg-orange-500">Call seller</button>}
         <button onClick={()=>setChatBox(e=>!e)} className="mt-6 sm:mt-3 w-[49%] sm:w-[100%] bg-orange-400 cursor-pointer rounded text-white text-lg font-bold md:font-semibold py-2 hover:bg-orange-500">Chat with seller</button>

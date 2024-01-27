@@ -20,6 +20,7 @@ import UserSignIn from "./pages/UserSignIn";
 import ForgotPassword from "./pages/ForgotPassword";
 import Favorite from "./pages/Favorite";
 import ProductDetail from "./pages/ProductDetail";
+import Footer from "./pages/Footer";
 
 // Import Components
 import Header from "./components/Header";
@@ -62,6 +63,7 @@ function App() {
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/product-detail/:id" element={<ProductDetail/>} />
         </Routes>
+        <Footer/>
         <MenuBottom />
         <AddProductIcon disp={displayAddProduct} />
       </Router>
