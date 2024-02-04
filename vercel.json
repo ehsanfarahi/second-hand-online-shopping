@@ -1,6 +1,6 @@
 {
 	"functions": {
-		"api/db": {
+		"api": {
 			"handler": "api/db.js",
 			"events": [
 				{
