@@ -1,0 +1,15 @@
+{
+	"functions": {
+		"api/db": {
+			"handler": "api/db.js",
+			"events": [
+				{
+					"http": {
+						"method": "ANY",
+						"path": "/api/db"
+					}
+				}
+			]
+		}
+	}
+}

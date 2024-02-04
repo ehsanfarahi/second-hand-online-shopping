@@ -7,8 +7,8 @@ import { FaTiktok } from "react-icons/fa6";
 
 const Footer = () => {
 	return (
-		<div className="bg-blue-200 text-slate-700">
-			<div className="grid grid-cols-4 md:grid-cols-5 sm:grid-cols-2 gap-20 sm:gap-10 md:gap-6 justify-between w-[92%] sm:w-[95%] md:w-[97%] mx-auto pt-10 sm:pb-6 md:pb-4 md:pt-8">
+		<div className="bg-blue-200 text-slate-700 shadow">
+			<div className="footer-container--top">
 				<div className="sm:col-start-1 sm:col-span-2"><WhatWeDo /></div>
 				<div><About /></div>
 				<div><Suport /></div>
@@ -57,7 +57,7 @@ function StayConnected() {
 }
 
 function FooterSocialMedial () {
-	return <div className="flex items-center my-10 gap-8 sm:gap-4 w-[95%] mx-auto justify-center text-2xl sm:text-3xl before:h-[2px] before:w-[40%] sm:before:w-[35%] before:bg-slate-500 after:h-[2px] after:w-[40%] sm:after:w-[35%] after:bg-slate-500">
+	return <div className="footer-socialMedia">
 	<FaFacebookF className="cursor-pointer" />
 	<FaInstagram className="cursor-pointer" />
 	<FaXTwitter className="cursor-pointer" />

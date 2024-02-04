@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+// React Icons
+import { FaUpload } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
+
+// data
+const fuels = ["Diesel", "Electric", "Hybrid", "LPG", "Petrol"];
+
 const AddProduct = () => {
   // Get Data from DB
   const [categories, setCategories] = useState([]);
@@ -8,7 +16,7 @@ const AddProduct = () => {
   const [chooseType, setChooseType] = useState(false);
   const [discount, setDiscount] = useState(false);
   const [transmission, setTransmission] = useState(false);
-  const [fuel, setFuel] = useState(false);
+  const [fuel, setFuel] = useState("");
   const [price, setPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [enableDiscount, setEnableDiscount] = useState(true);
@@ -175,46 +183,7 @@ const AddProduct = () => {
           >
             <label className="pb-2  font-semibold">Fuel</label>
             <div className="flex justify-between">
-              <input
-                type="button"
-                value="Diesel"
-                onClick={() => setFuel((e) => !e)}
-                className={`${
-                  fuel ? "bg-white" : "bg-slate-300"
-                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
-              />
-               <input
-                type="button"
-                value="Electric"
-                onClick={() => setFuel((e) => !e)}
-                className={`${
-                  fuel ? "bg-white" : "bg-slate-300"
-                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
-              />
-               <input
-                type="button"
-                value="Hybrids"
-                onClick={() => setFuel((e) => !e)}
-                className={`${
-                  fuel ? "bg-slate-300" : "white"
-                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] mr-1`}
-              />
-               <input
-                type="button"
-                value="LPG"
-                onClick={() => setFuel((e) => !e)}
-                className={`${
-                  fuel ? "bg-white" : "bg-slate-300"
-                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
-              />
-               <input
-                type="button"
-                value="Petrol"
-                onClick={() => setFuel((e) => !e)}
-                className={`${
-                  fuel ? "bg-white" : "bg-slate-300"
-                } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
-              />
+              {fuels.map((f, i) => <FuelButton value={f} key={i} fuel={fuel} setFuel={setFuel} />)}
             </div>
           </div>
         </div>
@@ -327,6 +296,8 @@ const AddProduct = () => {
 
         <FormControlDouble children1="Location" children2="Image" type2="file" placeholder1="Enter product's location" conExtraStyle2="sm:mt-3" />
 
+        <UploadImages/>
+
         <div className="publish-btn hover:cursor-not-allowed">
           <button disabled className="hover:cursor-not-allowed">Publish</button>
         </div>
@@ -354,9 +325,140 @@ function FormControlSingle({children, conStyle="flex flex-col w-[49%] sm:w-full"
 </div>
 }
 
+function UploadImages() {
+  const [imgSrc1, setImgSrc1] = useState("");
+  const [imgSrc2, setImgSrc2] = useState("");
+  const [imgSrc3, setImgSrc3] = useState("");
+  const [imgSrc4, setImgSrc4] = useState("");
+  const [img1, setImg1] = useState(true);
+  const [img2, setImg2] = useState(false);
+  const [img3, setImg3] = useState(false);
+  const [img4, setImg4] = useState(false);
+  const [displayImages, setDisplayImages] = useState(false);
+ 
+  
+  function handleImage(e, num) {
+
+    const fileInput = e.target;
+  
+    if(fileInput.files && fileInput.files[0]) {
+      
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+       if(num === 1) {
+        setImgSrc1(e.target.result);
+        if(img1 && !img2) setImg2(true);
+        setDisplayImages(true);
+       } else if(num === 2) {
+        setImgSrc2(e.target.result)
+        setImg2(false);
+        if(img1 && !img3) setImg3(true);
+       } else if(num === 3) {
+        setImgSrc3(e.target.result)
+        setImg3(false);
+        if(img1 && !img4) setImg4(true);
+       }  else if(num === 4) {
+        setImgSrc4(e.target.result)
+        setImg4(false);
+        setImg1(false);
+       }
+        
+      }
+      reader.readAsDataURL(fileInput.files[0])
+    }
+    console.log(num);
+    console.log(e);
+  }
+
+  function handleDelete(e, num) {
+    e.preventDefault();
+    if(num === 1) {
+      setImgSrc1("")
+      setImg1(true);
+    } else if(num === 2) {
+      setImgSrc2("")
+      setImg2(true);
+    } else if(num === 3) {
+      setImgSrc3("")
+      setImg3(true);
+    } else if(num === 4) {
+      setImgSrc4("")
+      setImg4(true);
+    }
+  }
+  
+  return <div className="mt-7 sm:mt-3 flex flex-col">
+      <div className="pb-2">
+    <label className="font-semibold text-lg">Image</label> <span className="text-gray-500 text-sm pl-3">(Max. 4 images)</span>
+    </div>
+    <div className="border-2 border-dashed border-gray-300 rounded p-6 flex justify-between items-center">
+      <div className="flex flex-col">
+     {displayImages ? <div className="flex gap-1">
+      {imgSrc1.length > 0 && <div className="flex flex-col items-center"><img src={imgSrc1} width="100" alt="img" /><div className="flex items-center">
+      <MdEdit className="text-2xl cursor-pointer mt-2" />
+      <MdDeleteForever onClick={(e)=>handleDelete(e, 1)} className="text-2xl cursor-pointer mt-2" />
+        </div></div>}
+       {imgSrc2.length > 0 &&  <div className="flex flex-col items-center"><img src={imgSrc2} width="100" alt="img" /><div className="flex items-center">
+      <MdEdit className="text-2xl cursor-pointer mt-2" />
+      <MdDeleteForever onClick={(e)=>handleDelete(e, 2)} className="text-2xl cursor-pointer mt-2" />
+        </div></div>}
+       {imgSrc3.length > 0 &&  <div className="flex flex-col items-center"><img src={imgSrc3} width="100" alt="img" /><div className="flex items-center">
+      <MdEdit className="text-2xl cursor-pointer mt-2" />
+      <MdDeleteForever onClick={(e)=>handleDelete(e, 3)} className="text-2xl cursor-pointer mt-2" />
+        </div></div>}
+       {imgSrc4
+      .length > 0 &&  <div className="flex flex-col items-center"><img src={imgSrc4} width="100" alt="img" /><div className="flex items-center">
+      <MdEdit className="text-2xl cursor-pointer mt-2" />
+      <MdDeleteForever onClick={(e)=>handleDelete(e, 4)} className="text-2xl cursor-pointer mt-2" />
+        </div></div>}
+      </div> :  <>
+      <div className="flex items-center">
+      <FaUpload className="text-2xl" />
+      <p className="text-xl pl-3">Drag and drop images here or upload</p>
+      </div>
+      <div>
+        <p className="text-gray-500 pt-3 text-sm">Accepted image types: JPEG, JPG, PNG</p>
+      </div>
+      </>}
+      <input onChange={(e)=>handleImage(e, 1)} type="file" id="image1" hidden />
+      <input onChange={(e)=>handleImage(e, 2)} type="file" id="image2" hidden />
+      <input onChange={(e)=>handleImage(e, 3)} type="file" id="image3" hidden />
+      <input onChange={(e)=>handleImage(e, 4)} type="file" id="image4" hidden />
+      
+    </div>
+    <div>
+      {img2 && !img3 && !img4 ? <label htmlFor="image2">Upload 2</label> : img3 && !img2 && !img4 ? <label htmlFor="image3">Upload 3</label> : img4 && !img2 && !img3 ? <label htmlFor="image4">Upload 4</label> : img1 && !img2 && !img3 && !img4 && <label htmlFor="image1">Upload</label>}
+    </div>
+  </div>
+  </div>
+}
+
+{/* <div>
+{img2 ? <label htmlFor="image2" className="border-2 border-slate-700 rounded py-1 px-5 text-xl cursor-pointer hover:bg-slate-700 hover:text-slate-200">Upload 2</label> : img3 ? <label htmlFor="image3" className="border-2 border-slate-700 rounded py-1 px-5 text-xl cursor-pointer hover:bg-slate-700 hover:text-slate-200">Upload 3</label> : img4 ? <label htmlFor="image4" className="border-2 border-slate-700 rounded py-1 px-5 text-xl cursor-pointer hover:bg-slate-700 hover:text-slate-200">Upload 4</label> : <label htmlFor="image1" className="border-2 border-slate-700 rounded py-1 px-5 text-xl cursor-pointer hover:bg-slate-700 hover:text-slate-200">Upload</label>}
+</div> */}
+
 function FormControlDouble({children1, conStyle1, conExtraStyle1, labStyle1, inStyle1, type1, placeholder1, children2, conStyle2, conExtraStyle2, labStyle2, inStyle2, type2, placeholder2}) {
   return  <div className="flex justify-between mt-7 text-lg text-gray-700 sm:block sm:mt-3">
   <FormControlSingle conStyle={conStyle1} conExtraStyle={conExtraStyle1} labStyle={labStyle1} inStyle={inStyle1} type={type1} placeholder={placeholder1}>{children1}</FormControlSingle>
   <FormControlSingle conStyle={conStyle2} conExtraStyle={conExtraStyle2} labStyle={labStyle2} inStyle={inStyle2} type={type2} placeholder={placeholder2}>{children2}</FormControlSingle>
 </div>
 }
+
+function FuelButton({value, fuel, setFuel}) {
+  
+  function handleFuel(e) {
+    setFuel(e.target.value);
+  }
+
+  return <input
+  type="button"
+  value={value}
+  onClick={handleFuel}
+  className={`${
+    value === fuel ? "bg-slate-300" : "bg-white"
+  } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
+/>
+}
+
+
