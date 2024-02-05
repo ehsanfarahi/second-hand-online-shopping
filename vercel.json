@@ -1,7 +1,8 @@
 {
 	"functions": {
-		"api": {
-			"handler": "api/db.js",
+		"api/db": {
+			"runtime": "vercel-node@2",
+			"handler": "api/db.handler",
 			"events": [
 				{
 					"http": {
