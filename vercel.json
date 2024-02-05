@@ -1,4 +1,4 @@
 {
 	"version": 2,
-	"builds": [{"src": "api/db.js", "use": "@vercel/node"}], "routes": [{"src": "/api/db", "dest": ".vercel/functions/api/db.js"}]
+	"builds": [{"src": "./api/db.js", "use": "@vercel/node"}], "routes": [{"src": "/api/db", "dest": ".vercel/functions/api/db.js"}]
 }
