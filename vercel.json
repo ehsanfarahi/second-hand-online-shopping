@@ -2,15 +2,7 @@
 	"functions": {
 		"api/db": {
 			"runtime": "vercel-node@2",
-			"handler": "api/db.handler",
-			"events": [
-				{
-					"http": {
-						"method": "ANY",
-						"path": "/api/db"
-					}
-				}
-			]
+			"memory": 1024
 		}
 	}
 }
