@@ -1,8 +1,4 @@
 {
-	"functions": {
-		"api/db": {
-			"runtime": "nodejs14.x",
-			"memory": 1024
-		}
-	}
+	"version": 2,
+	"builds": [{"src": "api/db.js", "use": "@vercel/node"}], "routes": [{"src": "/api/db", "dest": ".vercel/functions/api/db.js"}]
 }
