@@ -7,7 +7,7 @@ import { FaTiktok } from "react-icons/fa6";
 
 const Footer = () => {
 	return (
-		<div className="bg-blue-200 text-slate-700 shadow">
+		<div className="bg-blue-200 sm:bg-blue-100 text-slate-700 shadow">
 			<div className="footer-container--top">
 				<div className="sm:col-start-1 sm:col-span-2"><WhatWeDo /></div>
 				<div><About /></div>
@@ -27,7 +27,7 @@ export default Footer;
 function WhatWeDo() {
 	return <div>
 		<p className="font-semibold text-lg pb-3">What we do</p>
-		<p className="pb-2">AfghanBazaar24 helps you sell your used products, and let's you buy used products.</p>
+		<p className="pb-2">FarahiBazaar24 helps you sell your used products, and let's you buy used products.</p>
 	</div>
 }
 
@@ -68,7 +68,7 @@ function FooterSocialMedial () {
 
 function FooterHeading() {
 	return <div className="w-full mx-auto text-center ">
-		<h3 className="text-2xl font-semibold">AfghanBazaar<span className="font-extrabold">24</span></h3>
+		<h3 className="text-2xl font-semibold">FarahiBazaar<span className="font-extrabold">24</span></h3>
 	</div>
 }
 
@@ -77,7 +77,7 @@ function FooterCopyRight() {
 	const currentYear = date.getFullYear();
 
 	return <div className="w-full mx-auto text-sm text-center my-4">
-		<p className="font-semibold">Copyright &copy; {currentYear} www.afghanbazaar24.com</p>
+		<p className="font-semibold">Copyright &copy; {currentYear} www.farahibazaar24.com</p>
 	</div>
 }
 

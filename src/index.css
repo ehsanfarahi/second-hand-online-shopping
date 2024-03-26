@@ -2,6 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Home Start */
+.home-container {
+  @apply grid grid-cols-5 gap-6 mt-3 sm:grid-cols-2 sm:gap-2 sm:mt-4 md:grid-cols-3;
+}
+/* Product Card Start */
+.product-card-container {
+  @apply h-[23rem] sm:h-auto rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer;
+}
+.product-card--new {
+  @apply absolute bg-blue-300 text-white font-bold text-lg px-2 py-1 shadow top-4;
+}
+.product-card--featured {
+  @apply absolute bg-orange-300 text-white font-bold text-lg px-2 rounded shadow top-2 left-2;
+}
+.product-card--model {
+  @apply text-gray-700 text-base text-center sm:text-left whitespace-nowrap overflow-hidden overflow-ellipsis;
+}
+.product-card--price-container {
+  @apply font-bold sm:font-semibold text-xl sm:text-[1.25rem] text-center w-min mx-auto font-mono sm:pl-2; 
+}
+.product-card--discount {
+  @apply text-red-400 relative font-medium text-lg before:content-[''] before:block before:w-full before:border-red-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 before:rotate-[-6deg] px-1 sm:hidden;
+}
+.product-card--location {
+  @apply inline-block bg-gray-200 sm:bg-inherit rounded-full sm:rounded-none px-3 sm:px-0 py-1 sm:py-0 text-sm font-semibold text-gray-700 mr-2 whitespace-nowrap overflow-hidden;
+}
+.product-card--date {
+  @apply inline-block bg-gray-200 rounded-full sm:rounded-none px-3 sm:px-1 py-1 sm:py-0 text-sm font-semibold text-gray-700 whitespace-nowrap;
+}
+.product-card--addToFavorite {
+  @apply w-full border-2 sm:border-none border-blue-400 font-semibold py-2 sm:py-0 flex justify-center items-center hover:bg-blue-100 sm:hover:bg-inherit hover:text-slate-700; 
+}
+/* Product Card End */
+/* Load More Start*/
+.load-more {
+  @apply flex items-center rounded border-2 px-2 border-slate-400;
+}
+/* Load More End */
+/* Home End */
+
 /* Sign in/up forms start */
 /* Laptop size sign in/up container start*/
 .signinup-container {
@@ -39,7 +79,7 @@
   @apply flex items-center text-blue-900 mb-8 cursor-pointer;
 }
 .bottomAddToFav-container {
-  @apply fixed bottom-8 bg-blue-50 w-[90%] left-[50%] translate-x-[-50%] shadow-md sm:hidden;
+  @apply fixed bottom-8 bg-blue-50 w-[90%] left-[50%] translate-x-[-50%] shadow-md sm:hidden opacity-[0.85] hover:opacity-100;
 }
 .bottomAddToFav-img {
   @apply w-[3rem] h-[3rem] border-[1px] border-blue-200 rounded;
@@ -55,6 +95,16 @@
 }
 /* Product Detail Page End */
 
+/* Profile Page Start */
+.user-ads {
+  @apply bg-blue-50 text-slate-700 font-semibold text-lg py-1 px-2 border-b-[3px] border-slate-400;
+}
+/* Ad Container Start*/
+.adContainer { 
+  @apply w-[13rem] border text-slate-700 rounded hover:border-orange-400 cursor-pointer hover:scale-[1.01] relative;}
+/* Ad Container End*/
+/* Profile Page End */
+
 /* Footer Start*/
 .footer-container--top {
   @apply grid grid-cols-4 md:grid-cols-5 sm:grid-cols-2 gap-20 sm:gap-10 md:gap-6 justify-between w-[92%] sm:w-[95%] md:w-[97%] mx-auto pt-10 sm:pb-6 md:pb-4 md:pt-8;
@@ -63,3 +113,31 @@
   @apply flex items-center my-10 gap-8 sm:gap-4 w-[95%] mx-auto justify-center text-2xl sm:text-3xl before:h-[2px] before:w-[40%] sm:before:w-[35%] before:bg-slate-500 after:h-[2px] after:w-[40%] sm:after:w-[35%] after:bg-slate-500;
 }
 /* Footer End*/
+
+.move-left {
+  animation: move-left .7s ease-in-out;
+}
+
+@keyframes move-left {
+  0% {
+    left: 37%;
+  }
+
+  100% {
+    left: 1.5rem;
+  }
+}
+
+.move-right {
+  animation: move-right .7s ease-in-out;
+}
+
+@keyframes move-right {
+  0% {
+    right: 37%;
+  }
+
+  100% {
+    right: 1.5rem;
+  }
+}

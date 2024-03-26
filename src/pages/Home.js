@@ -1,174 +1,282 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+
+// Get random recommended ads
+import _ from "lodash";
 
 // React Icons
-import { AiOutlineHeart } from "react-icons/ai";
+import { MdOutlineMapsHomeWork } from "react-icons/md";
+import { IoCarOutline } from "react-icons/io5";
+import { MdOutlinePhonelink } from "react-icons/md";
+import { TbArmchair2 } from "react-icons/tb";
+import { GiClothes } from "react-icons/gi";
+import { FaChild } from "react-icons/fa6";
+import { BiSolidDog } from "react-icons/bi";
+import { MdMiscellaneousServices } from "react-icons/md";
+import { BsThreeDots } from "react-icons/bs";
 
 // Components
 import Spinner from "../components/Spinner";
+import ProductCard from "../components/ProductCard";
+import PopupProductDetail from "../components/PopupProductDetail";
+import LoadingPlaceholder from "../components/LoadingPlaceholder";
 
-const Home = () => {
-  const numProductDisplay = 6;
+const Home = ({ setUpdateFavorite }) => {
+  const numProductDisplay = 10;
 
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [displayLimit, setDisplayLimit] = useState(numProductDisplay)
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [popupDetail, setPopupDetail] = useState([]);
+  const [loadingFeatured, setLoadingFeatured] = useState(false);
+  const [loadingRecommended, setLoadingRecommended] = useState(false);
+  const [loadingForYou, setLoadingForYou] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(numProductDisplay);
+  const [displayPopupProDetail, setDisplayPopupProDetail] = useState(false);
+  const [error, setError] = useState("");
 
-  
-
+  // Fetching featured ads
   useEffect(() => {
-    fetch(`http://localhost:3000/products?_limit=${displayLimit}`)
+   
+   async function fetchData() {
+    try {
+    setLoadingFeatured(true);
+    setError("");
+
+    const response = await fetch(`http://localhost:3000/products?featured=1&_limit=${displayLimit}`);
+
+    if(!response.ok) throw new Error(`Something went wrong while fetching data`);
+    
+
+    const result = await response.json();
+
+      const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      setFeaturedProducts(sortedData);
+      setLoadingFeatured(false);
+      setError("");
+      
+    } catch (error) {
+      console.log(error instanceof TypeError ? "Network error: Please check your internet connection" : error.message)
+    } 
+   } 
+   fetchData();
+  }, [displayLimit]); 
+
+  // Fetching recommended ads
+  useEffect(() => {
+    fetch(`http://localhost:3000/products?featured=0&_limit=${displayLimit}`)
       .then((response) => response.json())
       .then((result) => {
-        setProducts(result);
-       
-          setLoading(false);
-       
+        setRecommendedProducts(result);
+        setLoadingRecommended(false);
+      });
+  }, [displayLimit]);
+
+  // Fetching all ads
+  useEffect(() => {
+    fetch(`http://localhost:3000/products?featured=0&_limit=${displayLimit}`)
+      .then((response) => response.json())
+      .then((result) => {
+        const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setProducts(sortedData);
+        setLoadingForYou(false);
       });
   }, [displayLimit]);
 
   function handleLoadMore() {
-    setDisplayLimit(num => num + numProductDisplay);
+    setDisplayLimit((num) => num + numProductDisplay);
   }
+
+  function getPopupDetail(id) {
+    fetch(`http://localhost:3000/products/${id}`)
+    .then((response) => response.json())
+    .then((result) => {
+      setPopupDetail(result);
+    });
+  }
+
+  // Get random recommended ads
+  const limit = 10;
+  const randomRecommendedAds = _.sampleSize(recommendedProducts, limit);
+
   return (
-    <div className="py-20 sm:py-17 md:py-8">
-      <div className="grid grid-cols-6 gap-6 mt-12 mx-10 sm:grid-cols-1 sm:gap-0 sm:mt-0 sm:mx-4 md:grid-cols-3 md:mx-4">
-        {products.map((product) => {
-          return (
-            <ProductCard product={product} key={product.id}/>
-          );
-        })}
+    <div className="py-20 sm:py-8 md:py-8 w-[70%] md:w-[95%] sm:w-[95%] mx-auto">
+      <div className="flex justify-center sm:justify-start gap-2 sm:gap-0 md:overflow-x-auto sm:overflow-x-auto">
+        <ProductCategory category="Accomodation" bg="bg-green-500">
+          <MdOutlineMapsHomeWork />
+        </ProductCategory>
+        <ProductCategory category="Vehicles" bg="bg-red-400">
+          <IoCarOutline />
+        </ProductCategory>
+        <ProductCategory category="Electronics" bg="bg-blue-400">
+          <MdOutlinePhonelink />
+        </ProductCategory>
+        <ProductCategory category="Furniture" bg="bg-purple-400">
+          <TbArmchair2 />
+        </ProductCategory>
+        <ProductCategory category="Fashion" bg="bg-orange-400">
+          <GiClothes />
+        </ProductCategory>
+        <ProductCategory category="Kids" bg="bg-pink-400">
+        <FaChild />
+        </ProductCategory>
+        <ProductCategory category="Pets" bg="bg-teal-400">
+        <BiSolidDog />
+        </ProductCategory>
+        <ProductCategory category="Services" bg="bg-indigo-400">
+        <MdMiscellaneousServices />
+        </ProductCategory>
+        <ProductCategory category="Other" bg="bg-slate-400">
+        <BsThreeDots />
+        </ProductCategory>
       </div>
-      {products.length >= numProductDisplay && <LoadMore handleLoadMore={handleLoadMore} />}
-      {loading && <Spinner/>}
+      <AdsDisplayCategory
+        products={featuredProducts}
+        loading={loadingFeatured}
+        numProductDisplay={numProductDisplay}
+        setUpdateFavorite={setUpdateFavorite}
+        handleLoadMore={handleLoadMore}
+        loadMore={true}
+        getPopupDetail={getPopupDetail}
+        setDisplayPopupProDetail={setDisplayPopupProDetail}
+        error={error}
+      >
+        Featured Ads
+      </AdsDisplayCategory>
+      <AdsDisplayCategory
+        products={randomRecommendedAds}
+        loading={loadingRecommended}
+        numProductDisplay={numProductDisplay}
+        setUpdateFavorite={setUpdateFavorite}
+        handleLoadMore={handleLoadMore}
+        loadMore={false}
+        getPopupDetail={getPopupDetail}
+        setDisplayPopupProDetail={setDisplayPopupProDetail}
+        error={error}
+      >
+        Recommended Ads
+      </AdsDisplayCategory>
+      <AdsDisplayCategory
+        products={products}
+        loading={loadingForYou}
+        numProductDisplay={numProductDisplay}
+        setUpdateFavorite={setUpdateFavorite}
+        handleLoadMore={handleLoadMore}
+        loadMore={true}
+        getPopupDetail={getPopupDetail}
+        setDisplayPopupProDetail={setDisplayPopupProDetail}
+        extraStyle="pt-16"
+        error={error}
+      >
+        For you
+      </AdsDisplayCategory>
+      {displayPopupProDetail && <PopupProductDetail detail={popupDetail} setDisplayPopupProDetail={setDisplayPopupProDetail} />}
     </div>
   );
 };
 
 export default Home;
 
-function ProductCard({product}) {
-  const navigate = useNavigate();
-  function handleProductDetail(id) {
-      navigate(`/product-detail/${id}`)
-  }
-  return <div
-  onClick={()=>handleProductDetail(product.id)}
-  className="h-[28rem] rounded overflow-hidden shadow-lg relative hover:outline hover:outline-blue-300 hover:scale-[1.02] z-10 cursor-pointer sm:mb-6"
->
-  {new Date(product.date).toDateString() ===
-    new Date().toDateString() && (
-    <span className="absolute bg-blue-300 text-white font-bold text-lg px-2 py-1 shadow top-4">
-      New
-    </span>
-  )}
-  <img
-    className="w-full h-56 shadow"
-    src="pictures/car1.jpg"
-    alt="Sunset in the mountains"
-  />
-  <div className="px-6 py-3">
-    <p className="text-gray-700 text-base text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
-      {product.company} {product.model}
-    </p>
-    <ProductPrice product={product}/>
-  </div>
-  <div className="px-6 pt-0 pb-1 flex justify-between">
-    <ProductLocation product={product}/>
-    <ProductDate product={product}/>
-  </div>
-  <AddToFavorite/>
-</div>
-}
+function AdsDisplayCategory({
+  children,
+  products,
+  loading,
+  numProductDisplay,
+  setUpdateFavorite,
+  handleLoadMore,
+  loadMore,
+  extraStyle,
+  getPopupDetail,
+  setDisplayPopupProDetail,
+  error,
+}) {
 
-function ProductPrice({product}) {
-  return <div className="font-bold text-xl mb-2 text-center w-min mx-auto font-mono">
-  <p
-    className={`${
-      product.discount &&
-      "text-red-400 relative font-medium text-lg before:content-[''] before:block before:w-full before:border-red-400 before:border-t-2 before:h-3 before:absolute before:bottom-[2px] before:left-0 before:rotate-[-6deg] px-1"
-    }`}
-  >
-    ${product.price.toFixed(2)}
-  </p>
-  {product.discount ? (
-    <div className="relative flex">
-      <p className="text-green-700 text-2xl">
-        {product.discount === 100
-          ? "Free"
-          : `$${(
-              product.price -
-              (product.discount / 100) * product.price
-            ).toFixed(2)}`}
-      </p>{" "}
-      <span className="absolute right-[-55px] top-[-10px] text-orange-400">
-        -{product.discount}%
-      </span>
+  return (
+    <div className={`${extraStyle}`}>
+      <p className="font-bold text-xl mt-5 text-slate-700">{children}</p>
+      <div className="home-container">
+        {loading ? <>{Array.from({length: numProductDisplay}, (_, i) => <LoadingPlaceholder key={i} />)}</> : !loading && !error && <>{products.map((product) => {
+          return ( 
+            <ProductCard
+              setUpdateFavorite={setUpdateFavorite}
+              product={product}
+              getPopupDetail={getPopupDetail}
+              setDisplayPopupProDetail={setDisplayPopupProDetail}
+              key={product.id}
+            />
+          );
+        })}</>}
+      </div>
+
+      {error && <Error error={error} />}
+      
+      {loadMore && (
+        <>
+          {" "}
+          {products.length >= numProductDisplay && (
+            <LoadMore handleLoadMore={handleLoadMore} />
+          )}
+          {/* {loading && <Spinner />} */}
+        </>
+      )}
+
+
     </div>
-  ) : (
-    ""
-  )}
-</div>
+  );
 }
 
-function ProductLocation({product}) {
-  return <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap overflow-hidden">
-  {product.location}
-</span>
+function LoadMore({ handleLoadMore }) {
+  return (
+    <div
+      onClick={handleLoadMore}
+      className="w-fit mx-auto mt-12 mb-16 cursor-pointer"
+    >
+      <div className="load-more">
+        <Spinner type="5" wWidth="w-[3rem] sm:w-[2rem]" applyStyle={false} />
+        <p className="text-lg pr-1">Load more</p>
+      </div>
+    </div>
+  );
 }
 
-function ProductDate({product}) {
-  const date = new Date();
-  const yesterday = date.setDate(date.getDate() - 1);
-  const twoDaysAgo = date.setDate(date.getDate(yesterday) - 1);
-  const threeDaysAgo = date.setDate(date.getDate(twoDaysAgo) - 1);
-  const fourDaysAgo = date.setDate(date.getDate(threeDaysAgo) - 1);
-  const fiveDaysAgo = date.setDate(date.getDate(fourDaysAgo) - 1);
-  const sixDaysAgo = date.setDate(date.getDate(fiveDaysAgo) - 1);
-  const oneWeekAgo = date.setDate(date.getDate(sixDaysAgo) - 1);
-
-  return <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 whitespace-nowrap">
-  {new Date(product.date).toDateString() ===
-  new Date().toDateString()
-    ? "Today"
-    : new Date(product.date).toDateString() ===
-      new Date(yesterday).toDateString()
-    ? "Yesterday"
-    : new Date(product.date).toDateString() ===
-      new Date(twoDaysAgo).toDateString()
-    ? "2d ago"
-    : new Date(product.date).toDateString() ===
-      new Date(threeDaysAgo).toDateString()
-    ? "3d ago"
-    : new Date(product.date).toDateString() ===
-      new Date(fourDaysAgo).toDateString()
-    ? "4d ago"
-    : new Date(product.date).toDateString() ===
-      new Date(fiveDaysAgo).toDateString()
-    ? "5d ago"
-    : new Date(product.date).toDateString() ===
-      new Date(sixDaysAgo).toDateString()
-    ? "6d ago"
-    : new Date(product.date).toDateString() ===
-      new Date(oneWeekAgo).toDateString()
-    ? "1w ago"
-    : product.date}
-</span>
+function ProductCategory({ children, category, bg }) {
+  const [hoverEffect, setHoverEffect] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHoverEffect(true)}
+      onMouseLeave={() => setHoverEffect(false)}
+      className={`md:mt-14 mt-14 flex flex-col items-center cursor-pointer px-4 sm:px-2 ${
+        hoverEffect && "scale-[1.1]"
+      }`}
+    >
+      <div
+        className={`text-4xl sm:text-3xl ${bg} shadow-md rounded-full text-white p-6 sm:p-4`}
+      >
+        {children}
+      </div>
+      <div className="mt-1">
+        <p
+          className={`font-semibold sm:font-bold rounded p-1 text-[0.8rem] sm:text-[0.7rem] ${
+            hoverEffect && "bg-orange-100"
+          }`}
+        >
+          {category}
+        </p>
+      </div>
+    </div>
+  );
 }
 
-function AddToFavorite() {
-  return <div className="px-6 pt-4 pb-2">
-  <button className="w-full border-2 border-blue-400 font-semibold py-2 flex justify-center items-center">
-    <AiOutlineHeart className="text-lg mr-2" /> Add to favorite
-  </button>
-</div>
-}
 
-function LoadMore({handleLoadMore}) {
-  return <div onClick={handleLoadMore} className="w-fit mx-auto mt-12 mb-16 cursor-pointer">
-  <div className="flex items-center rounded border-2 px-2 border-slate-400">
-    <Spinner type="5" wWidth="w-[3rem] sm:w-[2rem]" applyStyle={false}/>
-    <p className="text-lg pr-1">Load more</p>
+function Error({error}) {
+ 
+  return <div >
+    <div className="bg-black opacity-30 fixed top-0 right-0 bottom-0 left-0">
+
+    </div>
+    <div className="text-2xl text-white">
+      <p>{error}</p>
+    </div>
   </div>
-</div>
 }
+

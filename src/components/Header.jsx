@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 // React Icons
 import {
   AiOutlineLogin,
+  AiOutlineLogout,
   AiOutlineMenuUnfold,
   AiOutlineMenuFold,
   AiOutlineSearch,
@@ -14,10 +15,26 @@ import { IoCloseSharp } from "react-icons/io5";
 import { BsArrowUpLeftCircle } from "react-icons/bs";
 import { MdOutlineAutoDelete } from "react-icons/md";
 import { LuPlus } from "react-icons/lu";
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { PiMagnifyingGlassMinusDuotone } from "react-icons/pi";
+import { FaUser } from "react-icons/fa6";
+import { IoIosArrowDown } from "react-icons/io";
+import { RiLogoutBoxLine } from "react-icons/ri";
+import { FiUser } from "react-icons/fi";
+import { FaRegHeart } from "react-icons/fa";
+import { MdOutlineLanguage } from "react-icons/md";
 
-const Header = () => {
+// React Components
+import Button from "./Button";
+
+const Header = ({ updateFavorite }) => {
   // Track Locations of the Pages
   const location = useLocation();
+
+  document.title =
+    location.pathname === "/" ? "AfghanBazaar24" : location.pathname.slice(1);
+
+  const getUserLoginData = localStorage.getItem("24UserLoginData");
 
   // Refs
   const ref = useRef();
@@ -42,10 +59,12 @@ const Header = () => {
   const [initialScroll, setInitialScroll] = useState(0);
   const [displaySearchContainer, setDisplaySearchContainer] = useState(false);
   const [displaySearchClose, setDisplaySearchClose] = useState(false);
-  const [searchData, setSearchData] = useState("");
+  
   const [displaySearchHistoryContainer, setDisplaySearchHistoryContainer] =
     useState(false);
   const [displayProductType, setDisplayProductType] = useState(false);
+  const [displayUserSignedIn, setDisplayUserSignedIn] = useState(false);
+  const [signedInUserData, setSignedInUserData] = useState([]);
 
   // Hooks
   useEffect(() => {
@@ -56,7 +75,7 @@ const Header = () => {
         setMenuType(false);
       }
     });
-  });
+  }); 
 
   // Functions
 
@@ -89,6 +108,7 @@ const Header = () => {
     setDisplaySearchHistoryContainer(false);
   }
 
+  const [searchData, setSearchData] = useState(""); 
   function handleSearchOnChange(e) {
     setSearchData(e.target.value);
 
@@ -108,14 +128,21 @@ const Header = () => {
     setDisplaySearchClose(false);
   }
 
-  function searchProducts(e) {
-    navigate(`/search-products/${searchData}`);
+ 
+  const saveHistory = []; 
+
+  const getSaveHistory = JSON.parse(localStorage.getItem("afgBazSearchHistry")) || "";
+
+  function searchProducts() {
+    navigate(`/search-products/${searchData}`); 
     setDisplaySearchHistoryContainer(false);
-    localStorage.setItem("afgBazSearchHistry", searchData);
+    saveHistory.push(searchData);
+    localStorage.setItem("afgBazSearchHistry", JSON.stringify([...getSaveHistory, saveHistory]));     
   }
 
-  function searchBySearchHistory() {
-    navigate(`/search-products/${localStorage.getItem("afgBazSearchHistry")}`);
+
+  function searchBySearchHistory(data) {
+    navigate(`/search-products/${data}`);
     setDisplaySearchHistoryContainer(false);
   }
 
@@ -135,13 +162,21 @@ const Header = () => {
     }
   });
 
-  const searchHistory = localStorage.getItem("afgBazSearchHistry");
+  const searchHistory = localStorage.getItem("afgBazSearchHistry")?.split(",");
+
+  const signedInUserId = JSON.parse(localStorage.getItem("24UserLoginData"));
+
+  function handleUserSignedIn () {
+    setDisplayUserSignedIn(i=>!i)
+
+    fetch(`http://localhost:3000/userSignup/${signedInUserId}`).then(response => response.json()).then(result=>setSignedInUserData(result))
+  }
 
   return (
     <div
       className={`${
         menuType ? "bg-blue-100 shadow" : "bg-white"
-      } fixed w-full text-blue-400 z-40 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:fixed sm:shadow-md ${
+      } fixed w-full text-blue-400 z-40 sm:bg-blue-200 sm:text-gray-600 sm:h-14 sm:fixed sm:shadow-md shadow ${
         showMenu
           ? "sm:top-0 sm:opacity-100"
           : menuIconDisplay
@@ -149,7 +184,7 @@ const Header = () => {
           : "sm:-top-14 sm:opacity-0"
       } sm:shadow-sm sm:transition-all sm:duration-[.75s] sm:ease-in-out md:bg-blue-200 md:text-gray-600 md:h-16 md:fixed`}
     >
-      <div className="flex justify-between items-center w-[95%] mx-auto py-3  sm:block sm:w-full sm:py-3 sm:z-20">
+      <div className="flex justify-between items-center w-[70%] md:w-full mx-auto py-3  sm:block sm:w-full sm:py-3 sm:z-20">
         <div className="hidden sm:block sm:absolute sm:left-2 sm:top-3 sm:text-3xl cursor-pointer md:block md:absolute md:left-4 md:top-4 md:text-3xl">
           {menuIconDisplay ? null : (
             <AiOutlineMenuUnfold
@@ -164,7 +199,7 @@ const Header = () => {
                 ""
               ) : (
                 <>
-                  AfghanBazaar
+                  FarahiBazaar
                   <span className="text-orange-500 font-extrabold">24</span>
                 </>
               )}
@@ -214,26 +249,26 @@ const Header = () => {
               >
                 <Link
                   onClick={handleMenu}
-                  className={`mx-5 flex items-center sm:inline-flex ${
+                  className={`mx-5 sm:inline-flex ${
                     selectMenu("/products") &&
                     `text-blue-500 border-b-[3px] border-orange-500 sm:text-gray-700 md:text-gray-700`
                   }`}
                   to="/products"
                 >
-                  Products <LuPlus className="ml-1" />
+                  Products
                 </Link>
-                {displayProductType && <ProductsTypes />}
+                {/*{displayProductType && <ProductsTypes />}*/}
               </li>
               <li className="sm:py-4 md:py-4">
                 <Link
                   onClick={handleMenu}
                   className={`mx-5 ${
-                    selectMenu("/about") &&
+                    selectMenu("/favorite") &&
                     `text-blue-500 border-b-[3px] border-orange-500 sm:text-gray-700 md:text-gray-700`
                   }`}
-                  to="/about"
+                  to="/favorite"
                 >
-                  About
+                  Category
                 </Link>
               </li>
               <li className="sm:py-4 md:py-4">
@@ -261,17 +296,32 @@ const Header = () => {
         </div>
 
         {/* Sign in container */}
-        <div className="cursor-pointer hover:text-blue-500 sm:hover:text-gray-700 sm:float-right sm:mr-1">
+        <div className="cursor-pointer hover:text-blue-500 sm:hover:text-gray-700 sm:float-right sm:mr-1 md:mr-4">
           <div className="flex items-center">
             <span className="sm:hidden text-3xl mr-4">
               <AiOutlineSearch onClick={handleSearchDisplay} />
             </span>
-            <p
-              onClick={() => navigate("/user-signin")}
-              className="sm:hidden flex items-center text-xl"
-            >
-              Sign in <AiOutlineLogin className="ml-2 " />
-            </p>
+            <div onClick={()=>navigate("/favorite")} className="sm:hidden text-2xl mr-4 relative">
+            <FaRegHeart /> {updateFavorite > 0 && <span className={`text-[1rem] font-semibold absolute text-orange-500 bg-orange-200 rounded-full leading-none px-[0.3rem] py-[0.1rem] top-[-0.5rem] right-[-0.6rem]`}>{updateFavorite}</span>}
+            </div> 
+            {getUserLoginData ? (
+             <> 
+              <div onClick={handleUserSignedIn} className="flex items-center mr-4">
+              <FaUser className="text-2xl" />
+              <IoIosArrowDown className={`text-3xl transition duration-500 ${displayUserSignedIn && "rotate-180"}`} />
+              </div>
+             </>
+            ) : (
+              <p
+                onClick={() => navigate("/user-signin")}
+                className="sm:hidden flex items-center text-xl"
+              >
+                Sign in <AiOutlineLogin className="ml-2 mr-4" />
+              </p>
+            )}
+             <div className="sm:hidden flex items-end">
+            <MdOutlineLanguage className="text-[1.7rem]" /> <span className="text-[1.1rem] pl-[0.05rem]">EN</span>
+            </div>
           </div>
           {/* Mobile size search */}
           <div
@@ -329,7 +379,8 @@ const Header = () => {
         </div>
         {/* Search History Container Start */}
         {displaySearchHistoryContainer && (
-          <div className="absolute top-[5rem] left-[50%] w-[50%] -translate-x-[50%] rounded-lg shadow bg-white">
+           <div className="absolute top-[5rem] md:top-[4.5rem] left-[50%] w-[50%] md:w-[60%] -translate-x-[50%] bg-white rounded-lg shadow">
+          <div className="mb-[2.5rem]">
             <p className="ml-3 mt-2 bg-blue-100 absolute px-2 rounded-xl text-blue-400">
               Recent searches
             </p>
@@ -338,28 +389,38 @@ const Header = () => {
               onClick={deleteSearchHistory}
               className="mt-2 absolute text-blue-400 right-2 cursor-pointer text-[1.7rem]"
             />
-
-            <div
-              onClick={searchBySearchHistory}
-              className="w-full mt-[2.5rem] flex items-center md:w-[60%] border-t hover:bg-blue-50 cursor-pointer"
-            >
-              <BiSearch className="text-2xl cursor-pointer m-2" />
-
-              <div>
-                <p>{searchHistory}</p>
-              </div>
-
-              <BsArrowUpLeftCircle className="text-xl cursor-pointer m-2 absolute right-1" />
-            </div>
+           
           </div>
+          
+           {JSON.parse(searchHistory).sort((a,b) => b-a).slice(0,5).map((s, i) => (
+               <div
+               onClick={()=>searchBySearchHistory(s)}
+               className="w-full flex items-center md:w-[60%] border-t cursor-pointer hover:bg-blue-200" key={i}
+             > 
+             
+              
+                <BiSearch className="text-2xl cursor-pointer m-2" />
+                <p>{s}</p>
+                <BsArrowUpLeftCircle className="text-xl cursor-pointer m-2 absolute right-1" />
+             
+             
+                </div> 
+            ))}
+           </div>
+          
         )}
         {/* Search Hostory Container End */}
         <IoCloseSharp
           onClick={handleSearchDisplay}
-          className="text-white text-3xl absolute right-[18%] top-[1rem] cursor-pointer hover:text-orange-400 md:right-[10%]"
+          className="text-white text-3xl absolute right-[18%] top-[1rem] cursor-pointer hover:text-orange-400 md:right-[10%]" 
         />
       </div>
-    </div>
+      {
+        displayUserSignedIn && <div className="absolute right-[16%]">
+        <UserSignedIn signedInUserData={signedInUserData} setDisplayUserSignedIn={setDisplayUserSignedIn} />
+        </div>
+      }
+    </div> 
   );
 };
 
@@ -373,3 +434,30 @@ const ProductsTypes = () => {
     </div>
   );
 };
+
+function UserSignedIn ({setDisplayUserSignedIn, signedInUserData}) {
+const navigate = useNavigate();
+
+
+
+  return <div className="shadow bg-white rounded">
+  <div className="border-t border-slate-300 p-2">
+  <p className="sm:hidden flex items-center text-xl"><FiUser className="mr-2" /> {signedInUserData.firstName} {signedInUserData.lastName}</p>
+  
+  </div>
+  <div className="p-2 mt-2">
+  <Button onClick={()=>setDisplayUserSignedIn(false)} extraStyle="w-full">View Profile</Button>
+  </div>
+  <div onClick={()=>setDisplayUserSignedIn(false)} className="border-t border-slate-300 p-2 hover:bg-orange-50 cursor-pointer">
+     <p
+                onClick={() => {
+                  localStorage.removeItem("24UserLoginData");
+                  navigate("/user-signin");
+                }}
+                className="sm:hidden flex items-center text-xl"
+              >
+                <RiLogoutBoxLine className="mr-2" /> Sign out 
+              </p>
+  </div>
+  </div>
+}

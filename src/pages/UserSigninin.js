@@ -8,12 +8,15 @@ import { CgLock, CgLockUnlock } from "react-icons/cg";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+import Spinner from "../components/Spinner";
 
 const UserSignIn = () => {
+  const [loading, setLoading] = useState(false);
   return (
     <>
-      <SignInUpForms />
+      <SignInUpForms setLoading={setLoading} />
       <MobileSignInUpForms />
+      {loading && <Spinner />}
     </>
   );
 };
@@ -469,11 +472,11 @@ function MobileSignup({
   );
 }
 
-function SignInUpForms() {
+function SignInUpForms({ setLoading }) {
   const [signinupForm, setSigninupForm] = useState(false);
   return (
-    <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%]">
-      <div className="bg-blue-200">
+    <div className="w-[50%] mx-auto pt-[15%] mb-[30rem]  py sm:hidden md:w-[80%] md:pt-[15%]">
+      <div className="relative bg-blue-200">
         <div className="flex justify-between">
           <div className="px-8 py-12 w-[40%] md:pl-6 md:pr-10 md:py-8 md:w-[40%]">
             <h3 className="text-2xl font-thin">Don't have an account?</h3>
@@ -491,9 +494,9 @@ function SignInUpForms() {
         <div
           className={`absolute transition-all duration-500 ease-in-out  ${
             signinupForm && "left-6"
-          } top-0 w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
+          } top-[-2rem] w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
         >
-          {signinupForm ? <Signup /> : <Signin />}
+          {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
         </div>
       </div>
     </div>
@@ -511,7 +514,7 @@ function SignInUpButtons({ setSigninupForm, children }) {
   );
 }
 
-function Signin() {
+function Signin({ setLoading }) {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [email, setEmail] = useState("");
@@ -519,7 +522,6 @@ function Signin() {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
-  const [user, setUser] = useState("");
 
   // Functions
   async function handleSigninFormLaptop() {
@@ -534,18 +536,32 @@ function Signin() {
       setErrorPassword(true);
     }
 
+    setLoading(true);
+
     fetch(
       `http://localhost:3000/userSignup?email=${email}&password=${password}`
     )
       .then((response) => response.json())
       .then((result) => {
         if (result.length > 0) {
-          setUser(result);
           setErrorLogin(false);
-          console.log(result);
+          localStorage.setItem(
+            "24UserLoginData",
+            JSON.stringify(Number(result[0].id))
+          );
+
+          const redirectUrl = sessionStorage.getItem("redirectUrl");
+          if (redirectUrl) {
+            sessionStorage.removeItem("redirectUrl");
+            window.location.href = redirectUrl;
+          } else {
+            window.location.href = "/";
+          }
         } else {
           setErrorLogin(true);
         }
+
+        setLoading(false);
       });
   }
 
@@ -666,6 +682,7 @@ function Signup() {
   const [errorPasswordMatch, setErrorPasswordMatch] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [displayTermsMsg, setDisplayTermsMsg] = useState(false);
+  const [step, setStep] = useState(1);
 
   // Functions
   function handleEmail(e) {
@@ -869,164 +886,192 @@ function Signup() {
     } else {
       alert("Something went wrong!");
     }
+    setEmailIcon(true);
   }
 
   return (
     <div className="">
       <h2 className="text-3xl font-semibold text-orange-500">Sign up</h2>
-
-      <div className="flex flex-col mt-10">
-        {displayTermsMsg && (
-          <small className="text-center text-red-500 mb-2">
-            To continue, you must agree to our terms and conditions.
-          </small>
-        )}
-        <div className="flex  justify-between p-1 text-lg relative">
-          <div>
-            <div className="border-b-2 border-blue-100">
-              <Input onChange={(e) => setFirstName(e.target.value)} type="text">
-                First name *
-              </Input>
-            </div>
-            {errorFirstName && (
-              <small className="text-red-500">First name is required</small>
-            )}
-          </div>
-
-          <div>
-            <div className="border-b-2 border-blue-100">
-              <Input onChange={(e) => setLastName(e.target.value)} type="text">
-                Last name *
-              </Input>
-            </div>
-            {errorLastName && (
-              <small className="text-red-500">Last name is required</small>
-            )}
-          </div>
-        </div>
-
-        <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
-          <Input onChange={handleEmail} type="email">
-            Email *
-          </Input>
-          {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
-        </div>
-        {errorEmail && (
-          <small className="text-red-500">Email is required</small>
-        )}
-        {invalidEmail && <small className="text-red-500">Invalid email</small>}
-        <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
-          <Input onChange={handlePassword} type={lock ? "password" : "text"}>
-            Password *
-          </Input>
-          {lock ? (
-            <CgLock
-              onClick={() => setLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          ) : (
-            <CgLockUnlock
-              onClick={() => setLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          )}
-        </div>
-        {errorPassword && (
-          <small className="text-red-500">Password is required</small>
-        )}
-        {passwordContain && (
-          <div className="flex justify-between">
-            <small>
-              <p
-                className={`flex items-center font-semibold ${
-                  chars ? "text-green-700" : "text-slate-600"
-                }`}
-              >
-                <FaCheck className="mr-2" /> At least 6 characters
-              </p>
-              <p
-                className={` ${
-                  capital ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain capital letter
-              </p>
-              <p
-                className={` ${
-                  num ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain number
-              </p>
-              <p
-                className={` ${
-                  specialChar ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain special character
-              </p>
-            </small>
-            <div className="flex justify-between w-[50%] h-fit">
-              <div
-                className={`${
-                  weak || meduim || strong || veryStrong
-                    ? "bg-red-500"
-                    : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  meduim || strong || veryStrong ? "bg-orange-400" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  strong || veryStrong ? "bg-green-400" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  veryStrong ? "bg-green-600" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-
-              <small className="w-[25%] whitespace-nowrap font-semibold">
-                {weak && <p className="text-red-500">Weak</p>}
-                {meduim && <p className="text-orange-500">Medium</p>}
-                {strong && <p className="text-green-400">Strong</p>}
-                {veryStrong && <p className="text-green-600">Very strong</p>}
+      {step === 1 ? (
+        <>
+          <div className="flex flex-col mt-10">
+            {displayTermsMsg && (
+              <small className="text-center text-red-500 mb-2">
+                To continue, you must agree to our terms and conditions.
               </small>
-            </div>
-          </div>
-        )}
+            )}
+            <div className="flex  justify-between p-1 text-lg relative">
+              <div>
+                <div className="border-b-2 border-blue-100">
+                  <Input
+                    onChange={(e) => setFirstName(e.target.value)}
+                    type="text"
+                  >
+                    First name *
+                  </Input>
+                </div>
+                {errorFirstName && (
+                  <small className="text-red-500">First name is required</small>
+                )}
+              </div>
 
-        <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
-          <input
-            onChange={handleConfirmPassword}
-            onClick={() => setPasswordContain(false)}
-            type={confirmLock ? "password" : "text"}
-            placeholder="Confirm password *"
-            className="w-full outline-none border-none"
-          />
-          {confirmLock ? (
-            <CgLock
-              onClick={() => setConfirmLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          ) : (
-            <CgLockUnlock
-              onClick={() => setConfirmLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          )}
-        </div>
-        {errorConfirmPassword && (
-          <small className="text-red-500">Password must be confirmed</small>
-        )}
-        {errorPasswordMatch && (
-          <small className="text-red-500">Passwords do not match</small>
-        )}
-      </div>
+              <div>
+                <div className="border-b-2 border-blue-100">
+                  <Input
+                    onChange={(e) => setLastName(e.target.value)}
+                    type="text"
+                  >
+                    Last name *
+                  </Input>
+                </div>
+                {errorLastName && (
+                  <small className="text-red-500">Last name is required</small>
+                )}
+              </div>
+            </div>
+
+            <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
+              <Input onChange={handleEmail} type="email">
+                Email *
+              </Input>
+              {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
+            </div>
+            {errorEmail && (
+              <small className="text-red-500">Email is required</small>
+            )}
+            {invalidEmail && (
+              <small className="text-red-500">Invalid email</small>
+            )}
+            <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
+              <Input
+                onChange={handlePassword}
+                type={lock ? "password" : "text"}
+              >
+                Password *
+              </Input>
+              {lock ? (
+                <CgLock
+                  onClick={() => setLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              ) : (
+                <CgLockUnlock
+                  onClick={() => setLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              )}
+            </div>
+            {errorPassword && (
+              <small className="text-red-500">Password is required</small>
+            )}
+            {passwordContain && (
+              <div className="flex justify-between">
+                <small>
+                  <p
+                    className={`flex items-center font-semibold ${
+                      chars ? "text-green-700" : "text-slate-600"
+                    }`}
+                  >
+                    <FaCheck className="mr-2" /> At least 6 characters
+                  </p>
+                  <p
+                    className={` ${
+                      capital ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain capital letter
+                  </p>
+                  <p
+                    className={` ${
+                      num ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain number
+                  </p>
+                  <p
+                    className={` ${
+                      specialChar ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain special character
+                  </p>
+                </small>
+                <div className="flex justify-between w-[50%] h-fit">
+                  <div
+                    className={`${
+                      weak || meduim || strong || veryStrong
+                        ? "bg-red-500"
+                        : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      meduim || strong || veryStrong
+                        ? "bg-orange-400"
+                        : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      strong || veryStrong ? "bg-green-400" : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      veryStrong ? "bg-green-600" : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+
+                  <small className="w-[25%] whitespace-nowrap font-semibold">
+                    {weak && <p className="text-red-500">Weak</p>}
+                    {meduim && <p className="text-orange-500">Medium</p>}
+                    {strong && <p className="text-green-400">Strong</p>}
+                    {veryStrong && (
+                      <p className="text-green-600">Very strong</p>
+                    )}
+                  </small>
+                </div>
+              </div>
+            )}
+
+            <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
+              <input
+                onChange={handleConfirmPassword}
+                onClick={() => setPasswordContain(false)}
+                type={confirmLock ? "password" : "text"}
+                placeholder="Confirm password *"
+                className="w-full outline-none border-none"
+              />
+              {confirmLock ? (
+                <CgLock
+                  onClick={() => setConfirmLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              ) : (
+                <CgLockUnlock
+                  onClick={() => setConfirmLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              )}
+            </div>
+            {errorConfirmPassword && (
+              <small className="text-red-500">Password must be confirmed</small>
+            )}
+            {errorPasswordMatch && (
+              <small className="text-red-500">Passwords do not match</small>
+            )}
+          </div>
+        </>
+      ) : step === 2 ? (
+        <>
+          <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
+            <Input type="number">Phone number *</Input>
+            {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
+          </div>
+        </>
+      ) : (
+        ""
+      )}
       <div className="flex justify-between items-center mt-[3rem]">
         <div className="flex items-center">
           <input

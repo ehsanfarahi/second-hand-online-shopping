@@ -16,7 +16,7 @@ const UserSignIn = () => {
     <>
       <SignInUpForms setLoading={setLoading} />
       <MobileSignInUpForms />
-      {loading && <Spinner/>}
+      {loading && <Spinner />}
     </>
   );
 };
@@ -472,11 +472,11 @@ function MobileSignup({
   );
 }
 
-function SignInUpForms({setLoading}) {
+function SignInUpForms({ setLoading }) {
   const [signinupForm, setSigninupForm] = useState(false);
   return (
-    <div className="absolute w-[50%] left-[50%] translate-x-[-50%] top-[25%]  py-8 sm:hidden md:w-[80%] md:top-[15%]">
-      <div className="bg-blue-200">
+    <div className="w-[50%] mx-auto pt-[15%] mb-[30rem]  py sm:hidden md:w-[80%] md:pt-[15%]">
+      <div className="relative bg-blue-200">
         <div className="flex justify-between">
           <div className="px-8 py-12 w-[40%] md:pl-6 md:pr-10 md:py-8 md:w-[40%]">
             <h3 className="text-2xl font-thin">Don't have an account?</h3>
@@ -491,10 +491,17 @@ function SignInUpForms({setLoading}) {
             </SignInUpButtons>
           </div>
         </div>
-        <div
-          className={`absolute transition-all duration-500 ease-in-out  ${
+        {/* <div
+          className={`absolute   ${
             signinupForm && "left-6"
-          } top-0 w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
+          } top-[-2rem] w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
+        >
+          {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
+        </div> */}
+        <div
+          className={`absolute ${
+            signinupForm ? "move-left left-[1.5rem]" : "move-right right-[1.5rem]"
+          } top-[-2rem] w-[60%]  bg-white border-2 border-blue-200 px-8 py-10`}
         >
           {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
         </div>
@@ -514,7 +521,7 @@ function SignInUpButtons({ setSigninupForm, children }) {
   );
 }
 
-function Signin({setLoading}) {
+function Signin({ setLoading }) {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [email, setEmail] = useState("");
@@ -522,7 +529,6 @@ function Signin({setLoading}) {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
-  
 
   // Functions
   async function handleSigninFormLaptop() {
@@ -537,7 +543,7 @@ function Signin({setLoading}) {
       setErrorPassword(true);
     }
 
-    
+    setLoading(true);
 
     fetch(
       `http://localhost:3000/userSignup?email=${email}&password=${password}`
@@ -545,29 +551,36 @@ function Signin({setLoading}) {
       .then((response) => response.json())
       .then((result) => {
         if (result.length > 0) {
-          // setUser(result);
           setErrorLogin(false);
-          console.log(result)
-         
+          localStorage.setItem(
+            "24UserLoginData",
+            JSON.stringify(result[0].id)
+          );
+
+          const redirectUrl = sessionStorage.getItem("redirectUrl");
+          if (redirectUrl) {
+            sessionStorage.removeItem("redirectUrl");
+            window.location.href = redirectUrl;
+          } else {
+            window.location.href = "/";
+          }
+
+          setLoading(false);
         } else {
           setErrorLogin(true);
-          
+          setLoading(false);
         }
 
-        if(errorUser === false && result.length <= 0) {
-          setLoading(true)
-        } else {
-          setLoading(false)
-        }
+        
       });
   }
 
   function handleEmail(e) {
-    if (e.target.value.length > 0) {
-      setEmailIcon(false);
-    } else {
-      setEmailIcon(true);
-    }
+    // if (e.target.value.length > 0) {
+    //   setEmailIcon(false);
+    // } else {
+    //   setEmailIcon(true);
+    // }
     setEmail(e.target.value);
   }
 
@@ -647,21 +660,44 @@ function Signin({setLoading}) {
         >
           Sign in
         </button>
-        
       </div>
     </div>
   );
 }
 
 function Signup() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phoneNumber: "",
+    state: "",
+    city: "",
+    zone: "",
+    postalCode: "",
+  });
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword,
+    phoneNumber,
+    state,
+    city,
+    zone,
+    postalCode,
+  } = formData;
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [confirmLock, setConfirmLock] = useState(true);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
   const [errorFirstName, setErrorFirstName] = useState(false);
   const [errorLastName, setErrorLastName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
@@ -680,17 +716,23 @@ function Signup() {
   const [errorPasswordMatch, setErrorPasswordMatch] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [displayTermsMsg, setDisplayTermsMsg] = useState(false);
+  const [errorPhoneNumber, setErrorPhoneNumber] = useState(false);
+  const [errorState, setErrorState] = useState(false);
+  const [errorCity, setErrorCity] = useState(false);
+  const [errorZone, setErrorZone] = useState(false);
+  const [errorPostalCode, setErrorPostalCode] = useState(false);
+  const [step, setStep] = useState(1);
 
   // Functions
   function handleEmail(e) {
     const event = e.target.value;
-    setEmail(event);
+    setFormData(prevState=>({...prevState, email: event }));
     setErrorEmail(false);
   }
 
   function handlePassword(e) {
     const event = e.target.value;
-    setPassword(event);
+    setFormData(prevState=>({...prevState, password: event }));
     setPasswordContain(true);
 
     if (event.length >= 6) {
@@ -807,11 +849,11 @@ function Signup() {
   }
 
   function handleConfirmPassword(e) {
-    setConfirmPassword(e.target.value);
+    setFormData(prevState=>({...prevState, confirmPassword: e.target.value }));
     setErrorPasswordMatch(false);
   }
 
-  async function handleSignupFormLaptop() {
+  function handleNext() {
     if (firstName.length < 1) {
       setErrorFirstName(true);
     } else {
@@ -850,6 +892,44 @@ function Signup() {
       setErrorPasswordMatch(false);
     }
 
+    if (
+      firstName.length >= 3 &&
+      lastName.length >= 3 &&
+      email.includes("@") &&
+      password.length >= 6 &&
+      password === confirmPassword
+    ) {
+      setStep((step) => step + 1);
+    }
+  }
+
+  async function handleSignupFormLaptop() {
+    if (phoneNumber.length < 1) {
+      setErrorPhoneNumber(true);
+    } else {
+      setErrorPhoneNumber(false);
+    }
+    if (state.length < 1) {
+      setErrorState(true);
+    } else {
+      setErrorState(false);
+    }
+    if (city.length < 1) {
+      setErrorCity(true);
+    } else {
+      setErrorCity(false);
+    }
+    if (zone.length < 1) {
+      setErrorZone(true);
+    } else {
+      setErrorZone(false);
+    }
+    if (postalCode.length < 1) {
+      setErrorPostalCode(true);
+    } else {
+      setErrorPostalCode(false);
+    }
+
     if (agreeTerms === false) {
       setDisplayTermsMsg(true);
     } else {
@@ -857,11 +937,11 @@ function Signup() {
     }
 
     if (
-      firstName.length >= 3 &&
-      lastName.length >= 3 &&
-      email.includes("@") &&
-      password.length >= 6 &&
-      password === confirmPassword &&
+      phoneNumber.length >= 11 &&
+      state.length >= 3 &&
+      city.length >= 3 &&
+      zone.length >= 3 &&
+      postalCode.length >= 4 &&
       agreeTerms === true
     ) {
       let data = await fetch("http://localhost:3000/userSignup", {
@@ -873,6 +953,11 @@ function Signup() {
           email,
           password,
           confirmPassword,
+          phoneNumber,
+          state,
+          city,
+          zone,
+          postalCode,
         }),
       });
 
@@ -889,190 +974,311 @@ function Signup() {
   return (
     <div className="">
       <h2 className="text-3xl font-semibold text-orange-500">Sign up</h2>
+      {step === 1 ? (
+        <>
+          <div className="flex flex-col mt-10">
+            <div className="flex  justify-between p-1 text-lg relative">
+              <div>
+                <div className="border-b-2 border-blue-100">
+                  <Input
+                    onChange={(e) => setFormData(prevState=>({...prevState, firstName: e.target.value }))}
+                    type="text"
+                    value={firstName}
+                  >
+                    First name *
+                  </Input>
+                </div>
+                {errorFirstName && (
+                  <small className="text-red-500">First name is required</small>
+                )}
+              </div>
 
-      <div className="flex flex-col mt-10">
+              <div>
+                <div className="border-b-2 border-blue-100">
+                  <Input
+                    onChange={(e) => setFormData(prevState=>({...prevState, lastName: e.target.value }))}
+                    type="text"
+                    value={lastName}
+                  >
+                    Last name *
+                  </Input>
+                </div>
+                {errorLastName && (
+                  <small className="text-red-500">Last name is required</small>
+                )}
+              </div>
+            </div>
+
+            <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
+              <Input onChange={handleEmail} type="email" value={email}>
+                Email *
+              </Input>
+              {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
+            </div>
+            {errorEmail && (
+              <small className="text-red-500">Email is required</small>
+            )}
+            {invalidEmail && (
+              <small className="text-red-500">Invalid email</small>
+            )}
+            <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
+              <Input
+                onChange={handlePassword}
+                value={password}
+                type={lock ? "password" : "text"}
+              >
+                Password *
+              </Input>
+              {lock ? (
+                <CgLock
+                  onClick={() => setLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              ) : (
+                <CgLockUnlock
+                  onClick={() => setLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              )}
+            </div>
+            {errorPassword && (
+              <small className="text-red-500">Password is required</small>
+            )}
+            {passwordContain && (
+              <div className="flex justify-between">
+                <small>
+                  <p
+                    className={`flex items-center font-semibold ${
+                      chars ? "text-green-700" : "text-slate-600"
+                    }`}
+                  >
+                    <FaCheck className="mr-2" /> At least 6 characters
+                  </p>
+                  <p
+                    className={` ${
+                      capital ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain capital letter
+                  </p>
+                  <p
+                    className={` ${
+                      num ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain number
+                  </p>
+                  <p
+                    className={` ${
+                      specialChar ? "text-green-700" : "text-slate-600"
+                    } flex items-center font-semibold`}
+                  >
+                    <FaCheck className="mr-2" /> Contain special character
+                  </p>
+                </small>
+                <div className="flex justify-between w-[50%] h-fit">
+                  <div
+                    className={`${
+                      weak || meduim || strong || veryStrong
+                        ? "bg-red-500"
+                        : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      meduim || strong || veryStrong
+                        ? "bg-orange-400"
+                        : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      strong || veryStrong ? "bg-green-400" : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+                  <div
+                    className={`${
+                      veryStrong ? "bg-green-600" : "bg-white"
+                    } mr-1 mt-2 h-1 w-[25%]`}
+                  ></div>
+
+                  <small className="w-[25%] whitespace-nowrap font-semibold">
+                    {weak && <p className="text-red-500">Weak</p>}
+                    {meduim && <p className="text-orange-500">Medium</p>}
+                    {strong && <p className="text-green-400">Strong</p>}
+                    {veryStrong && (
+                      <p className="text-green-600">Very strong</p>
+                    )}
+                  </small>
+                </div>
+              </div>
+            )}
+
+            <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
+              <input
+                onChange={handleConfirmPassword}
+                value={confirmPassword}
+                onClick={() => setPasswordContain(false)}
+                type={confirmLock ? "password" : "text"}
+                placeholder="Confirm password *"
+                className="w-full outline-none border-none"
+              />
+              {confirmLock ? (
+                <CgLock
+                  onClick={() => setConfirmLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              ) : (
+                <CgLockUnlock
+                  onClick={() => setConfirmLock((e) => !e)}
+                  className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
+                />
+              )}
+            </div>
+            {errorConfirmPassword && (
+              <small className="text-red-500">Password must be confirmed</small>
+            )}
+            {errorPasswordMatch && (
+              <small className="text-red-500">Passwords do not match</small>
+            )}
+          </div>
+          <div className="text-right mt-[3rem]">
+            <button
+              onClick={handleNext}
+              className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
+            >
+              Next
+            </button>
+          </div>
+        </>
+      ) : step === 2 ? (
+        <>
+        <div className="text-center">
         {displayTermsMsg && (
-          <small className="text-center text-red-500 mb-2">
-            To continue, you must agree to our terms and conditions.
-          </small>
-        )}
-        <div className="flex  justify-between p-1 text-lg relative">
-          <div>
-            <div className="border-b-2 border-blue-100">
-              <Input onChange={(e) => setFirstName(e.target.value)} type="text">
-                First name *
-              </Input>
-            </div>
-            {errorFirstName && (
-              <small className="text-red-500">First name is required</small>
-            )}
-          </div>
-
-          <div>
-            <div className="border-b-2 border-blue-100">
-              <Input onChange={(e) => setLastName(e.target.value)} type="text">
-                Last name *
-              </Input>
-            </div>
-            {errorLastName && (
-              <small className="text-red-500">Last name is required</small>
-            )}
-          </div>
-        </div>
-
-        <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
-          <Input onChange={handleEmail} type="email">
-            Email *
-          </Input>
-          {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
-        </div>
-        {errorEmail && (
-          <small className="text-red-500">Email is required</small>
-        )}
-        {invalidEmail && <small className="text-red-500">Invalid email</small>}
-        <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
-          <Input onChange={handlePassword} type={lock ? "password" : "text"}>
-            Password *
-          </Input>
-          {lock ? (
-            <CgLock
-              onClick={() => setLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          ) : (
-            <CgLockUnlock
-              onClick={() => setLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          )}
-        </div>
-        {errorPassword && (
-          <small className="text-red-500">Password is required</small>
-        )}
-        {passwordContain && (
-          <div className="flex justify-between">
-            <small>
-              <p
-                className={`flex items-center font-semibold ${
-                  chars ? "text-green-700" : "text-slate-600"
-                }`}
-              >
-                <FaCheck className="mr-2" /> At least 6 characters
-              </p>
-              <p
-                className={` ${
-                  capital ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain capital letter
-              </p>
-              <p
-                className={` ${
-                  num ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain number
-              </p>
-              <p
-                className={` ${
-                  specialChar ? "text-green-700" : "text-slate-600"
-                } flex items-center font-semibold`}
-              >
-                <FaCheck className="mr-2" /> Contain special character
-              </p>
-            </small>
-            <div className="flex justify-between w-[50%] h-fit">
-              <div
-                className={`${
-                  weak || meduim || strong || veryStrong
-                    ? "bg-red-500"
-                    : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  meduim || strong || veryStrong ? "bg-orange-400" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  strong || veryStrong ? "bg-green-400" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-              <div
-                className={`${
-                  veryStrong ? "bg-green-600" : "bg-white"
-                } mr-1 mt-2 h-1 w-[25%]`}
-              ></div>
-
-              <small className="w-[25%] whitespace-nowrap font-semibold">
-                {weak && <p className="text-red-500">Weak</p>}
-                {meduim && <p className="text-orange-500">Medium</p>}
-                {strong && <p className="text-green-400">Strong</p>}
-                {veryStrong && <p className="text-green-600">Very strong</p>}
+              <small className="text-red-500 mb-2">
+                To continue, you must agree to our terms and conditions.
               </small>
+            )}
+        </div>
+          <div className="border-b-2 border-blue-100 p-1 text-lg mt-4 relative flex justify-center items-center">
+            <Input
+              onChange={(e) => setFormData(prevState=>({...prevState, phoneNumber: e.target.value }))}
+              value={phoneNumber}
+              type="number"
+            >
+              Phone number *
+            </Input>
+            {emailIcon && <MdOutlineEmail className=" text-2xl ml-1" />}
+          </div>
+          {errorPhoneNumber && (
+            <small className="text-red-500">Phone number is required</small>
+          )}
+          <div className="flex  justify-between p-1 text-lg relative mt-4">
+            <div>
+              <div className="border-b-2 border-blue-100">
+                <Input
+                  onChange={(e) => setFormData(prevState=>({...prevState, state: e.target.value }))}
+                  type="text"
+                  value={state}
+                >
+                  State *
+                </Input>
+              </div>
+              {errorState && (
+                <small className="text-red-500">State is required</small>
+              )}
+            </div>
+
+            <div>
+              <div className="border-b-2 border-blue-100">
+                <Input
+                  onChange={(e) => setFormData(prevState=>({...prevState, city: e.target.value }))}
+                  type="text"
+                  value={city}
+                >
+                  City *
+                </Input>
+              </div>
+              {errorCity && (
+                <small className="text-red-500">City is required</small>
+              )}
             </div>
           </div>
-        )}
+          <div className="flex  justify-between p-1 text-lg relative mt-4">
+            <div>
+              <div className="border-b-2 border-blue-100">
+                <Input
+                  onChange={(e) => setFormData(prevState=>({...prevState, zone: e.target.value }))}
+                  type="text"
+                  value={zone}
+                >
+                  Zone *
+                </Input>
+              </div>
+              {errorZone && (
+                <small className="text-red-500">Zone is required</small>
+              )}
+            </div>
 
-        <div className="border-b-2 border-blue-100 p-1 text-lg focus:outline-2 focus:outline-blue-300  mt-4 relative">
-          <input
-            onChange={handleConfirmPassword}
-            onClick={() => setPasswordContain(false)}
-            type={confirmLock ? "password" : "text"}
-            placeholder="Confirm password *"
-            className="w-full outline-none border-none"
-          />
-          {confirmLock ? (
-            <CgLock
-              onClick={() => setConfirmLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          ) : (
-            <CgLockUnlock
-              onClick={() => setConfirmLock((e) => !e)}
-              className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl cursor-pointer"
-            />
-          )}
-        </div>
-        {errorConfirmPassword && (
-          <small className="text-red-500">Password must be confirmed</small>
-        )}
-        {errorPasswordMatch && (
-          <small className="text-red-500">Passwords do not match</small>
-        )}
-      </div>
-      <div className="flex justify-between items-center mt-[3rem]">
-        <div className="flex items-center">
-          <input
-            id="terms"
-            className="mr-2 cursor-pointer w-4 h-4 accent-orange-400/25"
-            onChange={() => setAgreeTerms((e) => !e)}
-            type="checkbox"
-          />
-          <label htmlFor="terms" className="text-sm cursor-pointer">
-            Agree with{" "}
-            <Link className="font-semibold underline text-blue-400">
-              terms and conditions
-            </Link>
-          </label>
-        </div>
-        <button
-          onClick={handleSignupFormLaptop}
-          className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
-        >
-          Sign up
-        </button>
-      </div>
+            <div>
+              <div className="border-b-2 border-blue-100">
+                <Input
+                  onChange={(e) => setFormData(prevState=>({...prevState, postalCode: e.target.value }))}
+                  type="text"
+                  value={postalCode}
+                >
+                  Postal code *
+                </Input>
+              </div>
+              {errorPostalCode && (
+                <small className="text-red-500">Postal code is required</small>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-between items-center mt-[3rem]">
+            <div className="flex items-center">
+              <input
+                id="terms"
+                className="mr-2 cursor-pointer w-4 h-4 accent-orange-400/25"
+                onChange={() => setAgreeTerms((e) => !e)}
+                type="checkbox"
+              />
+              <label htmlFor="terms" className="text-sm cursor-pointer">
+                Agree with{" "}
+                <Link className="font-semibold underline text-blue-400">
+                  terms and conditions
+                </Link>
+              </label>
+            </div>
+            <div className="flex">
+              <button
+                onClick={() => setStep((step) => step - 1)}
+                className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 mr-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleSignupFormLaptop}
+                className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500 whitespace-nowrap"
+              >
+                Sign up
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
 
-function Input({ onChange, type, children }) {
+function Input({ onChange, type, children, value }) {
   return (
     <input
       onChange={onChange}
       type={type}
+      value={value}
       placeholder={children}
       className="w-full outline-none border-none"
     />
