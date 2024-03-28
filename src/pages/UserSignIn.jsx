@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 // React Icons
@@ -10,14 +10,36 @@ import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import Spinner from "../components/Spinner";
 
+// React Toasts
+import { ToastContainer, toast } from 'react-toastify';
+
 const UserSignIn = () => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=> {
+    window.scrollTo({
+        top: 0,
+    });
+}, [])
+ 
   return (
     <>
       <SignInUpForms setLoading={setLoading} />
       <MobileSignInUpForms />
       {loading && <Spinner />}
-    </>
+      <ToastContainer
+position="top-center"
+autoClose={500}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss={false}
+draggable={false}
+pauseOnHover={false}
+theme="light"
+/>
+    </> 
   );
 };
 
@@ -503,7 +525,7 @@ function SignInUpForms({ setLoading }) {
             signinupForm ? "move-left left-[1.5rem]" : "move-right right-[1.5rem]"
           } top-[-2rem] w-[60%]  bg-white border-2 border-blue-200 px-8 py-10`}
         >
-          {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
+          {signinupForm ? <Signup setSigninupForm={setSigninupForm} /> : <Signin setLoading={setLoading} />}
         </div>
       </div>
     </div>
@@ -522,7 +544,6 @@ function SignInUpButtons({ setSigninupForm, children }) {
 }
 
 function Signin({ setLoading }) {
-  const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -576,11 +597,6 @@ function Signin({ setLoading }) {
   }
 
   function handleEmail(e) {
-    // if (e.target.value.length > 0) {
-    //   setEmailIcon(false);
-    // } else {
-    //   setEmailIcon(true);
-    // }
     setEmail(e.target.value);
   }
 
@@ -616,9 +632,9 @@ function Signin({ setLoading }) {
             className="w-full outline-none border-none"
           />
 
-          {emailIcon && (
+        
             <MdOutlineEmail className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
-          )}
+          
         </div>
         <small className={`text-red-500 ${errorEmail && "hidden"}`}>
           Email cannot be empty.
@@ -665,7 +681,7 @@ function Signin({ setLoading }) {
   );
 }
 
-function Signup() {
+function Signup({setSigninupForm}) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -693,11 +709,6 @@ function Signup() {
   const [emailIcon, setEmailIcon] = useState(true);
   const [lock, setLock] = useState(true);
   const [confirmLock, setConfirmLock] = useState(true);
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
   const [errorFirstName, setErrorFirstName] = useState(false);
   const [errorLastName, setErrorLastName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
@@ -722,6 +733,18 @@ function Signup() {
   const [errorZone, setErrorZone] = useState(false);
   const [errorPostalCode, setErrorPostalCode] = useState(false);
   const [step, setStep] = useState(1);
+
+  // get current date
+  function getCurrentDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, `0`);
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  }
 
   // Functions
   function handleEmail(e) {
@@ -958,12 +981,15 @@ function Signup() {
           city,
           zone,
           postalCode,
+          date: getCurrentDateTime(),
+          online: false,
         }),
       });
 
       data = await data.json();
       if (data) {
-        alert("Signed up successfully!");
+        toast("Signed up successfully!");
+        setSigninupForm(false);
       }
     } else {
       alert("Something went wrong!");

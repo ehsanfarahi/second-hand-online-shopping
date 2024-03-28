@@ -321,7 +321,7 @@ function SellerDetail({setChatBox, setBottomAdDisplay, sellerId, product}) {
         <div className="flex justify-between items-center">
             <div className="flex items-center">
             <div className="mr-4 bg-orange-400 rounded-full w-[4rem] h-[4rem]">
-                <p className="text-4xl flex h-full justify-center items-center text-white"><span>{product.sellerFullName?.split(" ").at(0).slice(0,1)}</span><span>{product.sellerFullName?.split(" ").at(1).slice(0,1)}</span></p>
+                <p className="text-4xl flex h-full justify-center items-center text-white"><span>{product.sellerFullName?.split(" ").at(0)?.slice(0,1)}</span><span>{product.sellerFullName?.split(" ").at(1)?.slice(0,1)}</span></p>
             </div>
             <p className="text-xl">{product.sellerFullName}</p>
             </div>

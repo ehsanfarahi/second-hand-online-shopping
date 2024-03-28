@@ -9,6 +9,7 @@ import { IoIosPhonePortrait } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa6";
 import { HiUsers } from "react-icons/hi2";
+import { GoDotFill } from "react-icons/go";
 
 // Components
 import Spinner from "./Spinner";
@@ -48,11 +49,11 @@ const Profile = ({setUpdateFavorite}) => {
 		getProductData();
 	}, [id])
 
+	console.log(errorMessage);
+
 	useEffect(() => {
 		fetch(`http://localhost:3000/userSignup/${id}`).then(response => response.json()).then(result => setUser(result));
 	}, [id])
-
-	console.log(user);
 
 	return (
 		<div className="w-[60%] md:w-[95%] mx-auto pt-24 pb-10">
@@ -66,7 +67,6 @@ const Profile = ({setUpdateFavorite}) => {
 export default Profile;
 
 function UserData({user}) {
-	console.log("user", user);
 	return <div className="flex">
 		<div>
 		<div className="mr-4 bg-orange-400 rounded-full w-[10rem] h-[10rem]">
@@ -85,19 +85,21 @@ function UserData({user}) {
 	</div>
 }
 
+
+
 function UserDetail({user}) {
 	const userLocation = `${user.state} ${user.city}, ${user.zone} ${user.postalCode}`;
 	return <div className="">
-	<p>online / offline</p>
+	{user.online ? <UserSubDetail user="online" color="text-green-600"><GoDotFill /></UserSubDetail> : <UserSubDetail user="offline" color="text-orange-600"><GoDotFill /></UserSubDetail>}
 	<UserSubDetail user={user.phoneNumber}><IoIosPhonePortrait/></UserSubDetail> 
 	<UserSubDetail user={userLocation}><FaLocationDot/></UserSubDetail> 
-	<UserSubDetail user="member since Jan 2024"><FaUser/></UserSubDetail> 
+	<UserSubDetail user={`Member since ${user.date?.split(" ").at(0).split("/").at(2)}/${user.date?.split(" ").at(0).split("/").at(1)}/${user.date?.split(" ").at(0).split("/").at(0)}`}><FaUser/></UserSubDetail> 
 	<UserSubDetail user="12 Followes | 3 Following"><HiUsers/></UserSubDetail> 
 </div>
 }  
 
-function UserSubDetail({children, user}) {
-	return <p className="flex items-center"><span className="text-xl mr-2">{children}</span> {user}</p>
+function UserSubDetail({children, user, color}) {
+	return <p className="flex items-center"><span className={`text-xl mr-2 ${color}`}>{children}</span> {user}</p>
 }
 
 function UserAction() {

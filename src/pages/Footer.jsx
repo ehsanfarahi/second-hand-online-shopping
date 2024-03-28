@@ -7,7 +7,7 @@ import { FaTiktok } from "react-icons/fa6";
 
 const Footer = () => {
 	return (
-		<div className="bg-blue-200 sm:bg-blue-100 text-slate-700 shadow">
+		<div className="bg-blue-200 mt-16 sm:bg-blue-100 text-slate-700 shadow">
 			<div className="footer-container--top">
 				<div className="sm:col-start-1 sm:col-span-2"><WhatWeDo /></div>
 				<div><About /></div>

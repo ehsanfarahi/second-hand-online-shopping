@@ -23,7 +23,6 @@ const AddProduct = () => {
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const [enableDiscount, setEnableDiscount] = useState(true);
   const [descriptionCount, setDescriptionCount] = useState(0);
-  const [publish, setPublish] = useState(false);
 
   // Form Data
   const [category, setCatecategory] = useState("");
@@ -31,12 +30,9 @@ const AddProduct = () => {
   const [title, setTitle] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [discountPercentage, setDiscountPercentage] = useState(0);
-  const [image, setImage] = useState("");
-  // const [sellerFullName, setSellerFullName] = useState("");
-  // const [sellerPhoneNumber, setSellerPhoneNumber] = useState("");
-  // const [sellerLocation, setSellerLocation] = useState("");
+  const [price, setPrice] = useState("");  
+  const [discountPercentage, setDiscountPercentage] = useState(""); 
+  
 
   const [sellerInfo, setSellerInfo] = useState({
     sellerFullName: "",
@@ -46,22 +42,20 @@ const AddProduct = () => {
 
   const {sellerFullName, sellerPhoneNumber, sellerLocation} = sellerInfo;
 
-  console.log("top", sellerFullName, sellerPhoneNumber, sellerLocation);
-
   // Displays
   const [displayType, setDisplayType] = useState(false);
   const [getType, setGetType] = useState("");
   const [addProductMessage, setAddProductMessage] = useState(false);
 
-  function getCurrentDate() {
-    const date = new Date();
+  // function getCurrentDate() {
+  //   const date = new Date();
 
-    const yyyy = date.getFullYear();
-    const mm = date.getMonth() + 1;
-    const dd = date.getDate();
+  //   const yyyy = date.getFullYear();
+  //   const mm = date.getMonth() + 1;
+  //   const dd = date.getDate();
 
-    return `${mm}/${dd}/${yyyy}`;
-  }
+  //   return `${mm}/${dd}/${yyyy}`;
+  // }
 
   useEffect(() => {
     fetch(`http://localhost:3000/categories`)
@@ -106,21 +100,42 @@ const AddProduct = () => {
       .then((result) => setCategoriesTypes(result));
   }
 
+  function handlePrice(e) {
+    const inputValue = e.target.value;
+      setPrice(inputValue.startsWith(0) ? "" : inputValue);
+      if (inputValue > 0) {
+        setEnableDiscount(false);
+       if(discountPercentage > 0) {
+        const discountedPrice = (inputValue / 100) * discountPercentage;
+        setDiscountedPrice((inputValue - discountedPrice).toFixed(2));
+       }
+      } else {
+        setEnableDiscount(true);
+        setDiscountPercentage(""); 
+        setDiscountedPrice(0); 
+      }
+  }  
+
   function handleDiscountedPrice(e) {
     const percent = e.target.value;
-    const discountedPrice = (price / 100) * percent;
-    setDiscountedPrice(price - discountedPrice);
-    setDiscountPercentage(percent);
-  }
+    
 
+    if (percent === '' || parseInt(percent, 10) <= 100) {
+      setDiscountPercentage(percent.startsWith(0) ? "" : percent);
+      const discountedPrice = (price / 100) * percent;
+      setDiscountedPrice((price - discountedPrice).toFixed(2));
+    }  
+  }
+ 
   function handleDescription(e) {
     const count = e.target.value;
     setDescriptionCount(count.length);
     setDescription(e.target.value);
   }
 
-  function checkPublish(e) {
-    console.log(categoriesTypes);
+  function generateUniqueId() {
+    const randomId = Math.floor(Math.random() * 9000000000000);
+    return randomId;
   }
 
   async function handlePublish(e) {
@@ -130,6 +145,7 @@ const AddProduct = () => {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        productId: generateUniqueId,
         category,
         type,
         title,
@@ -139,7 +155,7 @@ const AddProduct = () => {
         discount,
         discountPercentage,
         image: "pictures/car1.jpg",
-        date: getCurrentDate(),
+        date: getCurrentDateTime(), 
         sellerFullName,
         sellerPhoneNumber,
         sellerLocation,
@@ -165,6 +181,19 @@ const AddProduct = () => {
     setDisplayType(false);
     setChooseType(false);
   }
+
+  function getCurrentDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, `0`);
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+
   return (
     <div className="add-product-container">
       <h2 className="add-product-container--header">Publishing an ad</h2>
@@ -339,19 +368,12 @@ const AddProduct = () => {
                 >
                   <label className="pb-2  font-semibold">Price $</label>
                   <input
-                    value={price}
                     type="number"
                     min={1}
-                    onChange={(e) => {
-                      setPrice(e.target.value);
-                      if (e.target.value > 0) {
-                        setEnableDiscount(false);
-                      } else {
-                        setEnableDiscount(true);
-                      }
-                    }}
+                    value={price} 
+                    onChange={handlePrice} 
                     className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2"
-                    placeholder="Price $"
+                    placeholder="0"
                   />
                 </div>
                 {discount && (
@@ -364,8 +386,9 @@ const AddProduct = () => {
                       <label className="pb-2  font-semibold ">Percentage</label>
                       <input
                         type="number"
+                        value={discountPercentage}
                         onChange={handleDiscountedPrice}
-                        max={100}
+                        max={100} 
                         min={1}
                         disabled={enableDiscount}
                         className="border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-blue-300 pl-2"
@@ -398,7 +421,7 @@ const AddProduct = () => {
                   <input
                     type="button"
                     value="YES"
-                    onClick={() => setDiscount((e) => !discount && !e)}
+                    onClick={() => setDiscount(true)}
                     className={`${
                       discount ? "bg-slate-300" : "white"
                     } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] mr-1`}
@@ -406,7 +429,7 @@ const AddProduct = () => {
                   <input
                     type="button"
                     value="NO"
-                    onClick={() => setDiscount((e) => !discount && !e)}
+                    onClick={() => setDiscount(false)}
                     className={`${
                       discount ? "bg-white" : "bg-slate-300"
                     } border-2 rounded py-2 cursor-pointer focus:outline-none focus:border-slate-400 pl-2 w-[50%] ml-1`}
@@ -780,6 +803,7 @@ function SellerDataReview({
         <DetailConfirmation
           data={sellerFullName}
           onChange={setSellerFullName}
+          sellerData="sellerFullName"
         >
           Confirm your full name
         </DetailConfirmation>
@@ -787,15 +811,17 @@ function SellerDataReview({
           type="number"
           data={sellerPhoneNumber}
           onChange={setSellerPhoneNumber}
+          sellerData="sellerPhoneNumber"
         >
           Confirm your phone number
         </DetailConfirmation>
         <DetailConfirmation
           data={sellerLocation} 
-          onChange={setSellerLocation}
+          onChange={setSellerLocation} 
+          sellerData="sellerLocation" 
         >
           Confirm your location
-        </DetailConfirmation> 
+        </DetailConfirmation>  
       </div>
       <small>
         This data will be posted with your ad only, the actual data will not be
@@ -822,15 +848,15 @@ function SellerData({ data }) {
   );
 }
 
-function DetailConfirmation({ children, type = "text", data, onChange }) {
+function DetailConfirmation({ children, type = "text", data, onChange, sellerData }) {
   return (
     <div className="my-6 md:w-full sm:w-full sm:my-3">
       <p className="text-lg mb-2">{children}</p>
       <input
-      value={data}
-        onChange={(e) => onChange(e.target.value)}
+        value={data}
+        onChange={(e) => onChange(prevState => ({...prevState, [sellerData]: e.target.value}))}
         className="border-2 rounded outline-none p-2 text-xl md:w-full sm:w-full"
-        type={type}
+        type={type} 
       />
     </div>
   );

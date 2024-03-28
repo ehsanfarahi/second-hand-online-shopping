@@ -438,6 +438,24 @@ const ProductsTypes = () => {
 function UserSignedIn ({setDisplayUserSignedIn, signedInUserData}) {
 const navigate = useNavigate();
 
+   // get signed in user id
+   const userId = JSON.parse(localStorage.getItem("24UserLoginData"));
+
+async function userSignOut() {
+    localStorage.removeItem("24UserLoginData");
+    navigate("/user-signin");
+
+
+       // get user offline
+        await fetch(`http://localhost:3000/userSignup/${userId}`, {
+          method: "PATCH",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            online: false
+          })
+        })
+}
+
 
 
   return <div className="shadow bg-white rounded">
@@ -450,10 +468,7 @@ const navigate = useNavigate();
   </div>
   <div onClick={()=>setDisplayUserSignedIn(false)} className="border-t border-slate-300 p-2 hover:bg-orange-50 cursor-pointer">
      <p
-                onClick={() => {
-                  localStorage.removeItem("24UserLoginData");
-                  navigate("/user-signin");
-                }}
+                onClick={userSignOut}
                 className="sm:hidden flex items-center text-xl"
               >
                 <RiLogoutBoxLine className="mr-2" /> Sign out 

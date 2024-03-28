@@ -29,6 +29,9 @@ import PrivateComponent from "./components/PrivateComponent";
 import Header from "./components/Header";
 import SearchProduct from "./components/SearchProduct";
 
+// React Toastify
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const [displayAddProduct, setDisplayAddProduct] = useState(true);
   const [displayArrowUp, setDisplayArrowUp] = useState(false);
@@ -45,6 +48,57 @@ function App() {
       }
     });
   }, []);
+
+   // get signed in user id
+   const userId = JSON.parse(localStorage.getItem("24UserLoginData"));
+
+  // get user online
+  async function userOnline() {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const id = JSON.parse(localStorage.getItem("24UserLoginData"));
+  
+    try {
+      await fetch(`http://localhost:3000/userSignup/${id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          online: true 
+        }),
+        signal
+      });
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Request aborted');
+        
+      } else {
+        console.error('Error:', error);
+      }
+    }
+
+    setTimeout(() => {
+      userOffline(); 
+    }, 5 * 60 * 1000)  
+
+  }
+
+
+    // get user offline
+    async function userOffline() {
+      await fetch(`http://localhost:3000/userSignup/${userId}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          online: false
+        })
+      })
+     }
+  
+  // window.addEventListener("scroll", userOnline);
+  if(userId) window.addEventListener("keydown", userOnline);
+  
+  // window.addEventListener("mouseover", userOnline);
 
   const handleArrowUp = () => {
     window.scrollTo({

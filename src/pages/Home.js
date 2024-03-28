@@ -14,11 +14,21 @@ import { BiSolidDog } from "react-icons/bi";
 import { MdMiscellaneousServices } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 
+
 // Components
 import Spinner from "../components/Spinner";
 import ProductCard from "../components/ProductCard";
 import PopupProductDetail from "../components/PopupProductDetail";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
+import Error from "../components/Error";
+import NetworkError from "../components/NetworkError";
+
+// API
+const api = "http://localhost:3000/products";
+
+// Variables
+const errorMessage = "Something went wrong while fetching data";
+
 
 const Home = ({ setUpdateFavorite }) => {
   const numProductDisplay = 10;
@@ -36,51 +46,92 @@ const Home = ({ setUpdateFavorite }) => {
 
   // Fetching featured ads
   useEffect(() => {
+
+    const controller = new AbortController();
+    const signal = controller.signal;
    
    async function fetchData() {
     try {
     setLoadingFeatured(true);
     setError("");
 
-    const response = await fetch(`http://localhost:3000/products?featured=1&_limit=${displayLimit}`);
+    const response = await fetch(`${api}?featured=1&_limit=${displayLimit}`, {signal});
 
-    if(!response.ok) throw new Error(`Something went wrong while fetching data`);
+    if(!response.ok) throw new Error(`${errorMessage}`);
     
-
     const result = await response.json();
 
       const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
-      
       setFeaturedProducts(sortedData);
-      setLoadingFeatured(false);
-      setError("");
       
+      setError("");
     } catch (error) {
-      console.log(error instanceof TypeError ? "Network error: Please check your internet connection" : error.message)
-    } 
-   } 
+      if(error.name !== "AbortError") setError(error instanceof TypeError ? <NetworkError/> : error.message)
+      
+    } finally {
+      setLoadingFeatured(false);
+    }
+   }  
    fetchData();
+
+   return () => controller.abort();
   }, [displayLimit]); 
 
   // Fetching recommended ads
   useEffect(() => {
-    fetch(`http://localhost:3000/products?featured=0&_limit=${displayLimit}`)
-      .then((response) => response.json())
-      .then((result) => {
-        setRecommendedProducts(result);
-        setLoadingRecommended(false);
-      });
-  }, [displayLimit]);
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchData = async () => {
+      setLoadingRecommended(true);
+     try {
+      const response = await fetch(`${api}?featured=0&_limit=10`, {signal});
+
+      if(!response.ok) throw new Error(`${errorMessage}`);
+
+      const result = await response.json();
+
+       // Get random recommended ads
+  const limit = 10;
+  const randomRecommendedAds = _.sampleSize(result, limit);
+
+      setRecommendedProducts(randomRecommendedAds);
+      
+     } catch (error) {
+      if(error.name !== "AbortError") setError(error instanceof TypeError ? <NetworkError/> : error.message); 
+     } finally {
+      setLoadingRecommended(false); 
+     }
+    }
+    fetchData();
+
+    return () => controller.abort();
+  }, []);
 
   // Fetching all ads
   useEffect(() => {
-    fetch(`http://localhost:3000/products?featured=0&_limit=${displayLimit}`)
-      .then((response) => response.json())
-      .then((result) => {
-        const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setProducts(sortedData);
+    const controller = new AbortController();
+    const signal = controller.signal;
+   const fetchData = async () => {
+      try {
+        setLoadingForYou(true);
+
+        const response = await fetch(`${api}?featured=0&_limit=${displayLimit}`, {signal});
+        if(!response.ok) throw new Error(`${errorMessage}`);
+        const result = await response.json();
+        
+          const sortedData = result.sort((a, b) => new Date(b.date) - new Date(a.date));
+          setProducts(sortedData);
+
+      } catch (error) {
+        if(error.name !== "AbortError") setError(error instanceof TypeError ? <NetworkError/> : error.message);
+      } finally {
         setLoadingForYou(false);
-      });
+      }
+   }
+   fetchData();
+
+   return () => controller.abort();
   }, [displayLimit]);
 
   function handleLoadMore() {
@@ -95,48 +146,15 @@ const Home = ({ setUpdateFavorite }) => {
     });
   }
 
-  // Get random recommended ads
-  const limit = 10;
-  const randomRecommendedAds = _.sampleSize(recommendedProducts, limit);
-
   return (
     <div className="py-20 sm:py-8 md:py-8 w-[70%] md:w-[95%] sm:w-[95%] mx-auto">
-      <div className="flex justify-center sm:justify-start gap-2 sm:gap-0 md:overflow-x-auto sm:overflow-x-auto">
-        <ProductCategory category="Accomodation" bg="bg-green-500">
-          <MdOutlineMapsHomeWork />
-        </ProductCategory>
-        <ProductCategory category="Vehicles" bg="bg-red-400">
-          <IoCarOutline />
-        </ProductCategory>
-        <ProductCategory category="Electronics" bg="bg-blue-400">
-          <MdOutlinePhonelink />
-        </ProductCategory>
-        <ProductCategory category="Furniture" bg="bg-purple-400">
-          <TbArmchair2 />
-        </ProductCategory>
-        <ProductCategory category="Fashion" bg="bg-orange-400">
-          <GiClothes />
-        </ProductCategory>
-        <ProductCategory category="Kids" bg="bg-pink-400">
-        <FaChild />
-        </ProductCategory>
-        <ProductCategory category="Pets" bg="bg-teal-400">
-        <BiSolidDog />
-        </ProductCategory>
-        <ProductCategory category="Services" bg="bg-indigo-400">
-        <MdMiscellaneousServices />
-        </ProductCategory>
-        <ProductCategory category="Other" bg="bg-slate-400">
-        <BsThreeDots />
-        </ProductCategory>
-      </div>
+      <Categories/>
       <AdsDisplayCategory
         products={featuredProducts}
         loading={loadingFeatured}
         numProductDisplay={numProductDisplay}
         setUpdateFavorite={setUpdateFavorite}
         handleLoadMore={handleLoadMore}
-        loadMore={true}
         getPopupDetail={getPopupDetail}
         setDisplayPopupProDetail={setDisplayPopupProDetail}
         error={error}
@@ -144,7 +162,7 @@ const Home = ({ setUpdateFavorite }) => {
         Featured Ads
       </AdsDisplayCategory>
       <AdsDisplayCategory
-        products={randomRecommendedAds}
+        products={recommendedProducts}
         loading={loadingRecommended}
         numProductDisplay={numProductDisplay}
         setUpdateFavorite={setUpdateFavorite}
@@ -152,6 +170,7 @@ const Home = ({ setUpdateFavorite }) => {
         loadMore={false}
         getPopupDetail={getPopupDetail}
         setDisplayPopupProDetail={setDisplayPopupProDetail}
+        extraStyle="pt-16"
         error={error}
       >
         Recommended Ads
@@ -162,7 +181,6 @@ const Home = ({ setUpdateFavorite }) => {
         numProductDisplay={numProductDisplay}
         setUpdateFavorite={setUpdateFavorite}
         handleLoadMore={handleLoadMore}
-        loadMore={true}
         getPopupDetail={getPopupDetail}
         setDisplayPopupProDetail={setDisplayPopupProDetail}
         extraStyle="pt-16"
@@ -170,12 +188,46 @@ const Home = ({ setUpdateFavorite }) => {
       >
         For you
       </AdsDisplayCategory>
+
+      {/* Mobile size product detail popup display */}
       {displayPopupProDetail && <PopupProductDetail detail={popupDetail} setDisplayPopupProDetail={setDisplayPopupProDetail} />}
     </div>
   );
 };
 
 export default Home;
+
+function Categories() {
+  return <div className="flex justify-center sm:justify-start gap-2 sm:gap-0 md:overflow-x-auto sm:overflow-x-auto">
+  <ProductCategory category="Accomodation" bg="bg-green-500">
+    <MdOutlineMapsHomeWork />
+  </ProductCategory>
+  <ProductCategory category="Vehicles" bg="bg-red-400">
+    <IoCarOutline />
+  </ProductCategory>
+  <ProductCategory category="Electronics" bg="bg-blue-400">
+    <MdOutlinePhonelink />
+  </ProductCategory>
+  <ProductCategory category="Furniture" bg="bg-purple-400">
+    <TbArmchair2 />
+  </ProductCategory>
+  <ProductCategory category="Fashion" bg="bg-orange-400">
+    <GiClothes />
+  </ProductCategory>
+  <ProductCategory category="Kids" bg="bg-pink-400">
+  <FaChild />
+  </ProductCategory>
+  <ProductCategory category="Pets" bg="bg-teal-400">
+  <BiSolidDog />
+  </ProductCategory>
+  <ProductCategory category="Services" bg="bg-indigo-400">
+  <MdMiscellaneousServices />
+  </ProductCategory>
+  <ProductCategory category="Other" bg="bg-slate-400">
+  <BsThreeDots />
+  </ProductCategory>
+</div>
+}
 
 function AdsDisplayCategory({
   children,
@@ -184,7 +236,7 @@ function AdsDisplayCategory({
   numProductDisplay,
   setUpdateFavorite,
   handleLoadMore,
-  loadMore,
+  loadMore = true,
   extraStyle,
   getPopupDetail,
   setDisplayPopupProDetail,
@@ -229,7 +281,7 @@ function LoadMore({ handleLoadMore }) {
   return (
     <div
       onClick={handleLoadMore}
-      className="w-fit mx-auto mt-12 mb-16 cursor-pointer"
+      className="w-fit mx-auto mt-12 cursor-pointer"
     >
       <div className="load-more">
         <Spinner type="5" wWidth="w-[3rem] sm:w-[2rem]" applyStyle={false} />
@@ -268,15 +320,4 @@ function ProductCategory({ children, category, bg }) {
 }
 
 
-function Error({error}) {
- 
-  return <div >
-    <div className="bg-black opacity-30 fixed top-0 right-0 bottom-0 left-0">
-
-    </div>
-    <div className="text-2xl text-white">
-      <p>{error}</p>
-    </div>
-  </div>
-}
 

@@ -104,7 +104,7 @@ function ProductCard({ product, setUpdateFavorite, getPopupDetail, setDisplayPop
   }
   
   function ProductLocation({ product }) {
-	return <span className="product-card--location">{product.sellerLocation}</span>;
+	return <span className="product-card--location">{product.sellerLocation?.split(",").at(0)}</span>;
   }
   
   function AddToFavorite({ productId, setFav, setUpdateFavorite }) {
