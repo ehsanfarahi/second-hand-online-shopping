@@ -2,7 +2,7 @@
   "products": [
     {
       "id": "1",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "BMW",
       "model": "White Car",
       "price": 96000,
@@ -15,7 +15,7 @@
     },
     {
       "id": "2",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Volks Wagen",
       "model": "Top",
       "price": 20000,
@@ -28,7 +28,7 @@
     },
     {
       "id": "3",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Lamburghini",
       "model": "Black",
       "price": 115000,
@@ -41,7 +41,7 @@
     },
     {
       "id": "4",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Mitsobishi",
       "model": "2023",
       "price": 8300,
@@ -54,7 +54,7 @@
     },
     {
       "id": "5",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel Opel Opel Opel Opel",
       "model": "Corsa Corsa Corsa Corsa",
       "price": 45500,
@@ -67,7 +67,7 @@
     },
     {
       "id": "6",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel",
       "model": "Corsa",
       "price": 1500,
@@ -80,7 +80,7 @@
     },
     {
       "id": "7",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel",
       "model": "Mazda",
       "price": 18450,
@@ -93,7 +93,7 @@
     },
     {
       "id": "8",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel",
       "model": "Mezzo",
       "price": 24390,
@@ -106,7 +106,7 @@
     },
     {
       "id": "9",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel",
       "model": "Salon",
       "price": 38420,
@@ -119,7 +119,7 @@
     },
     {
       "id": "10",
-      "category": "cars",
+      "category": "Vehicles",
       "title": "Opel",
       "model": "Cario",
       "price": 8350,
@@ -137,7 +137,7 @@
       "title": "Metal Capboard",
       "brand": "Woody",
       "description": "This is a metalic capboard",
-      "price": "200",
+      "price": 200,
       "discount": true,
       "discountPercentage": "5",
       "image": "pictures/car1.jpg",
@@ -154,7 +154,7 @@
       "title": "Laser Camera",
       "brand": "LG",
       "description": "One of the best cameras",
-      "price": "200",
+      "price": 200,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -171,7 +171,7 @@
       "title": "Coat",
       "brand": "Zara",
       "description": "Winter men coat",
-      "price": "10",
+      "price": 10,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -188,7 +188,7 @@
       "title": "Modern Capboard",
       "brand": "Moderna",
       "description": "A very modern capboard.",
-      "price": "200",
+      "price": 200,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -206,7 +206,7 @@
       "title": "Laptop",
       "brand": "DELL",
       "description": "Very new laptop",
-      "price": "600",
+      "price": 600,
       "discount": true,
       "discountPercentage": "10",
       "image": "pictures/car1.jpg",
@@ -224,7 +224,7 @@
       "title": "Coat",
       "brand": "Zara",
       "description": "Original lethel coat",
-      "price": "100",
+      "price": 100,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -257,7 +257,7 @@
       "title": "Cupboard",
       "brand": "Wooden",
       "description": "Wooden Cup board",
-      "price": "400",
+      "price": 400,
       "discount": true,
       "discountPercentage": "5",
       "image": "pictures/car1.jpg",
@@ -272,7 +272,7 @@
       "title": "Double Bed",
       "brand": "Woody",
       "description": "Comfortable double bed",
-      "price": "200",
+      "price": 200,
       "discount": true,
       "discountPercentage": "10",
       "image": "pictures/car1.jpg",
@@ -287,7 +287,7 @@
       "title": "Sofa",
       "brand": "Sofis",
       "description": "The best sofa",
-      "price": "50",
+      "price": 50,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -305,7 +305,7 @@
       "title": "Laptop",
       "brand": "Dell",
       "description": "Core i7 latitude laptop",
-      "price": "200",
+      "price": 200,
       "discount": true,
       "discountPercentage": "7",
       "image": "pictures/car1.jpg",
@@ -320,7 +320,7 @@
       "title": "Smart LED TV",
       "brand": "Samsung",
       "description": "Smart 52inch LED TV",
-      "price": "499",
+      "price": 499,
       "discount": true,
       "discountPercentage": "10",
       "image": "pictures/car1.jpg",
@@ -338,7 +338,7 @@
       "title": "Microwave",
       "brand": "Alliance",
       "description": "New Alliance Microwave",
-      "price": "50",
+      "price": 50,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -356,7 +356,7 @@
       "title": "Metal Cupboard",
       "brand": "",
       "description": "200 * 50 metal cupboard",
-      "price": "100",
+      "price": 100,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -371,7 +371,7 @@
       "title": "Single Bed",
       "brand": "",
       "description": "Very cozy sigle bed",
-      "price": "150",
+      "price": 150,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -386,7 +386,7 @@
       "title": "Refridgerator ",
       "brand": "LG",
       "description": "very new LG refridgerator",
-      "price": "350",
+      "price": 350,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
@@ -408,7 +408,7 @@
       "date": "3/27/2024",
       "sellerFullName": "Ehsan Farahi",
       "sellerPhoneNumber": "0049176236547",
-      "sellerLocation": "Daglfing, 81929 Munich",
+      "sellerLocation": "Munich",
       "sellerId": "a10e",
       "featured": false
     },
@@ -426,7 +426,7 @@
       "date": "3/27/2024",
       "sellerFullName": "Ehsan Far",
       "sellerPhoneNumber": "004917623",
-      "sellerLocation": "Daglfing",
+      "sellerLocation": "Hamburg",
       "sellerId": "a10e",
       "featured": false
     },
@@ -437,14 +437,14 @@
       "title": "Wood Cupboard",
       "brand": "",
       "description": "Medium size wood cupboard",
-      "price": "200",
+      "price": 200,
       "discount": false,
       "discountPercentage": 0,
       "image": "pictures/car1.jpg",
       "date": "3/27/2024",
       "sellerFullName": "Ehsan Farahi",
       "sellerPhoneNumber": "0049176236547",
-      "sellerLocation": "Daglfing, 81929 Munich",
+      "sellerLocation": "Hamburg",
       "sellerId": "a10e",
       "featured": false
     },
@@ -455,14 +455,14 @@
       "title": "sdf",
       "brand": "",
       "description": "adf",
-      "price": "65",
+      "price": 65,
       "discount": false,
       "discountPercentage": "",
       "image": "pictures/car1.jpg",
-      "date": "2024/03/27 20:44:38",
+      "date": "2024/03/27",
       "sellerFullName": "Ehsannnn",
       "sellerPhoneNumber": "004917623333",
-      "sellerLocation": "Daglfing, 81",
+      "sellerLocation": "Berlin",
       "sellerId": "a10e",
       "featured": false
     },
@@ -473,14 +473,14 @@
       "title": "Desktop",
       "brand": "Dell",
       "description": "Core i7 Dell Desktop",
-      "price": "760",
+      "price": 760,
       "discount": true,
       "discountPercentage": "15",
       "image": "pictures/car1.jpg",
-      "date": "2024/03/27 21:35:43",
+      "date": "2024/03/27",
       "sellerFullName": "New User",
       "sellerPhoneNumber": "111111111111111111111111111",
-      "sellerLocation": "Frino, 29456 Kipo",
+      "sellerLocation": "Munich",
       "sellerId": "43a9",
       "featured": false
     },
@@ -491,37 +491,125 @@
       "title": "Chair",
       "brand": "",
       "description": "Leathel chair",
-      "price": "50",
+      "price": 50,
       "discount": false,
       "discountPercentage": "",
       "image": "pictures/car1.jpg",
-      "date": "2024/03/28 00:01:58",
+      "date": "2024/03/28",
       "sellerFullName": "jacky milan",
       "sellerPhoneNumber": "425435245235",
-      "sellerLocation": "sdff, 3243 sdfds",
+      "sellerLocation": "Berlin",
       "sellerId": "24af",
+      "featured": false
+    },
+    {
+      "id": "9594",
+      "category": "Furniture",
+      "type": "Beds",
+      "title": "Wood Bed",
+      "brand": "",
+      "description": "The best bed ever",
+      "price": 200,
+      "discount": true,
+      "discountPercentage": "10",
+      "image": "pictures/car1.jpg",
+      "date": "2024/04/21",
+      "sellerFullName": "",
+      "sellerPhoneNumber": "",
+      "sellerLocation": "Hamburg",
+      "sellerId": null,
+      "featured": false
+    },
+    {
+      "id": "5e9a",
+      "category": "Electronics",
+      "type": "TVs",
+      "title": "Very New LED TV",
+      "brand": "Samsung",
+      "description": "This is a very new 32\" samsung TV.\nThe TV comes with original packs.",
+      "price": 200,
+      "discount": true,
+      "discountPercentage": "15",
+      "image": "pictures/car1.jpg",
+      "date": "2024/05/20",
+      "sellerFullName": "very new new",
+      "sellerPhoneNumber": "9843571394265366",
+      "sellerLocation": "Munich",
+      "sellerId": "0d10",
       "featured": false
     }
   ],
   "categories": [
     {
       "id": "1",
-      "cat": "Electronics"
+      "cat": "Accommodation",
+      "types": [
+        "Villas",
+        "Apartments",
+        "Houses",
+        "Garages",
+        "Shops",
+        "Gardens",
+        "Other accommodation"
+      ]
     },
     {
       "id": "2",
-      "cat": "Furniture"
+      "cat": "Vehicles",
+      "types": [
+        "Cars",
+        "Motor Bikes",
+        "Bikes",
+        "Scooters",
+        "Vehicles' Spare Parts",
+        "Other vehicles"
+      ]
     },
     {
       "id": "3",
-      "cat": "Vehicles"
+      "cat": "Electronics",
+      "types": [
+        "Computers & Accessories",
+        "Mobiles & Accessories",
+        "TVs",
+        "Kitchen Appliances",
+        "Cameras",
+        "Games & Entertainment",
+        "Other electronics"
+      ]
     },
     {
       "id": "4",
-      "cat": "Fashion"
+      "cat": "Furniture",
+      "types": ["Sofas", "Beds", "Capboards", "Other furniture"]
     },
     {
       "id": "5",
+      "cat": "Fashion",
+      "types": ["Men", "Women", "Kids", "Other fashion"]
+    },
+    {
+      "id": "6",
+      "cat": "Kids",
+      "types": ["Clothes", "Shoes", "Other"]
+    },
+    {
+      "id": "7",
+      "cat": "Pets",
+      "types": ["Cats", "Dogs", "Birds", "Rabbits", "Mice", "Other pets"]
+    },
+    {
+      "id": "8",
+      "cat": "Services",
+      "types": [
+        "Rent a vehicle",
+        "Post a job",
+        "Post an advertisement",
+        "Other services"
+      ]
+    },
+    {
+      "id": "9",
       "cat": "Other"
     }
   ],
@@ -645,7 +733,8 @@
       "zone": "Neuperlich",
       "postalCode": "81735",
       "phoneNumber": "098665456547",
-      "id": "3"
+      "id": "3",
+      "online": false
     },
     {
       "firstName": "Mobile Name",
@@ -704,7 +793,8 @@
       "state": "Bayern",
       "city": "Munich",
       "zone": "Daglfing",
-      "postalCode": "81929"
+      "postalCode": "81929",
+      "online": false
     },
     {
       "id": "43a9",
@@ -746,6 +836,51 @@
       "zone": "adfdf",
       "postalCode": "4234",
       "date": "2024/03/28 01:11:05",
+      "online": false
+    },
+    {
+      "id": "3374",
+      "firstName": "Siyar",
+      "lastName": "Sirat",
+      "email": "siyar.sirat@gmail.com",
+      "password": "Siyar@123",
+      "confirmPassword": "Siyar@123",
+      "phoneNumber": "7439857349435324",
+      "state": "Hamburg",
+      "city": "Hamburg",
+      "zone": "Zone1 ",
+      "postalCode": "91268",
+      "date": "2024/04/21 21:41:29",
+      "online": false
+    },
+    {
+      "id": "0d10",
+      "firstName": "very",
+      "lastName": "new",
+      "email": "very.new@gmail.com",
+      "password": "Very@123",
+      "confirmPassword": "Very@123",
+      "phoneNumber": "984357139426536",
+      "state": "New Street",
+      "city": "New City",
+      "zone": "New Zone",
+      "postalCode": "345524",
+      "date": "2024/05/20 17:23:04",
+      "online": false
+    },
+    {
+      "id": "adeb",
+      "firstName": "Hedayat ",
+      "lastName": "Farahi",
+      "email": "hedayat.farahi@yahoo.com",
+      "password": "Hedayat@123",
+      "confirmPassword": "Hedayat@123",
+      "phoneNumber": "749573405808095345",
+      "state": "Bayern",
+      "city": "Munich",
+      "zone": "First",
+      "postalCode": "345345",
+      "date": "2024/06/01 18:05:50",
       "online": false
     }
   ]

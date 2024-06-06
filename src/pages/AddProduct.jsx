@@ -79,6 +79,21 @@ const AddProduct = () => {
       case "Fashion":
         catType("fashion");
         break;
+        case "Accommodation":
+          catType("accommodation");
+          break;
+          case "Kids":
+            catType("kids");
+            break;
+            case "Pets":
+              catType("pets");
+              break;
+              case "Services":
+                catType("services");
+                break;
+                case "Other":
+                  catType("other");
+                  break;
       default:
         break;
     }
@@ -159,7 +174,7 @@ const AddProduct = () => {
         sellerFullName,
         sellerPhoneNumber,
         sellerLocation,
-        sellerId: JSON.parse(localStorage.getItem("24UserLoginData")),
+        sellerId: JSON.parse(localStorage.getItem("24UserLoginData")) || JSON.parse(sessionStorage.getItem("24UserLoginData")),
         featured: false, 
       }),
     });
@@ -481,7 +496,7 @@ function AddProductMessage({ handlePublishAnotherAd }) {
       </p>
       <div className="flex justify-between pt-8 text-white">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/products")}
           className="rounded font-semibold bg-slate-700 px-2 py-1 cursor-pointer mr-2 hover:bg-slate-800"
         >
           Go to ads
@@ -778,7 +793,7 @@ function SellerDataReview({
   sellerPhoneNumber,
   sellerLocation,
 }) {
-  const getUserId = localStorage.getItem("24UserLoginData");
+  const getUserId = localStorage.getItem("24UserLoginData") || sessionStorage.getItem("24UserLoginData");
 
   const [sellerData, setSellerData] = useState([]);
 

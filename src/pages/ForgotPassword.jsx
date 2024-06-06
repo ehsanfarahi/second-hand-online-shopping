@@ -21,8 +21,8 @@ const ForgotPassword = () => {
     }
   }
   return (
-    <div className="absolute left-[50%] top-[30%] translate-x-[-50%] w-[25%] border-2 border-blue-200 md:w-[40%] sm:w-[95%]">
-      <div className="p-4">
+    <div className="w-[30%] mx-auto pt-[10%] mb-[30rem]  py sm:hidden md:w-[50%] md:pt-[15%] sm:w-[95%]">
+      <div className="p-4 border-2 border-blue-200">
         <h2 className="text-2xl font-semibold text-orange-500 sm:text-xl">
           Forgot password
         </h2>

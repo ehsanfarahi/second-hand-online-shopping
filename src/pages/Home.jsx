@@ -30,7 +30,7 @@ const api = "http://localhost:3000/products";
 const errorMessage = "Something went wrong while fetching data";
 
 
-const Home = ({ setUpdateFavorite }) => {
+const Home = ({ setUpdateFavorite, productCardDisplay }) => {
   const numProductDisplay = 10;
 
   const [products, setProducts] = useState([]);
@@ -72,7 +72,7 @@ const Home = ({ setUpdateFavorite }) => {
       setLoadingFeatured(false);
     }
    }  
-   fetchData();
+   fetchData(); 
 
    return () => controller.abort();
   }, [displayLimit]); 
@@ -158,6 +158,7 @@ const Home = ({ setUpdateFavorite }) => {
         getPopupDetail={getPopupDetail}
         setDisplayPopupProDetail={setDisplayPopupProDetail}
         error={error}
+        productCardDisplay={productCardDisplay}
       >
         Featured Ads
       </AdsDisplayCategory>
@@ -172,6 +173,7 @@ const Home = ({ setUpdateFavorite }) => {
         setDisplayPopupProDetail={setDisplayPopupProDetail}
         extraStyle="pt-16"
         error={error}
+        productCardDisplay={productCardDisplay}
       >
         Recommended Ads
       </AdsDisplayCategory>
@@ -185,6 +187,7 @@ const Home = ({ setUpdateFavorite }) => {
         setDisplayPopupProDetail={setDisplayPopupProDetail}
         extraStyle="pt-16"
         error={error}
+        productCardDisplay={productCardDisplay}
       >
         For you
       </AdsDisplayCategory>
@@ -199,10 +202,10 @@ export default Home;
 
 function Categories() {
   return <div className="flex justify-center sm:justify-start gap-2 sm:gap-0 md:overflow-x-auto sm:overflow-x-auto">
-  <ProductCategory category="Accomodation" bg="bg-green-500">
+  <ProductCategory category="Accommodation" bg="bg-green-500">
     <MdOutlineMapsHomeWork />
   </ProductCategory>
-  <ProductCategory category="Vehicles" bg="bg-red-400">
+  <ProductCategory category="Vehicles" bg="bg-red-400"> 
     <IoCarOutline />
   </ProductCategory>
   <ProductCategory category="Electronics" bg="bg-blue-400">
@@ -241,12 +244,13 @@ function AdsDisplayCategory({
   getPopupDetail,
   setDisplayPopupProDetail,
   error,
+  productCardDisplay
 }) {
 
   return (
     <div className={`${extraStyle}`}>
       <p className="font-bold text-xl mt-5 text-slate-700">{children}</p>
-      <div className="home-container">
+      <div className={`home-container grid ${productCardDisplay === "grid" ? "grid-cols-5 sm:grid-cols-2 md:grid-cols-3" : "grid-cols-2 sm:grid-cols-1 md:grid-cols-2"} gap-6 mt-3 sm:gap-2 sm:mt-4`}>
         {loading ? <>{Array.from({length: numProductDisplay}, (_, i) => <LoadingPlaceholder key={i} />)}</> : !loading && !error && <>{products.map((product) => {
           return ( 
             <ProductCard
@@ -255,6 +259,7 @@ function AdsDisplayCategory({
               getPopupDetail={getPopupDetail}
               setDisplayPopupProDetail={setDisplayPopupProDetail}
               key={product.id}
+              productCardDisplay={productCardDisplay}
             />
           );
         })}</>}
@@ -271,7 +276,6 @@ function AdsDisplayCategory({
           {/* {loading && <Spinner />} */}
         </>
       )}
-
 
     </div>
   );

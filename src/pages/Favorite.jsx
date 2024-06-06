@@ -7,7 +7,7 @@ import { LuHeartOff } from "react-icons/lu";
 // Components
 import ProductCard from "../components/ProductCard";
 
-const Favorite = ({ setUpdateFavorite }) => {
+const Favorite = ({ setUpdateFavorite, productCardDisplay }) => {
   const [favorites, setFavorits] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Favorite = ({ setUpdateFavorite }) => {
   return (
     <div className="pt-24 sm:pt-[4.5rem] pb-20 sm:py-17 md:py-8 w-[70%] md:w-[95%] sm:w-[95%] mx-auto">
       <p className="font-semibold border-b-2 mb-6 sm:mb-0 text-lg w-fit">Favorite items</p>
-      <div className="home-container">
+      <div className={`home-container grid ${productCardDisplay === "grid" ? "grid-cols-5 sm:grid-cols-2 md:grid-cols-3" : "grid-cols-2 sm:grid-cols-1 md:grid-cols-2"} gap-6 mt-3 sm:gap-2 sm:mt-4`}>
         {getFavorite.length > 0 ? getFavorite.map((favId) => {
           return favorites
             .filter((p) => p.id === favId)
@@ -30,6 +30,7 @@ const Favorite = ({ setUpdateFavorite }) => {
                 setUpdateFavorite={setUpdateFavorite}
                 product={fav}
                 key={fav.id}
+                productCardDisplay={productCardDisplay}
               />
             ));
         }) : <NoFavoriteItem/>}

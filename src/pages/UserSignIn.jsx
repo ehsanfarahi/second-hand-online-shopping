@@ -8,6 +8,8 @@ import { CgLock, CgLockUnlock } from "react-icons/cg";
 import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+
+// Loader
 import Spinner from "../components/Spinner";
 
 // React Toasts
@@ -513,13 +515,7 @@ function SignInUpForms({ setLoading }) {
             </SignInUpButtons>
           </div>
         </div>
-        {/* <div
-          className={`absolute   ${
-            signinupForm && "left-6"
-          } top-[-2rem] w-[60%] right-6 bg-white border-2 border-blue-200 px-8 py-10`}
-        >
-          {signinupForm ? <Signup /> : <Signin setLoading={setLoading} />}
-        </div> */}
+       
         <div
           className={`absolute ${
             signinupForm ? "move-left left-[1.5rem]" : "move-right right-[1.5rem]"
@@ -548,52 +544,78 @@ function Signin({ setLoading }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorEmail, setErrorEmail] = useState(true);
+  const [invalidEmail, setInvalidEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorUser, setErrorLogin] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Functions
-  async function handleSigninFormLaptop() {
-    if (email.length < 1) {
-      setErrorEmail(false);
-    } else {
-      setErrorEmail(true);
-    }
-    if (password.length < 1) {
-      setErrorPassword(false);
-    } else {
-      setErrorPassword(true);
-    }
-
-    setLoading(true);
-
-    fetch(
-      `http://localhost:3000/userSignup?email=${email}&password=${password}`
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.length > 0) {
-          setErrorLogin(false);
-          localStorage.setItem(
-            "24UserLoginData",
-            JSON.stringify(result[0].id)
-          );
-
-          const redirectUrl = sessionStorage.getItem("redirectUrl");
-          if (redirectUrl) {
-            sessionStorage.removeItem("redirectUrl");
-            window.location.href = redirectUrl;
-          } else {
-            window.location.href = "/";
-          }
-
-          setLoading(false);
+  function handleSigninFormLaptop() {
+    try {
+      if (email.length < 1) {
+        setErrorEmail(false);
+      } else {
+        if(!email.includes("@")) {
+          setInvalidEmail(false)
+          setErrorEmail(true);
         } else {
-          setErrorLogin(true);
-          setLoading(false);
+          setInvalidEmail(true);
         }
+      }
+      if (password.length < 1) {
+        setErrorPassword(false);
+      } else {
+        setErrorPassword(true);
+      }
+  
+      setLoading(true);
+  
+      fetch(
+        `http://localhost:3000/userSignup?email=${email}&password=${password}`
+      )
+        .then((response) => {
+          if(!response.ok) throw new Error("Failed to fetch data");
+          return response.json();
+         } 
+        )
+        .then((result) => {
+          console.log(result)
+          if (result?.length > 0 && result?.length < 2) {
+            setErrorLogin(false);
 
-        
-      });
+            if(rememberMe) {
+              localStorage.setItem(
+                "24UserLoginData",
+                JSON.stringify(result[0].id)
+              );
+            } else {
+              sessionStorage.setItem(
+                "24UserLoginData",
+                JSON.stringify(result[0].id)
+              );
+            } 
+  
+            const redirectUrl = sessionStorage.getItem("redirectUrl");
+            if (redirectUrl) {
+              sessionStorage.removeItem("redirectUrl");
+              window.location.href = redirectUrl;
+            } else {
+              window.location.href = "/";
+            }
+  
+            setLoading(false);
+          } else {
+            if(email.length > 0 && password.length > 0) {
+              setErrorLogin(true);
+            } else {
+              setErrorLogin(false); 
+            }
+            setLoading(false);
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleEmail(e) {
@@ -636,6 +658,9 @@ function Signin({ setLoading }) {
             <MdOutlineEmail className="absolute right-1 top-[50%] translate-y-[-50%] text-2xl" />
           
         </div>
+        <small className={`text-red-500 ${invalidEmail && "hidden"}`}>
+          Invalid email. 
+        </small>
         <small className={`text-red-500 ${errorEmail && "hidden"}`}>
           Email cannot be empty.
         </small>
@@ -663,14 +688,15 @@ function Signin({ setLoading }) {
         </small>
       </div>
       <div className="flex my-4 text-md">
-        <input type="checkbox" className="mr-2" />
-        <p>Remember me</p>
+        <input onClick={()=>setRememberMe(e=>!e)} type="checkbox" id="remember-me" className="mr-2" />
+        <label htmlFor="remember-me">Remember me</label>
       </div>
       <div className="flex justify-between items-center">
         <p className="text-blue-400 font-semibold cursor-pointer">
           <Link to="/forgot-password">Forgot password?</Link>
         </p>
         <button
+        type="button"
           onClick={handleSigninFormLaptop}
           className="bg-orange-400 text-white font-semibold text-xl px-6 py-1 rounded-md hover:bg-orange-500"
         >
