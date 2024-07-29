@@ -75,13 +75,15 @@ function LaptopViewFilter({
         >
           Location
         </FormControl>
-        <FormControl
+        {/* <FormControl
           type="select"
           selectedCategory={selectedCategory}
           dispatch={dispatch}
         >
           Category
-        </FormControl>
+        </FormControl> */}
+        <SelectCategory selectedCategory={selectedCategory}
+          dispatch={dispatch} />
         <FormControl type="range">Distance</FormControl>
         <DoubleRangeFormControl
           selectedMinPrice={selectedMinPrice}
@@ -105,6 +107,61 @@ function LaptopViewFilter({
       </div>
     </div>
   );
+}
+
+function SelectCategory({selectedCategory, dispatch}) {
+  const [displayCategories, setDisplayCategories] = useState(false);
+  const [category, setCategory] = useState("");
+
+  const API = `http://localhost:3000/categories`
+
+  const {data} = useFetchGet(API);
+
+  return <div
+  className={`bg-white py-2 px-4 w-full`}
+>
+  
+    <div onClick={() => setDisplayCategories(true)}>
+      <input
+        value={selectedCategory ? selectedCategory : category}
+        onChange={(e) => setCategory(e.target.value)}
+        type="text"
+        className="border-2 border-gray-300
+     rounded mt-8 h-[2.7rem] w-full text-slate-700 px-2 text-lg outline-none"
+        placeholder={selectedCategory ? selectedCategory : 'All categories'}
+      />
+    </div>
+    {displayCategories && (
+      <div
+        className="border-2 border-gray-300
+     rounded mt-1 max-h-[80%] overflow-y-scroll px-2 py-1 text-lg text-slate-700"
+      >
+        {data.map((cat, index) => (
+          <div
+            className={`flex items-center ${
+              selectedCategory === category && 'bg-gray-200 rounded px-1'
+            }`}
+            key={cat.cat}  
+          >
+            {selectedCategory === cat.cat ? (
+              <FaCheck className="mr-2" />
+            ) : (
+              <FaCheck className="text-white mr-3" />
+            )}{' '}
+            <p
+              key={index}
+              onClick={() => {
+                dispatch({ type: 'selectedCity', payload: cat.cat });
+                setDisplayCategories(false);
+              }}
+            >
+              {cat.cat}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
+</div>
 }
 
 function MobileViewFilter({

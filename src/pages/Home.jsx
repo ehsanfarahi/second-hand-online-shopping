@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 // Get random recommended ads
 import _ from "lodash";
@@ -30,7 +31,7 @@ const api = "http://localhost:3000/products";
 const errorMessage = "Something went wrong while fetching data";
 
 
-const Home = ({ setUpdateFavorite, productCardDisplay }) => {
+const Home = ({ setUpdateFavorite, productCardDisplay, dispatch }) => {
   const numProductDisplay = 10;
 
   const [products, setProducts] = useState([]);
@@ -148,7 +149,7 @@ const Home = ({ setUpdateFavorite, productCardDisplay }) => {
 
   return (
     <div className="py-20 sm:py-8 md:py-8 w-[70%] md:w-[95%] sm:w-[95%] mx-auto">
-      <Categories/>
+      <Categories dispatch={dispatch} />
       <AdsDisplayCategory
         products={featuredProducts}
         loading={loadingFeatured}
@@ -200,33 +201,33 @@ const Home = ({ setUpdateFavorite, productCardDisplay }) => {
 
 export default Home;
 
-function Categories() {
+function Categories({dispatch}) {
   return <div className="flex justify-center sm:justify-start gap-2 sm:gap-0 md:overflow-x-auto sm:overflow-x-auto">
-  <ProductCategory category="Accommodation" bg="bg-green-500">
+  <ProductCategory dispatch={dispatch} category="Accommodation" bg="bg-green-500">
     <MdOutlineMapsHomeWork />
   </ProductCategory>
-  <ProductCategory category="Vehicles" bg="bg-red-400"> 
+  <ProductCategory dispatch={dispatch} category="Vehicles" bg="bg-red-400"> 
     <IoCarOutline />
   </ProductCategory>
-  <ProductCategory category="Electronics" bg="bg-blue-400">
+  <ProductCategory dispatch={dispatch} category="Electronics" bg="bg-blue-400">
     <MdOutlinePhonelink />
   </ProductCategory>
-  <ProductCategory category="Furniture" bg="bg-purple-400">
+  <ProductCategory dispatch={dispatch} category="Furniture" bg="bg-purple-400">
     <TbArmchair2 />
   </ProductCategory>
-  <ProductCategory category="Fashion" bg="bg-orange-400">
+  <ProductCategory dispatch={dispatch} category="Fashion" bg="bg-orange-400">
     <GiClothes />
   </ProductCategory>
-  <ProductCategory category="Kids" bg="bg-pink-400">
+  <ProductCategory dispatch={dispatch} category="Kids" bg="bg-pink-400">
   <FaChild />
   </ProductCategory>
-  <ProductCategory category="Pets" bg="bg-teal-400">
+  <ProductCategory dispatch={dispatch} category="Pets" bg="bg-teal-400">
   <BiSolidDog />
   </ProductCategory>
-  <ProductCategory category="Services" bg="bg-indigo-400">
+  <ProductCategory dispatch={dispatch} category="Services" bg="bg-indigo-400">
   <MdMiscellaneousServices />
   </ProductCategory>
-  <ProductCategory category="Other" bg="bg-slate-400">
+  <ProductCategory dispatch={dispatch} category="Other" bg="bg-slate-400">
   <BsThreeDots />
   </ProductCategory>
 </div>
@@ -295,10 +296,15 @@ function LoadMore({ handleLoadMore }) {
   );
 }
 
-function ProductCategory({ children, category, bg }) {
+function ProductCategory({ children, category, bg, dispatch }) {
   const [hoverEffect, setHoverEffect] = useState(false);
+
+  const navigate = useNavigate();
+
   return (
-    <div
+    <div onClick={()=>{dispatch({type: "selectedCategory", payload: category})
+    navigate("products"); 
+  }}
       onMouseEnter={() => setHoverEffect(true)}
       onMouseLeave={() => setHoverEffect(false)}
       className={`md:mt-14 mt-14 flex flex-col items-center cursor-pointer px-4 sm:px-2 ${

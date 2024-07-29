@@ -157,8 +157,6 @@ function App() {
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  console.log("All Prices", selectedMinPrice, selectedMaxPrice)
-
   // React Hooks
   useEffect(() => {
     window.addEventListener('scroll', (e) => {
@@ -259,6 +257,7 @@ function App() {
               <Home
                 setUpdateFavorite={setUpdateFavorite}
                 productCardDisplay={productCardDisplay}
+                dispatch={dispatch}
               />
             }
           />

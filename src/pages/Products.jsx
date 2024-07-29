@@ -20,7 +20,7 @@ const MIN_DISPLAY_LIMIT = 20;
 const Products = ({ setUpdateFavorite, productCardDisplay, dispatch, displayLimit, selectedCity, selectedCategory, selectedSubCategory, selectedMinPrice, selectedMaxPrice, showFilter, NUM_PRODUCT_DISPLAY }) => {
   
   // url
-  const api = `https://farahibazaar-json-server.vercel.app/products?sellerLocation=${selectedCity !== null ? selectedCity : ""}&category=${selectedCategory !== null ? selectedCategory : ""}&type=${selectedSubCategory !== null ? selectedSubCategory : ""}`;
+  const api = `http://localhost:3000/products?sellerLocation=${selectedCity !== null ? selectedCity : ""}&category=${selectedCategory !== null ? selectedCategory : ""}&type=${selectedSubCategory !== null ? selectedSubCategory : ""}`;
 
   const { data, error, isLoading } = useFetchGet(api);
 

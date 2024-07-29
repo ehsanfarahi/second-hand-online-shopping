@@ -9,11 +9,17 @@ import { IoLogoGoogleplus } from "react-icons/io";
 import { HiUser } from "react-icons/hi2";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 
+// Custom Hooks
+import { useGetGeoLocation } from "../customHooks/useGetGeoLocation";
+import { useGetAddress } from "../customHooks/useGetAddress";
+
 // Loader
 import Spinner from "../components/Spinner";
 
 // React Toasts
 import { ToastContainer, toast } from 'react-toastify';
+import Map from "../components/Map";
+import Button from "../components/Button";
 
 const UserSignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -759,6 +765,8 @@ function Signup({setSigninupForm}) {
   const [errorZone, setErrorZone] = useState(false);
   const [errorPostalCode, setErrorPostalCode] = useState(false);
   const [step, setStep] = useState(1);
+  const {geolocation, getGeolocation} = useGetGeoLocation();
+  const {address, getAddress} = useGetAddress()
 
   // get current date
   function getCurrentDateTime() {
@@ -1231,7 +1239,7 @@ function Signup({setSigninupForm}) {
                 <Input
                   onChange={(e) => setFormData(prevState=>({...prevState, state: e.target.value }))}
                   type="text"
-                  value={state}
+                  value={address?.principalSubdivision || state}
                 >
                   State *
                 </Input>
@@ -1246,7 +1254,7 @@ function Signup({setSigninupForm}) {
                 <Input
                   onChange={(e) => setFormData(prevState=>({...prevState, city: e.target.value }))}
                   type="text"
-                  value={city}
+                  value={address?.city || city}
                 >
                   City *
                 </Input>
@@ -1277,7 +1285,7 @@ function Signup({setSigninupForm}) {
                 <Input
                   onChange={(e) => setFormData(prevState=>({...prevState, postalCode: e.target.value }))}
                   type="text"
-                  value={postalCode}
+                  value={address?.postcode || postalCode}
                 >
                   Postal code *
                 </Input>
@@ -1287,6 +1295,13 @@ function Signup({setSigninupForm}) {
               )}
             </div>
           </div>
+          <Button onClick={()=>{
+            getGeolocation(); 
+            getAddress()
+          }} extraStyle="bg-blue-200 text-slate-700 font-semibold mt-3 hover:bg-blue-300">Get my location</Button>
+          <Map mapStyle="w-full h-[8rem] border-2 mt-1" position={geolocation} address={address} />
+          
+          <button >Get my location</button>
           <div className="flex justify-between items-center mt-[3rem]">
             <div className="flex items-center">
               <input
