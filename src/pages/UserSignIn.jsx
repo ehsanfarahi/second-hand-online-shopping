@@ -764,7 +764,7 @@ function Signup({setSigninupForm}) {
   const [errorCity, setErrorCity] = useState(false);
   const [errorZone, setErrorZone] = useState(false);
   const [errorPostalCode, setErrorPostalCode] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); 
   const {geolocation, getGeolocation} = useGetGeoLocation();
   const {address, getAddress} = useGetAddress()
 
